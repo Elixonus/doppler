@@ -1,4 +1,4 @@
-# dopplerJS
+# dopplerJS 🔊
 Small visualization of doppler sound effect for Physics 1.
 
 ## Controls
