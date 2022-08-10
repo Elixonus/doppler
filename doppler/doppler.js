@@ -68,22 +68,22 @@ function render()
     lightbulb.position.y -= speed;
   }
   
-  else if(down)
+  if(down)
   {
     lightbulb.position.y += speed;
   }
   
-  else if(left)
+  if(left)
   {
     lightbulb.position.x -= speed;
   }
   
-  else if(right)
+  if(right)
   {
     lightbulb.position.x += speed;
   }
 
-    if(time % 10 === 0)
+  if(time % 10 === 0)
   {
     waves.push(
     {
