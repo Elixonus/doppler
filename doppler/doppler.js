@@ -2,69 +2,37 @@ var up = false;
 var down = false;
 var left = false;
 var right = false;
-window.onkeydown = keydown;
-window.onkeyup = keyup;
 
-function keydown()
+function goUp()
 {
-  if(!event)
-  {
-    event = window.event;
-  }
-
-  var eventKey = event.key;
-  
-  if(eventKey === "ArrowUp")
-  {
-      up = true;
-  }
-  
-  if(eventKey === "ArrowDown")
-  {
-      down = true;
-  }
-  
-  if(eventKey === "ArrowLeft")
-  {
-        left = true;
-  }
-  
-  if(eventKey === "ArrowRight")
-  {
-      right = true;
-  }
+  goStop();
+  up = true;
 }
 
-function keyup()
+function goDown()
 {
-  if(!event)
-  {
-    event = window.event;
-  }
-
-  var eventKey = event.key;
-  
-  if(eventKey === "ArrowUp")
-  {
-      up = false;
-  }
-  
-  if(eventKey === "ArrowDown")
-  {
-      down = false;
-  }
-  
-  if(eventKey === "ArrowLeft")
-  {
-        left = false;
-  }
-  
-  if(eventKey === "ArrowRight")
-  {
-      right = false;
-  }
-{
+  goStop();
+  down = true;
 }
+
+function goLeft()
+{
+  goStop();
+  left = true;
+}
+
+function goRight()
+{
+  goStop();
+  right = true;
+}
+
+function goStop()
+{
+  up = false;
+  down = false;
+  left = false;
+  right = false;
 }
 
 var time = 0;
