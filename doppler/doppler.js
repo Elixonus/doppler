@@ -41,7 +41,7 @@ var lightbulb =
   wavelength: 550,
   position:
   {
-    x: -250,
+    x: 0,
     y: 0
   }
 };
@@ -108,7 +108,7 @@ function render()
   ctx.arc(lightbulb.position.x, lightbulb.position.y, 20, 0, 2 * Math.PI);
   ctx.fill();
   
-  ctx.fillText("S", lightbulb.position.x - 4, lightbulb.position.y + 30);
+  ctx.fillText("SRC", lightbulb.position.x - 4, lightbulb.position.y + 30);
   
   if(observer.timeDifference !== undefined)
   {
@@ -126,7 +126,7 @@ function render()
   ctx.arc(observer.position.x, observer.position.y, 20, 0, 2 * Math.PI);
   ctx.fill();
   
-  ctx.fillText("O", observer.position.x - 4, observer.position.y + 30);
+  ctx.fillText("OBS", observer.position.x - 4, observer.position.y + 30);
   
   ctx.strokeStyle = "white";
   ctx.lineWidth = 2;
