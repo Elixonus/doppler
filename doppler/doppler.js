@@ -38,21 +38,21 @@ function goStop()
 var time = 0;
 var lightbulb =
 {
-    wavelength: 550,
+  wavelength: 550,
   position:
   {
-      x: -250,
+    x: -250,
     y: 0
   }
 };
 var observer =
 {
-    lastWaveTime: 0,
-    position:
-    {
-      x: 0,
+  lastWaveTime: 0,
+  position:
+  {
+    x: 0,
     y: 150
-    }
+  }
 };
 var waves = [];
 var canvas = document.getElementById("canvas");
@@ -60,27 +60,27 @@ var ctx = canvas.getContext("2d");
 
 function render()
 {
-    var speed = Number(document.getElementById("speed-input").value);
+  var speed = Number(document.getElementById("speed-input").value);
   document.getElementById("speed-value").innerHTML = "Speed of the source is: " + speed + " time(s) the speed of sound";
 
-    if(up)
+  if(up)
   {
-        lightbulb.position.y -= speed;
+    lightbulb.position.y -= speed;
   }
   
   else if(down)
   {
-        lightbulb.position.y += speed;
+    lightbulb.position.y += speed;
   }
   
-    else if(left)
+  else if(left)
   {
-        lightbulb.position.x -= speed;
+    lightbulb.position.x -= speed;
   }
   
   else if(right)
   {
-        lightbulb.position.x += speed;
+    lightbulb.position.x += speed;
   }
 
     if(time % 10 === 0)
@@ -97,7 +97,7 @@ function render()
     });
   }
 
-    ctx.fillStyle = "black";
+  ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 500, 500);
   
   ctx.translate(250, 250);
@@ -119,8 +119,8 @@ function render()
   
   else
   {
-      ctx.fillStyle = "gray";
-    }
+    ctx.fillStyle = "gray";
+  }
 
   ctx.beginPath();
   ctx.arc(observer.position.x, observer.position.y, 20, 0, 2 * Math.PI);
@@ -133,7 +133,7 @@ function render()
   
   for(var n = 0; n < waves.length; n++)
   {
-      var wave = waves[n];
+    var wave = waves[n];
     ctx.beginPath();
     ctx.arc(wave.position.x, wave.position.y, wave.time, 0, 2 * Math.PI);
     ctx.stroke();
@@ -141,22 +141,23 @@ function render()
     
     if(wave.time > 500)
     {
-        waves.splice(waves.indexOf(wave), 1);
+      waves.splice(waves.indexOf(wave), 1);
       n--;
       continue;
     }
     
     if(wave.time >= Math.hypot(wave.position.x - observer.position.x, wave.position.y - observer.position.y) && !wave.seen)
     {
-        wave.seen = true;
+      wave.seen = true;
       observer.timeDifference = time - observer.lastWaveTime;
       observer.lastWaveTime = time;
     }
   }
+  
   time += 1;
   
   ctx.resetTransform();
-    window.requestAnimationFrame(render);
+  window.requestAnimationFrame(render);
 }
 
 window.requestAnimationFrame(render);
