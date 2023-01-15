@@ -1,14 +1,17 @@
 # doppler 🔊
+
 Small visualization of doppler sound effect for Physics 1.
 
 ## Controls
-Arrow keys - to move the position of the source (only)
+
+```(ARROW KEYS)``` - Move the position of the source *(the observer is stationary)*.
 
 ## Output
-The hue of the source represents the frequency of the sound wave sent.
 
-The hue of the observer represents the frequency of the sound wave received at the time of arrival.
+The hue of the source represents the mapped frequency of the sound wave sent with respect to the source.
 
-The greater the hue, the higher frequency the sound wave and vice versa.
+The hue of the observer represents the mapped frequency of the sound wave received with respect to the observer at the time of arrival.
+
+The greater the hue number, the higher frequency of the sound wave relative to the source or observer.
 
 ![Screenshot](screenshot.png)
