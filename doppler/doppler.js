@@ -1,0 +1,17 @@
+document.getElementById("time-strt").onclick = function(){};
+document.getElementById("time-stop").onclick = function(){};
+document.getElementById("bufr-save").onclick = function(){};
+document.getElementById("bufr-rest").onclick = function(){};
+document.getElementById("pwr-on").onclick = function(){};
+document.getElementById("pwr-off").onclick = function(){};
+document.getElementById("type-pos").onclick = function(){};
+document.getElementById("type-vel").onclick = function(){};
+document.getElementById("type-acc").onclick = function(){};
+document.getElementById("dir-left").onclick = function(){};
+document.getElementById("dir-rght").onclick = function(){};
+document.getElementById("dir-up").onclick = function(){};
+document.getElementById("dir-down").onclick = function(){};
+document.getElementById("dir-zero").onclick = function(){};
+document.getElementById("mag-low").onclick = function(){};
+document.getElementById("mag-med").onclick = function(){};
+document.getElementById("mag-high").onclick = function(){};

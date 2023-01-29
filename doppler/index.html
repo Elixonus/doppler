@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Doppler Effect Simulation</title>
+        <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    </head>
+    
+    <body>
+        <div id="container-doppler" class="container">
+            <h1 id="doppler">Doppler Effect Simulation</h1>
+            <div id="container-general" class="container">
+                <h2 id="general">General</h2>
+                <h3 id="time">TIME</h3>
+                <button type="button" id="time-strt">STRT</button>
+                <button type="button" id="time-stop">STOP</button>
+                <h3 id="bufr">BUFR</h3>
+                <button type="button" id="bufr-save">SAVE</button>
+                <button type="button" id="bufr-rest">REST</button>
+            </div>
+            <div id="container-object" class="container">
+                <h2 id="object">Object</h2>
+                <div id="container-signal" class="container">
+                    <h2 id="signal">Signal</h2>
+                    <h3 id="pwd">PWR</h3>
+                    <button type="button" id="pwr-on">ON</button>
+                    <button type="button" id="pwr-off">OFF</button>
+                </div>
+                <div id="container-motion" class="container">
+                    <h2 id="motion">Motion</h2>
+                    <h3 id="type">TYPE</h3>
+                    <button type="button" id="type-pos">POS</button>
+                    <button type="button" id="type-vel">VEL</button>
+                    <button type="button" id="type-acc">ACC</button>
+                    <div id="container-vector" class="container">
+                        <h2 id="vector">Vector</h2>
+                        <h3 id="dir">DIR</h3>
+                        <button type="button" id="dir-left">LEFT</button>
+                        <button type="button" id="dir-rght">RGHT</button>
+                        <button type="button" id="dir-up">UP</button>
+                        <button type="button" id="dir-down">DOWN</button>
+                        <button type="button" id="dir-zero">ZERO</button>
+                        <h3 id="mag">MAG</h3>
+                        <button type="button" id="mag-low">LOW</button>
+                        <button type="button" id="mag-med">MED</button>
+                        <button type="button" id="mag-high">HIGH</button>
+                    </div>
+                </div>
+            </div>
+            <div id="container-view" class="container">
+                <h2 id="view">View</h2>
+                <canvas id="canvas-view" width="800px" height="600px"></canvas>
+            </div>
+        </div>
+
+        <style>
+
+            body
+            {
+                display: flex;
+                justify-content: center;
+                background-color: #fffce4;
+            }
+
+            .container
+            {
+                margin: 20px;
+                padding: 5px;
+                outline: solid 5px #000000;
+                box-shadow: 0 0 5px #000000, 0 0 20px #000000;
+            }
+
+            #container-doppler
+            {
+                text-align: center;
+                width: 800px;
+                background-color: #cccccc;
+            }
+
+            #container-general
+            {
+                background-color: #777777;
+            }
+
+            #container-object
+            {
+                background-color: #777777;
+            }
+
+            #container-signal
+            {
+                background-color: #ffff63;
+            }
+
+            #container-motion
+            {
+                background-color: #b59aff;
+            }
+
+            #container-vector
+            {
+                background-color: #f89aff;
+            }
+
+            #container-view
+            {
+                background-color: #777777;
+            }
+
+            #canvas-view
+            {
+                width: 100%;
+                background-color: #000000;
+            }
+
+            h2, h3
+            {
+                margin: 0px;
+            }
+
+        </style>
+
+        <script src="./doppler.js"></script>
+    </body>
+</html>
