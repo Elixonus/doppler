@@ -21,7 +21,7 @@ const buttonMagMed = document.getElementById("button-mag-med");
 const buttonMagHigh = document.getElementById("button-mag-high");
 
 const src = {
-    ctrl: true,
+    ctrl: false,
     pwr: true,
     freq: 1,
     amp: 1,
@@ -33,7 +33,7 @@ const src = {
         y: 0
     },
     vel: {
-        type: true,
+        type: false,
         dir: 0,
         mag: 2,
         x: 0,
@@ -61,7 +61,7 @@ const obs = {
         y: 0
     },
     vel: {
-        type: true,
+        type: false,
         dir: 0,
         mag: 2,
         x: 0,
@@ -85,7 +85,6 @@ function step()
     window.requestAnimationFrame(step);
 }
 
-
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
 // buttonBufrSave.onclick = bufrSave();
@@ -108,32 +107,102 @@ buttonMagHigh.onclick = magHigh;
 
 function timeStrt()
 {
-    run = true;
     buttonTimeStrt.disabled = true;
     buttonTimeStop.disabled = false;
+    run = true;
 }
 
 function timeStop()
 {
-    run = false;
     buttonTimeStop.disabled = true;
     buttonTimeStrt.disabled = false;
+    run = false;
 }
 
 function ctrlSrc()
 {
+    buttonCtrlSrc.disabled = true;
+    buttonCtrlObs.disabled = false;
     obs.ctrl = false;
     src.ctrl = true;
+
+    if(src.pwr)
+    {
+        pwrOn();
+    }
+
+    else
+    {
+        pwrOff();
+    }
+
+    if(src.pos.type)
+    {
+        typePos();
+    }
+
+    else if(src.vel.type)
+    {
+        typeVel();
+    }
+
+    else if(src.acc.type)
+    {
+        typeAcc();
+    }
+
+    else
+    {
+        typeNone();
+    }
 }
 
 function ctrlObs()
 {
+    buttonCtrlObs.disabled = true;
+    buttonCtrlSrc.disabled = false;
     src.ctrl = false;
     obs.ctrl = true;
+
+    if(obs.pwr)
+    {
+        pwrOn();
+    }
+
+    else
+    {
+        pwrOff();
+    }
+    
+    if(obs.pos.type)
+    {
+        typePos();
+    }
+
+    else if(obs.vel.type)
+    {
+        typeVel();
+    }
+
+    else if(obs.acc.type)
+    {
+        typeAcc();
+    }
+
+    else
+    {
+        typeNone();
+    }
 }
 
 function pwrOn()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonPwrOn.disabled = true;
+        buttonPwrOff.disabled = false;
+    }
+
     if(src.ctrl)
     {
         src.pwr = true;
@@ -147,6 +216,12 @@ function pwrOn()
 
 function pwrOff()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonPwrOff.disabled = true;
+        buttonPwrOn.disabled = false;
+    }
+
     if(src.ctrl)
     {
         src.pwr = false;
@@ -160,6 +235,13 @@ function pwrOff()
 
 function typePos()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonTypePos.disabled = true;
+        buttonTypeVel.disabled = false;
+        buttonTypeAcc.disabled = false;
+    }
+
     if(src.ctrl)
     {
         src.vel.type = false;
@@ -177,6 +259,13 @@ function typePos()
 
 function typeVel()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonTypeVel.disabled = true;
+        buttonTypePos.disabled = false;
+        buttonTypeAcc.disabled = false;
+    }
+
     if(src.ctrl)
     {
         src.pos.type = false;
@@ -194,6 +283,13 @@ function typeVel()
 
 function typeAcc()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonTypeAcc.disabled = true;
+        buttonTypePos.disabled = false;
+        buttonTypeVel.disabled = false;
+    }
+
     if(src.ctrl)
     {
         src.pos.type = false;
@@ -206,6 +302,30 @@ function typeAcc()
         obs.pos.type = false;
         obs.vel.type = false;
         obs.acc.type = true;
+    }
+}
+
+function typeNone()
+{
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonTypePos.disabled = false;
+        buttonTypeVel.disabled = false;
+        buttonTypeAcc.disabled = false;
+    }
+
+    if(src.ctrl)
+    {
+        src.pos.type = false;
+        src.vel.type = false;
+        src.acc.type = false;
+    }
+
+    if(obs.ctrl)
+    {
+        obs.pos.type = false;
+        obs.vel.type = false;
+        obs.acc.type = false;
     }
 }
 
