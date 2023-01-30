@@ -33,7 +33,7 @@ const src = {
         y: 0
     },
     vel: {
-        type: false,
+        type: true,
         dir: 0,
         mag: 2,
         x: 0,
@@ -61,7 +61,7 @@ const obs = {
         y: 0
     },
     vel: {
-        type: false,
+        type: true,
         dir: 0,
         mag: 2,
         x: 0,
@@ -84,6 +84,8 @@ function step()
 
     window.requestAnimationFrame(step);
 }
+
+ctrlObs();
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
@@ -150,11 +152,6 @@ function ctrlSrc()
     {
         typeAcc();
     }
-
-    else
-    {
-        typeNone();
-    }
 }
 
 function ctrlObs()
@@ -187,11 +184,6 @@ function ctrlObs()
     else if(obs.acc.type)
     {
         typeAcc();
-    }
-
-    else
-    {
-        typeNone();
     }
 }
 
@@ -247,6 +239,46 @@ function typePos()
         src.vel.type = false;
         src.acc.type = false;
         src.pos.type = true;
+
+        if(src.pos.dir === 0)
+        {
+            dirZero();
+        }
+
+        else if(src.pos.dir === 1)
+        {
+            dirLeft();
+        }
+
+        else if(src.pos.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(src.pos.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(src.pos.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(src.pos.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(src.pos.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(src.pos.mag === 3)
+        {
+            magHigh();
+        }
     }
 
     if(obs.ctrl)
@@ -254,6 +286,46 @@ function typePos()
         obs.vel.type = false;
         obs.acc.type = false;
         obs.pos.type = true;
+
+        if(obs.pos.dir === 0)
+        {
+            dirZero();
+        }
+
+        else if(obs.pos.dir === 1)
+        {
+            dirLeft();
+        }
+
+        else if(obs.pos.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(obs.pos.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(obs.pos.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(obs.pos.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(obs.pos.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(obs.pos.mag === 3)
+        {
+            magHigh();
+        }
     }
 }
 
@@ -271,6 +343,46 @@ function typeVel()
         src.pos.type = false;
         src.acc.type = false;
         src.vel.type = true;
+
+        if(src.vel.dir === 0)
+        {
+            dirZero();
+        }
+
+        else if(src.vel.dir === 1)
+        {
+            dirLeft();
+        }
+
+        else if(src.vel.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(src.vel.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(src.vel.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(src.vel.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(src.vel.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(src.vel.mag === 3)
+        {
+            magHigh();
+        }
     }
 
     if(obs.ctrl)
@@ -278,6 +390,46 @@ function typeVel()
         obs.pos.type = false;
         obs.acc.type = false;
         obs.vel.type = true;
+
+        if(obs.vel.dir === 0)
+        {
+            dirZero();
+        }
+
+        else if(obs.vel.dir === 1)
+        {
+            dirLeft();
+        }
+
+        else if(obs.vel.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(obs.vel.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(obs.vel.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(obs.vel.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(obs.vel.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(obs.vel.mag === 3)
+        {
+            magHigh();
+        }
     }
 }
 
@@ -295,6 +447,46 @@ function typeAcc()
         src.pos.type = false;
         src.vel.type = false;
         src.acc.type = true;
+
+        if(src.acc.dir === 0)
+        {
+            dirZero();
+        }
+
+        else if(src.acc.dir === 1)
+        {
+            dirLeft();
+        }
+
+        else if(src.acc.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(src.acc.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(src.acc.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(src.acc.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(src.acc.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(src.acc.mag === 3)
+        {
+            magHigh();
+        }
     }
 
     if(obs.ctrl)
@@ -302,35 +494,60 @@ function typeAcc()
         obs.pos.type = false;
         obs.vel.type = false;
         obs.acc.type = true;
-    }
-}
 
-function typeNone()
-{
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonTypePos.disabled = false;
-        buttonTypeVel.disabled = false;
-        buttonTypeAcc.disabled = false;
-    }
+        if(obs.acc.dir === 0)
+        {
+            dirZero();
+        }
 
-    if(src.ctrl)
-    {
-        src.pos.type = false;
-        src.vel.type = false;
-        src.acc.type = false;
-    }
+        else if(obs.acc.dir === 1)
+        {
+            dirLeft();
+        }
 
-    if(obs.ctrl)
-    {
-        obs.pos.type = false;
-        obs.vel.type = false;
-        obs.acc.type = false;
+        else if(obs.acc.dir === 2)
+        {
+            dirRght();
+        }
+
+        else if(obs.acc.dir === 3)
+        {
+            dirUp();
+        }
+
+        else if(obs.acc.dir === 4)
+        {
+            dirDown();
+        }
+
+        if(src.acc.mag === 1)
+        {
+            magLow();
+        }
+
+        else if(src.acc.mag === 2)
+        {
+            magMed();
+        }
+
+        else if(src.acc.mag === 3)
+        {
+            magHigh();
+        }
     }
 }
 
 function dirLeft()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonDirLeft.disabled = true;
+        buttonDirRght.disabled = false;
+        buttonDirUp.disabled = false;
+        buttonDirDown.disabled = false;
+        buttonDirZero.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -370,6 +587,15 @@ function dirLeft()
 
 function dirRght()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonDirRght.disabled = true;
+        buttonDirLeft.disabled = false;
+        buttonDirUp.disabled = false;
+        buttonDirDown.disabled = false;
+        buttonDirZero.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -409,6 +635,15 @@ function dirRght()
 
 function dirUp()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonDirUp.disabled = true;
+        buttonDirLeft.disabled = false;
+        buttonDirRght.disabled = false;
+        buttonDirDown.disabled = false;
+        buttonDirZero.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -448,6 +683,15 @@ function dirUp()
 
 function dirDown()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonDirDown.disabled = true;
+        buttonDirLeft.disabled = false;
+        buttonDirRght.disabled = false;
+        buttonDirUp.disabled = false;
+        buttonDirZero.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -487,6 +731,15 @@ function dirDown()
 
 function dirZero()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonDirZero.disabled = true;
+        buttonDirLeft.disabled = false;
+        buttonDirRght.disabled = false;
+        buttonDirUp.disabled = false;
+        buttonDirDown.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -526,6 +779,13 @@ function dirZero()
 
 function magLow()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonMagLow.disabled = true;
+        buttonMagMed.disabled = false;
+        buttonMagHigh.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -565,6 +825,13 @@ function magLow()
 
 function magMed()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonMagMed.disabled = true;
+        buttonMagLow.disabled = false;
+        buttonMagHigh.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
@@ -604,6 +871,13 @@ function magMed()
 
 function magHigh()
 {
+    if(src.ctrl || obs.ctrl)
+    {
+        buttonMagHigh.disabled = true;
+        buttonMagLow.disabled = false;
+        buttonMagMed.disabled = false;
+    }
+
     if(src.ctrl)
     {
         if(src.pos.type)
