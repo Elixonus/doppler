@@ -46,6 +46,58 @@ function pwrOff()
     }
 }
 
+function typePos()
+{
+    if(src.ctrl)
+    {
+        src.vel.vel = false;
+        src.acc.acc = false;
+        src.pos.pos = true;
+    }
+
+    if(obs.ctrl)
+    {
+        obs.vel.vel = false;
+        obs.acc.acc = false;
+        obs.pos.pos = true;
+    }
+}
+
+function typeVel()
+{
+    if(src.ctrl)
+    {
+        src.pos.pos = false;
+        src.acc.acc = false;
+        src.vel.vel = true;
+    }
+
+    if(obs.ctrl)
+    {
+        obs.pos.pos = false;
+        obs.acc.acc = false;
+        obs.vel.vel = true;
+    }
+}
+
+function typeAcc()
+{
+    if(src.ctrl)
+    {
+        src.pos.pos = false;
+        src.vel.vel = false;
+        src.acc.acc = true;
+    }
+
+    if(obs.ctrl)
+    {
+        obs.pos.pos = false;
+        obs.vel.vel = false;
+        obs.acc.acc = true;
+    }
+}
+
+
 document.getElementById("time-strt").onclick = timeStrt();
 document.getElementById("time-stop").onclick = timeStop();
 document.getElementById("bufr-save").onclick = bufrSave();
@@ -74,14 +126,17 @@ const src = {
     freq: 1,
     amp: 1,
     pos: {
+        pos: false,
         x: 0,
         y: 0
     },
     vel: {
+        vel: true,
         x: 0,
         y: 0
     },
     acc: {
+        acc: false,
         x: 0,
         y: 0
     }
@@ -92,16 +147,18 @@ const obs = {
     pwr: true,
     freq: 1,
     amp: 1,
-    type: 1,
     pos: {
+        pos: false,
         x: 0,
         y: 0
     },
     vel: {
+        vel: true,
         x: 0,
         y: 0
     },
     acc: {
+        acc: false,
         x: 0,
         y: 0
     }
