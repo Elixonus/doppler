@@ -1,3 +1,5 @@
+let run = true;
+
 const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
 const buttonBufrSave = document.getElementById("button-bufr-save");
@@ -18,14 +20,104 @@ const buttonMagLow = document.getElementById("button-mag-low");
 const buttonMagMed = document.getElementById("button-mag-med");
 const buttonMagHigh = document.getElementById("button-mag-high");
 
+const src = {
+    ctrl: true,
+    pwr: true,
+    freq: 1,
+    amp: 1,
+    pos: {
+        type: false,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    },
+    vel: {
+        type: true,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    },
+    acc: {
+        type: false,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    }
+}
+
+const obs = {
+    ctrl: false,
+    pwr: true,
+    freq: 1,
+    amp: 1,
+    pos: {
+        type: false,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    },
+    vel: {
+        type: true,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    },
+    acc: {
+        type: false,
+        dir: 0,
+        mag: 2,
+        x: 0,
+        y: 0
+    }
+}
+
+window.requestAnimationFrame(step);
+
+function step()
+{
+    // render code and logic as well
+
+    window.requestAnimationFrame(step);
+}
+
+
+buttonTimeStrt.onclick = timeStrt;
+buttonTimeStop.onclick = timeStop;
+// buttonBufrSave.onclick = bufrSave();
+// buttonBufrRstr.onclick = bufrRstr();
+buttonCtrlSrc.onclick = ctrlSrc;
+buttonCtrlObs.onclick = ctrlObs;
+buttonPwrOn.onclick = pwrOn;
+buttonPwrOff.onclick = pwrOff;
+buttonTypePos.onclick = typePos;
+buttonTypeVel.onclick = typeVel;
+buttonTypeAcc.onclick = typeAcc;
+buttonDirLeft.onclick = dirLeft;
+buttonDirRght.onclick = dirRght;
+buttonDirUp.onclick = dirUp;
+buttonDirDown.onclick = dirDown;
+buttonDirZero.onclick = dirZero;
+buttonMagLow.onclick = magLow;
+buttonMagMed.onclick = magMed;
+buttonMagHigh.onclick = magHigh;
+
 function timeStrt()
 {
     run = true;
+    buttonTimeStrt.disabled = true;
+    buttonTimeStop.disabled = false;
 }
 
 function timeStop()
 {
     run = false;
+    buttonTimeStop.disabled = true;
+    buttonTimeStrt.disabled = false;
 }
 
 function ctrlSrc()
@@ -427,91 +519,4 @@ function magHigh()
             obs.acc.mag = 3;
         }
     }
-}
-
-buttonTimeStrt.onclick = timeStrt();
-buttonTimeStop.onclick = timeStop();
-buttonBufrSave.onclick = bufrSave();
-buttonBufrRstr.onclick = bufrRstr();
-buttonCtrlSrc.onclick = ctrlSrc();
-buttonCtrlObs.onclick = ctrlObs();
-buttonPwrOn.onclick = pwrOn();
-buttonPwrOff.onclick = pwrOff();
-buttonTypePos.onclick = typePos();
-buttonTypeVel.onclick = typeVel();
-buttonTypeAcc.onclick = typeAcc();
-buttonDirLeft.onclick = dirLeft();
-buttonDirRght.onclick = dirRght();
-buttonDirUp.onclick = dirUp();
-buttonDirDown.onclick = dirDown();
-buttonDirZero.onclick = dirZero();
-buttonMagLow.onclick = magLow();
-buttonMagMed.onclick = magMed();
-buttonMagHigh.onclick = magHigh();
-
-let run = true;
-
-const src = {
-    ctrl: true,
-    pwr: true,
-    freq: 1,
-    amp: 1,
-    pos: {
-        type: false,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    },
-    vel: {
-        type: true,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    },
-    acc: {
-        type: false,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    }
-}
-
-const obs = {
-    ctrl: false,
-    pwr: true,
-    freq: 1,
-    amp: 1,
-    pos: {
-        type: false,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    },
-    vel: {
-        type: true,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    },
-    acc: {
-        type: false,
-        dir: 0,
-        mag: 2,
-        x: 0,
-        y: 0
-    }
-}
-
-window.requestAnimationFrame(step);
-
-function step()
-{
-    // render code and logic as well
-
-    window.requestAnimationFrame(step);
 }
