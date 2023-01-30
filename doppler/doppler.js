@@ -80,7 +80,8 @@ function step()
     window.requestAnimationFrame(step);
 }
 
-//ctrlObs();
+timeStrt();
+ctrlObs();
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
@@ -132,17 +133,17 @@ function ctrlSrc()
         pwrOff();
     }
 
-    if(src.type === 0)
+    if(src.type === 1)
     {
         typePos();
     }
 
-    else if(src.type === 1)
+    else if(src.type === 2)
     {
         typeVel();
     }
 
-    else if(src.type === 2)
+    else if(src.type === 3)
     {
         typeAcc();
     }
@@ -164,17 +165,17 @@ function ctrlObs()
         pwrOff();
     }
     
-    if(obs.type === 0)
+    if(obs.type === 1)
     {
         typePos();
     }
 
-    else if(obs.type === 1)
+    else if(obs.type === 2)
     {
         typeVel();
     }
 
-    else if(obs.type === 2)
+    else if(obs.type === 3)
     {
         typeAcc();
     }
@@ -185,12 +186,12 @@ function pwrOn()
     buttonPwrOn.disabled = true;
     buttonPwrOff.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
         src.pwr = true;
     }
 
-    else
+    else if(obs.ctrl === true)
     {
         obs.pwr = true;
     }
@@ -201,12 +202,12 @@ function pwrOff()
     buttonPwrOff.disabled = true;
     buttonPwrOn.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
         src.pwr = false;
     }
 
-    else
+    else if(obs.ctrl === true)
     {
         obs.pwr = false;
     }
@@ -218,11 +219,9 @@ function typePos()
     buttonTypeVel.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        src.vel.type = false;
-        src.acc.type = false;
-        src.pos.type = true;
+        src.type = 1;
 
         if(src.pos.dir === 0)
         {
@@ -265,11 +264,9 @@ function typePos()
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        obs.vel.type = false;
-        obs.acc.type = false;
-        obs.pos.type = true;
+        obs.type = 1;
 
         if(obs.pos.dir === 0)
         {
@@ -319,11 +316,9 @@ function typeVel()
     buttonTypePos.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        src.pos.type = false;
-        src.acc.type = false;
-        src.vel.type = true;
+        src.type = 2;
 
         if(src.vel.dir === 0)
         {
@@ -366,11 +361,9 @@ function typeVel()
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        obs.pos.type = false;
-        obs.acc.type = false;
-        obs.vel.type = true;
+        obs.type = 2;
 
         if(obs.vel.dir === 0)
         {
@@ -420,11 +413,9 @@ function typeAcc()
     buttonTypePos.disabled = false;
     buttonTypeVel.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        src.pos.type = false;
-        src.vel.type = false;
-        src.acc.type = true;
+        src.type = 3;
 
         if(src.acc.dir === 0)
         {
@@ -467,11 +458,9 @@ function typeAcc()
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        obs.pos.type = false;
-        obs.vel.type = false;
-        obs.acc.type = true;
+        obs.type = 3;
 
         if(obs.acc.dir === 0)
         {
@@ -523,37 +512,37 @@ function dirLeft()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.dir = 1;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.dir = 1;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.dir = 1;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.dir = 1;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.dir = 1;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.dir = 1;
         }
@@ -568,37 +557,37 @@ function dirRght()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.dir = 2;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.dir = 2;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.dir = 2;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.dir = 2;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.dir = 2;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.dir = 2;
         }
@@ -613,37 +602,37 @@ function dirUp()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.dir = 3;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.dir = 3;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.dir = 3;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.dir = 3;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.dir = 3;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.dir = 3;
         }
@@ -658,37 +647,37 @@ function dirDown()
     buttonDirUp.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.dir = 4;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.dir = 4;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.dir = 4;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.dir = 4;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.dir = 4;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.dir = 4;
         }
@@ -703,37 +692,37 @@ function dirZero()
     buttonDirUp.disabled = false;
     buttonDirDown.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.dir = 0;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.dir = 0;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.dir = 0;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.dir = 0;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.dir = 0;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.dir = 0;
         }
@@ -746,37 +735,37 @@ function magLow()
     buttonMagMed.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.mag = 1;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.mag = 1;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.mag = 1;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.mag = 1;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.mag = 1;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.mag = 1;
         }
@@ -789,37 +778,37 @@ function magMed()
     buttonMagLow.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.mag = 2;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.mag = 2;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.mag = 2;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.mag = 2;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.mag = 2;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.mag = 2;
         }
@@ -832,37 +821,37 @@ function magHigh()
     buttonMagLow.disabled = false;
     buttonMagMed.disabled = false;
 
-    if(!obs.ctrl)
+    if(obs.ctrl === false)
     {
-        if(src.type === 0)
+        if(src.type === 1)
         {
             src.pos.mag = 3;
         }
 
-        else if(src.type === 1)
+        else if(src.type === 2)
         {
             src.vel.mag = 3;
         }
 
-        else if(src.type === 2)
+        else if(src.type === 3)
         {
             src.acc.mag = 3;
         }
     }
 
-    else
+    else if(obs.ctrl === true)
     {
-        if(obs.type === 0)
+        if(obs.type === 1)
         {
             obs.pos.mag = 3;
         }
 
-        else if(obs.type === 1)
+        else if(obs.type === 2)
         {
             obs.vel.mag = 3;
         }
 
-        else if(obs.type === 2)
+        else if(obs.type === 3)
         {
             obs.acc.mag = 3;
         }
