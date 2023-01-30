@@ -9,58 +9,58 @@
     
     <body>
         <div id="container-doppler" class="container">
-            <h1 id="doppler">Doppler Effect Simulation</h1>
-            <div id="container-general" class="container">
-                <h2 id="general">General</h2>
-                <h3 id="time">TIME</h3>
-                <button type="button" id="time-strt">STRT</button>
-                <button type="button" id="time-stop">STOP</button>
-                <h3 id="bufr">BUFR</h3>
-                <button type="button" id="bufr-save">SAVE</button>
-                <button type="button" id="bufr-rstr">RSTR</button>
+            <h1 id="label-doppler" class="label">Doppler Effect Simulation</h1>
+            <div id="container-general" class="container-doppler container">
+                <h2 id="label-general" class="label-doppler label">General</h2>
+                <h3 id="label-time" class="label-general label">TIME</h3>
+                <button type="button" id="button-time-strt" class="button-time button">STRT</button>
+                <button type="button" id="button-time-stop" class="button-time button">STOP</button>
+                <h3 id="label-bufr" class="label-general label">BUFR</h3>
+                <button type="button" id="button-bufr-save" class="button-bufr button">SAVE</button>
+                <button type="button" id="button-bufr-rstr" class="button-bufr button">RSTR</button>
             </div>
-            <div id="container-object" class="container">
-                <h2 id="object">Object</h2>
-                <h3 id="ctrl">CTRL</h3>
-                <button type="button" id="ctrl-on">SRC</button>
-                <button type="button" id="ctrl-off">OBS</button>                
-                <div id="container-signal" class="container">
-                    <h2 id="signal">Signal</h2>
-                    <h3 id="pwd">PWR</h3>
-                    <button type="button" id="pwr-on">ON</button>
-                    <button type="button" id="pwr-off">OFF</button>
+            <div id="container-object" class="container-doppler container">
+                <h2 id="label-object" class="label-doppler label">Object</h2>
+                <h3 id="label-ctrl" class="label-object label">CTRL</h3>
+                <button type="button" id="button-ctrl-on" class="button-ctrl button">SRC</button>
+                <button type="button" id="button-ctrl-off" class="button-ctrl button">OBS</button>                
+                <div id="container-signal" class="container-object container">
+                    <h2 id="label-signal" class="label-object label">Signal</h2>
+                    <h3 id="label-pwd" class="label-signal label">PWR</h3>
+                    <button type="button" id="button-pwr-on" class="button-pwr button">ON</button>
+                    <button type="button" id="button-pwr-off" class="button-pwr button">OFF</button>
                 </div>
-                <div id="container-motion" class="container">
-                    <h2 id="motion">Motion</h2>
-                    <h3 id="type">TYPE</h3>
-                    <button type="button" id="type-pos">POS</button>
-                    <button type="button" id="type-vel">VEL</button>
-                    <button type="button" id="type-acc">ACC</button>
-                    <div id="container-vector" class="container">
-                        <h2 id="vector">Vector</h2>
-                        <h3 id="dir">DIR</h3>
-                        <button type="button" id="dir-left">LEFT</button>
-                        <button type="button" id="dir-rght">RGHT</button>
-                        <button type="button" id="dir-up">UP</button>
-                        <button type="button" id="dir-down">DOWN</button>
-                        <button type="button" id="dir-zero">ZERO</button>
-                        <h3 id="mag">MAG</h3>
-                        <button type="button" id="mag-low">LOW</button>
-                        <button type="button" id="mag-med">MED</button>
-                        <button type="button" id="mag-high">HIGH</button>
+                <div id="container-motion" class="container-object container">
+                    <h2 id="label-motion" class="label-object label">Motion</h2>
+                    <h3 id="label-type" class="label-motion label">TYPE</h3>
+                    <button type="button" id="button-type-pos" class="button-type button">POS</button>
+                    <button type="button" id="button-type-vel" class="button-type button">VEL</button>
+                    <button type="button" id="button-type-acc" class="button-type button">ACC</button>
+                    <div id="container-vector" class="container-motion container">
+                        <h2 id="label-vector" class="label-motion label">Vector</h2>
+                        <h3 id="label-dir" class="label-vector label">DIR</h3>
+                        <button type="button" id="button-dir-left" class="button-dir button">LEFT</button>
+                        <button type="button" id="button-dir-rght" class="button-dir button">RGHT</button>
+                        <button type="button" id="button-dir-up" class="button-dir button">UP</button>
+                        <button type="button" id="button-dir-down" class="button-dir button">DOWN</button>
+                        <button type="button" id="button-dir-zero" class="button-dir button">ZERO</button>
+                        <h3 id="label-mag" class="label-vector label">MAG</h3>
+                        <button type="button" id="button-mag-low" class="button-mag button">LOW</button>
+                        <button type="button" id="button-mag-med" class="button-mag button">MED</button>
+                        <button type="button" id="button-mag-high" class="button-mag button">HIGH</button>
                     </div>
                 </div>
             </div>
-            <div id="container-view" class="container">
-                <h2 id="view">View</h2>
-                <canvas id="canvas-view" width="800px" height="600px"></canvas>
+            <div id="container-view" class="container-doppler container">
+                <h2 id="label-view" class="label-doppler label">View</h2>
+                <canvas id="canvas-view" class="canvas" width="800px" height="600px"></canvas>
             </div>
-            <div id="container-plot" class="container">
-                <h2 id="plot">Plot</h2>
-                <h3 id="freq">FREQ vs TIME</h3>
-                <canvas id="canvas-freq" width="800px" height="200px"></canvas>
-                <h3 id="amp">AMP vs TIME</h3>
-                <canvas id="canvas-amp" width="800px" height="200px"></canvas>
+            <div id="container-plot" class="container-doppler container">
+                <h2 id="label-plot" class="label-doppler label">Plot</h2>
+                <h3 id="label-freq" class="label-plot label">FREQ vs TIME</h3>
+                <canvas id="canvas-freq" class="canvas-plot canvas" width="800px" height="200px"></canvas>
+                <h3 id="label-amp" class="label-plot label">AMP vs TIME</h3>
+                <canvas id="canvas-amp" class="canvas-plot canvas" width="800px" height="200px"></canvas>
             </div>
         </div>
 
@@ -75,6 +75,7 @@
             {
                 display: flex;
                 justify-content: center;
+                text-align: center;
                 background-color: #fffce4;
             }
 
@@ -86,19 +87,7 @@
                 box-shadow: 0 0 5px #000000, 0 0 20px #000000;
             }
 
-            #container-doppler
-            {
-                text-align: center;
-                width: 800px;
-                background-color: #cccccc;
-            }
-
-            #container-general
-            {
-                background-color: #777777;
-            }
-
-            #container-object
+            .container-doppler
             {
                 background-color: #777777;
             }
@@ -118,29 +107,10 @@
                 background-color: #f89aff;
             }
 
-            #container-view
+            .canvas
             {
-                background-color: #777777;
-            }
-
-            canvas
-            {
+                width: 100%;
                 background-color: #000000;
-            }
-
-            #canvas-view
-            {
-                width: 100%;
-            }
-
-            #canvas-freq
-            {
-                width: 100%;
-            }
-
-            #canvas-amp
-            {
-                width: 100%;
             }
 
         </style>

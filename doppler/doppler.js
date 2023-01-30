@@ -1,3 +1,23 @@
+const buttonTimeStrt = document.getElementById("button-time-strt");
+const buttonTimeStop = document.getElementById("button-time-stop");
+const buttonBufrSave = document.getElementById("button-bufr-save");
+const buttonBufrRstr = document.getElementById("button-bufr-rstr");
+const buttonCtrlSrc = document.getElementById("button-ctrl-src");
+const buttonCtrlObs = document.getElementById("button-ctrl-obs");
+const buttonPwrOn = document.getElementById("button-pwr-on");
+const buttonPwrOff = document.getElementById("button-pwr-off");
+const buttonTypePos = document.getElementById("button-type-pos");
+const buttonTypeVel = document.getElementById("button-type-vel");
+const buttonTypeAcc = document.getElementById("button-type-acc");
+const buttonDirLeft = document.getElementById("button-dir-left");
+const buttonDirRght = document.getElementById("button-dir-rght");
+const buttonDirUp = document.getElementById("button-dir-up");
+const buttonDirDown = document.getElementById("button-dir-down");
+const buttonDirZero = document.getElementById("button-dir-zero");
+const buttonMagLow = document.getElementById("button-mag-low");
+const buttonMagMed = document.getElementById("button-mag-med");
+const buttonMagHigh = document.getElementById("button-mag-high");
+
 function timeStrt()
 {
     run = true;
@@ -409,25 +429,25 @@ function magHigh()
     }
 }
 
-document.getElementById("time-strt").onclick = timeStrt();
-document.getElementById("time-stop").onclick = timeStop();
-document.getElementById("bufr-save").onclick = bufrSave();
-document.getElementById("bufr-rstr").onclick = bufrRstr();
-document.getElementById("ctrl-src").onclick = ctrlSrc();
-document.getElementById("ctrl-obs").onclick = ctrlObs();
-document.getElementById("pwr-on").onclick = pwrOn();
-document.getElementById("pwr-off").onclick = pwrOff();
-document.getElementById("type-pos").onclick = typePos();
-document.getElementById("type-vel").onclick = typeVel();
-document.getElementById("type-acc").onclick = typeAcc();
-document.getElementById("dir-left").onclick = dirLeft();
-document.getElementById("dir-rght").onclick = dirRght();
-document.getElementById("dir-up").onclick = dirUp();
-document.getElementById("dir-down").onclick = dirDown();
-document.getElementById("dir-zero").onclick = dirZero();
-document.getElementById("mag-low").onclick = magLow();
-document.getElementById("mag-med").onclick = magMed();
-document.getElementById("mag-high").onclick = magHigh();
+buttonTimeStrt.onclick = timeStrt();
+buttonTimeStop.onclick = timeStop();
+buttonBufrSave.onclick = bufrSave();
+buttonBufrRstr.onclick = bufrRstr();
+buttonCtrlSrc.onclick = ctrlSrc();
+buttonCtrlObs.onclick = ctrlObs();
+buttonPwrOn.onclick = pwrOn();
+buttonPwrOff.onclick = pwrOff();
+buttonTypePos.onclick = typePos();
+buttonTypeVel.onclick = typeVel();
+buttonTypeAcc.onclick = typeAcc();
+buttonDirLeft.onclick = dirLeft();
+buttonDirRght.onclick = dirRght();
+buttonDirUp.onclick = dirUp();
+buttonDirDown.onclick = dirDown();
+buttonDirZero.onclick = dirZero();
+buttonMagLow.onclick = magLow();
+buttonMagMed.onclick = magMed();
+buttonMagHigh.onclick = magHigh();
 
 let run = true;
 
