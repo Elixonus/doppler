@@ -75,8 +75,216 @@ window.requestAnimationFrame(step);
 
 function step()
 {
-    // render code and logic as well
+    if(src.type === 1)
+    {
+        if(src.pos.dir === 0)
+        {
+            src.pos.x = 0;
+            src.pos.y = 0;
+        }
+    
+        else if(src.pos.dir === 1)
+        {
+            src.pos.x = -src.pos.mag;
+            src.pos.y = 0;
+        }
+    
+        else if(src.pos.dir === 2)
+        {
+            src.pos.x = src.pos.mag;
+            src.pos.y = 0;
+        }
+    
+        else if(src.pos.dir === 3)
+        {
+            src.pos.x = 0;
+            src.pos.y = src.pos.mag;
+        }
+    
+        else if(src.pos.dir === 4)
+        {
+            src.pos.x = 0;
+            src.pos.y = -src.pos.mag;
+        }
+    }
 
+    else if(src.type === 2)
+    {
+        if(src.vel.dir === 0)
+        {
+            src.vel.x = 0;
+            src.vel.y = 0;
+        }
+    
+        else if(src.vel.dir === 1)
+        {
+            src.vel.x = -src.vel.mag;
+            src.vel.y = 0;
+        }
+    
+        else if(src.vel.dir === 2)
+        {
+            src.vel.x = src.vel.mag;
+            src.vel.y = 0;
+        }
+    
+        else if(src.vel.dir === 3)
+        {
+            src.vel.x = 0;
+            src.vel.y = src.vel.mag;
+        }
+    
+        else if(src.vel.dir === 4)
+        {
+            src.vel.x = 0;
+            src.vel.y = -src.vel.mag;
+        }
+    }
+
+    else if(src.type === 3)
+    {
+        if(src.acc.dir === 0)
+        {
+            src.acc.x = 0;
+            src.acc.y = 0;
+        }
+    
+        else if(src.acc.dir === 1)
+        {
+            src.acc.x = -src.acc.mag;
+            src.acc.y = 0;
+        }
+    
+        else if(src.acc.dir === 2)
+        {
+            src.acc.x = src.acc.mag;
+            src.acc.y = 0;
+        }
+    
+        else if(src.acc.dir === 3)
+        {
+            src.acc.x = 0;
+            src.acc.y = src.acc.mag;
+        }
+    
+        else if(src.acc.dir === 4)
+        {
+            src.acc.x = 0;
+            src.acc.y = -src.acc.mag;
+        }
+    }
+    
+    if(obs.type === 1)
+    {
+        if(obs.pos.dir === 0)
+        {
+            obs.pos.x = 0;
+            obs.pos.y = 0;
+        }
+    
+        else if(obs.pos.dir === 1)
+        {
+            obs.pos.x = -obs.pos.mag;
+            obs.pos.y = 0;
+        }
+    
+        else if(obs.pos.dir === 2)
+        {
+            obs.pos.x = obs.pos.mag;
+            obs.pos.y = 0;
+        }
+    
+        else if(obs.pos.dir === 3)
+        {
+            obs.pos.x = 0;
+            obs.pos.y = obs.pos.mag;
+        }
+    
+        else if(obs.pos.dir === 4)
+        {
+            obs.pos.x = 0;
+            obs.pos.y = -obs.pos.mag;
+        }
+    }
+
+    else if(obs.type === 2)
+    {
+        if(obs.vel.dir === 0)
+        {
+            obs.vel.x = 0;
+            obs.vel.y = 0;
+        }
+    
+        else if(obs.vel.dir === 1)
+        {
+            obs.vel.x = -obs.vel.mag;
+            obs.vel.y = 0;
+        }
+    
+        else if(obs.vel.dir === 2)
+        {
+            obs.vel.x = obs.vel.mag;
+            obs.vel.y = 0;
+        }
+    
+        else if(obs.vel.dir === 3)
+        {
+            obs.vel.x = 0;
+            obs.vel.y = obs.vel.mag;
+        }
+    
+        else if(obs.vel.dir === 4)
+        {
+            obs.vel.x = 0;
+            obs.vel.y = -obs.vel.mag;
+        }
+    }
+
+    else if(obs.type === 3)
+    {
+        if(obs.acc.dir === 0)
+        {
+            obs.acc.x = 0;
+            obs.acc.y = 0;
+        }
+    
+        else if(obs.acc.dir === 1)
+        {
+            obs.acc.x = -obs.acc.mag;
+            obs.acc.y = 0;
+        }
+    
+        else if(obs.acc.dir === 2)
+        {
+            obs.acc.x = obs.acc.mag;
+            obs.acc.y = 0;
+        }
+    
+        else if(obs.acc.dir === 3)
+        {
+            obs.acc.x = 0;
+            obs.acc.y = obs.acc.mag;
+        }
+    
+        else if(obs.acc.dir === 4)
+        {
+            obs.acc.x = 0;
+            obs.acc.y = -obs.acc.mag;
+        }
+    }
+
+    src.vel.x += src.acc.x;
+    src.vel.y += src.acc.y;
+    src.pos.x += src.vel.x;
+    src.pos.y += src.vel.y;
+
+    obs.vel.x += obs.acc.x;
+    obs.vel.y += obs.acc.y;
+    obs.pos.x += obs.vel.x;
+    obs.pos.y += obs.vel.y;
+
+
+    
     window.requestAnimationFrame(step);
 }
 
