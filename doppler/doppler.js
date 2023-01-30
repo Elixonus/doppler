@@ -21,7 +21,6 @@ const buttonMagMed = document.getElementById("button-mag-med");
 const buttonMagHigh = document.getElementById("button-mag-high");
 
 const src = {
-    ctrl: false,
     pwr: true,
     freq: 1,
     amp: 1,
@@ -49,7 +48,7 @@ const src = {
 }
 
 const obs = {
-    ctrl: false,
+    ctrl: true,
     pwr: true,
     freq: 1,
     amp: 1,
@@ -126,7 +125,6 @@ function ctrlSrc()
     buttonCtrlSrc.disabled = true;
     buttonCtrlObs.disabled = false;
     obs.ctrl = false;
-    src.ctrl = true;
 
     if(src.pwr)
     {
@@ -158,7 +156,6 @@ function ctrlObs()
 {
     buttonCtrlObs.disabled = true;
     buttonCtrlSrc.disabled = false;
-    src.ctrl = false;
     obs.ctrl = true;
 
     if(obs.pwr)
@@ -192,7 +189,7 @@ function pwrOn()
     buttonPwrOn.disabled = true;
     buttonPwrOff.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         src.pwr = true;
     }
@@ -208,7 +205,7 @@ function pwrOff()
     buttonPwrOff.disabled = true;
     buttonPwrOn.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         src.pwr = false;
     }
@@ -225,7 +222,7 @@ function typePos()
     buttonTypeVel.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         src.vel.type = false;
         src.acc.type = false;
@@ -326,7 +323,7 @@ function typeVel()
     buttonTypePos.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         src.pos.type = false;
         src.acc.type = false;
@@ -427,7 +424,7 @@ function typeAcc()
     buttonTypePos.disabled = false;
     buttonTypeVel.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         src.pos.type = false;
         src.vel.type = false;
@@ -530,7 +527,7 @@ function dirLeft()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -575,7 +572,7 @@ function dirRght()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -620,7 +617,7 @@ function dirUp()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -665,7 +662,7 @@ function dirDown()
     buttonDirUp.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -710,7 +707,7 @@ function dirZero()
     buttonDirUp.disabled = false;
     buttonDirDown.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -753,7 +750,7 @@ function magLow()
     buttonMagMed.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -796,7 +793,7 @@ function magMed()
     buttonMagLow.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
@@ -839,7 +836,7 @@ function magHigh()
     buttonMagLow.disabled = false;
     buttonMagMed.disabled = false;
 
-    if(src.ctrl)
+    if(!obs.ctrl)
     {
         if(src.pos.type)
         {
