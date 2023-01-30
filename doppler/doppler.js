@@ -50,16 +50,16 @@ function typePos()
 {
     if(src.ctrl)
     {
-        src.vel.vel = false;
-        src.acc.acc = false;
-        src.pos.pos = true;
+        src.vel.type = false;
+        src.acc.type = false;
+        src.pos.type = true;
     }
 
     if(obs.ctrl)
     {
-        obs.vel.vel = false;
-        obs.acc.acc = false;
-        obs.pos.pos = true;
+        obs.vel.type = false;
+        obs.acc.type = false;
+        obs.pos.type = true;
     }
 }
 
@@ -67,16 +67,16 @@ function typeVel()
 {
     if(src.ctrl)
     {
-        src.pos.pos = false;
-        src.acc.acc = false;
-        src.vel.vel = true;
+        src.pos.type = false;
+        src.acc.type = false;
+        src.vel.type = true;
     }
 
     if(obs.ctrl)
     {
-        obs.pos.pos = false;
-        obs.acc.acc = false;
-        obs.vel.vel = true;
+        obs.pos.type = false;
+        obs.acc.type = false;
+        obs.vel.type = true;
     }
 }
 
@@ -84,19 +84,330 @@ function typeAcc()
 {
     if(src.ctrl)
     {
-        src.pos.pos = false;
-        src.vel.vel = false;
-        src.acc.acc = true;
+        src.pos.type = false;
+        src.vel.type = false;
+        src.acc.type = true;
     }
 
     if(obs.ctrl)
     {
-        obs.pos.pos = false;
-        obs.vel.vel = false;
-        obs.acc.acc = true;
+        obs.pos.type = false;
+        obs.vel.type = false;
+        obs.acc.type = true;
     }
 }
 
+function dirLeft()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.dir = 1;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.dir = 1;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.dir = 1;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.dir = 1;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.dir = 1;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.dir = 1;
+        }
+    }
+}
+
+function dirRght()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.dir = 2;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.dir = 2;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.dir = 2;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.dir = 2;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.dir = 2;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.dir = 2;
+        }
+    }
+}
+
+function dirUp()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.dir = 3;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.dir = 3;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.dir = 3;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.dir = 3;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.dir = 3;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.dir = 3;
+        }
+    }
+}
+
+function dirDown()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.dir = 4;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.dir = 4;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.dir = 4;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.dir = 4;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.dir = 4;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.dir = 4;
+        }
+    }
+}
+
+function dirZero()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.dir = 0;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.dir = 0;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.dir = 0;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.dir = 0;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.dir = 0;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.dir = 0;
+        }
+    }
+}
+
+function magLow()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.mag = 1;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.mag = 1;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.mag = 1;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.mag = 1;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.mag = 1;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.mag = 1;
+        }
+    }
+}
+
+function magMed()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.mag = 2;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.mag = 2;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.mag = 2;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.mag = 2;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.mag = 2;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.mag = 2;
+        }
+    }
+}
+
+function magHigh()
+{
+    if(src.ctrl)
+    {
+        if(src.pos.type)
+        {
+            src.pos.mag = 3;
+        }
+
+        if(src.vel.type)
+        {
+            src.vel.mag = 3;
+        }
+
+        if(src.acc.type)
+        {
+            src.acc.mag = 3;
+        }
+    }
+
+    if(obs.ctrl)
+    {
+        if(obs.pos.type)
+        {
+            obs.pos.mag = 3;
+        }
+
+        if(obs.vel.type)
+        {
+            obs.vel.mag = 3;
+        }
+
+        if(obs.acc.type)
+        {
+            obs.acc.mag = 3;
+        }
+    }
+}
 
 document.getElementById("time-strt").onclick = timeStrt();
 document.getElementById("time-stop").onclick = timeStop();
@@ -126,17 +437,23 @@ const src = {
     freq: 1,
     amp: 1,
     pos: {
-        pos: false,
+        type: false,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     },
     vel: {
-        vel: true,
+        type: true,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     },
     acc: {
-        acc: false,
+        type: false,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     }
@@ -148,18 +465,33 @@ const obs = {
     freq: 1,
     amp: 1,
     pos: {
-        pos: false,
+        type: false,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     },
     vel: {
-        vel: true,
+        type: true,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     },
     acc: {
-        acc: false,
+        type: false,
+        dir: 0,
+        mag: 2,
         x: 0,
         y: 0
     }
+}
+
+window.requestAnimationFrame(step);
+
+function step()
+{
+    // render code and logic as well
+
+    window.requestAnimationFrame(step);
 }
