@@ -189,18 +189,15 @@ function ctrlObs()
 
 function pwrOn()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonPwrOn.disabled = true;
-        buttonPwrOff.disabled = false;
-    }
+    buttonPwrOn.disabled = true;
+    buttonPwrOff.disabled = false;
 
     if(src.ctrl)
     {
         src.pwr = true;
     }
 
-    if(obs.ctrl)
+    else
     {
         obs.pwr = true;
     }
@@ -208,18 +205,15 @@ function pwrOn()
 
 function pwrOff()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonPwrOff.disabled = true;
-        buttonPwrOn.disabled = false;
-    }
+    buttonPwrOff.disabled = true;
+    buttonPwrOn.disabled = false;
 
     if(src.ctrl)
     {
         src.pwr = false;
     }
 
-    if(obs.ctrl)
+    else
     {
         obs.pwr = false;
     }
@@ -227,12 +221,9 @@ function pwrOff()
 
 function typePos()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonTypePos.disabled = true;
-        buttonTypeVel.disabled = false;
-        buttonTypeAcc.disabled = false;
-    }
+    buttonTypePos.disabled = true;
+    buttonTypeVel.disabled = false;
+    buttonTypeAcc.disabled = false;
 
     if(src.ctrl)
     {
@@ -281,7 +272,7 @@ function typePos()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         obs.vel.type = false;
         obs.acc.type = false;
@@ -331,12 +322,9 @@ function typePos()
 
 function typeVel()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonTypeVel.disabled = true;
-        buttonTypePos.disabled = false;
-        buttonTypeAcc.disabled = false;
-    }
+    buttonTypeVel.disabled = true;
+    buttonTypePos.disabled = false;
+    buttonTypeAcc.disabled = false;
 
     if(src.ctrl)
     {
@@ -385,7 +373,7 @@ function typeVel()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         obs.pos.type = false;
         obs.acc.type = false;
@@ -435,12 +423,9 @@ function typeVel()
 
 function typeAcc()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonTypeAcc.disabled = true;
-        buttonTypePos.disabled = false;
-        buttonTypeVel.disabled = false;
-    }
+    buttonTypeAcc.disabled = true;
+    buttonTypePos.disabled = false;
+    buttonTypeVel.disabled = false;
 
     if(src.ctrl)
     {
@@ -489,7 +474,7 @@ function typeAcc()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         obs.pos.type = false;
         obs.vel.type = false;
@@ -539,14 +524,11 @@ function typeAcc()
 
 function dirLeft()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonDirLeft.disabled = true;
-        buttonDirRght.disabled = false;
-        buttonDirUp.disabled = false;
-        buttonDirDown.disabled = false;
-        buttonDirZero.disabled = false;
-    }
+    buttonDirLeft.disabled = true;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
 
     if(src.ctrl)
     {
@@ -566,7 +548,7 @@ function dirLeft()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -587,14 +569,11 @@ function dirLeft()
 
 function dirRght()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonDirRght.disabled = true;
-        buttonDirLeft.disabled = false;
-        buttonDirUp.disabled = false;
-        buttonDirDown.disabled = false;
-        buttonDirZero.disabled = false;
-    }
+    buttonDirRght.disabled = true;
+    buttonDirLeft.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
 
     if(src.ctrl)
     {
@@ -614,7 +593,7 @@ function dirRght()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -635,14 +614,11 @@ function dirRght()
 
 function dirUp()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonDirUp.disabled = true;
-        buttonDirLeft.disabled = false;
-        buttonDirRght.disabled = false;
-        buttonDirDown.disabled = false;
-        buttonDirZero.disabled = false;
-    }
+    buttonDirUp.disabled = true;
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
 
     if(src.ctrl)
     {
@@ -662,7 +638,7 @@ function dirUp()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -683,14 +659,11 @@ function dirUp()
 
 function dirDown()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonDirDown.disabled = true;
-        buttonDirLeft.disabled = false;
-        buttonDirRght.disabled = false;
-        buttonDirUp.disabled = false;
-        buttonDirZero.disabled = false;
-    }
+    buttonDirDown.disabled = true;
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirZero.disabled = false;
 
     if(src.ctrl)
     {
@@ -710,7 +683,7 @@ function dirDown()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -731,14 +704,11 @@ function dirDown()
 
 function dirZero()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonDirZero.disabled = true;
-        buttonDirLeft.disabled = false;
-        buttonDirRght.disabled = false;
-        buttonDirUp.disabled = false;
-        buttonDirDown.disabled = false;
-    }
+    buttonDirZero.disabled = true;
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
 
     if(src.ctrl)
     {
@@ -758,7 +728,7 @@ function dirZero()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -779,12 +749,9 @@ function dirZero()
 
 function magLow()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonMagLow.disabled = true;
-        buttonMagMed.disabled = false;
-        buttonMagHigh.disabled = false;
-    }
+    buttonMagLow.disabled = true;
+    buttonMagMed.disabled = false;
+    buttonMagHigh.disabled = false;
 
     if(src.ctrl)
     {
@@ -804,7 +771,7 @@ function magLow()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -825,12 +792,9 @@ function magLow()
 
 function magMed()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonMagMed.disabled = true;
-        buttonMagLow.disabled = false;
-        buttonMagHigh.disabled = false;
-    }
+    buttonMagMed.disabled = true;
+    buttonMagLow.disabled = false;
+    buttonMagHigh.disabled = false;
 
     if(src.ctrl)
     {
@@ -850,7 +814,7 @@ function magMed()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
@@ -871,12 +835,9 @@ function magMed()
 
 function magHigh()
 {
-    if(src.ctrl || obs.ctrl)
-    {
-        buttonMagHigh.disabled = true;
-        buttonMagLow.disabled = false;
-        buttonMagMed.disabled = false;
-    }
+    buttonMagHigh.disabled = true;
+    buttonMagLow.disabled = false;
+    buttonMagMed.disabled = false;
 
     if(src.ctrl)
     {
@@ -896,7 +857,7 @@ function magHigh()
         }
     }
 
-    if(obs.ctrl)
+    else
     {
         if(obs.pos.type)
         {
