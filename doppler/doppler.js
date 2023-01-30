@@ -24,22 +24,20 @@ const src = {
     pwr: true,
     freq: 1,
     amp: 1,
+    type: 2,
     pos: {
-        type: false,
         dir: 0,
         mag: 2,
         x: 0,
         y: 0
     },
     vel: {
-        type: true,
         dir: 0,
         mag: 2,
         x: 0,
         y: 0
     },
     acc: {
-        type: false,
         dir: 0,
         mag: 2,
         x: 0,
@@ -52,22 +50,20 @@ const obs = {
     pwr: true,
     freq: 1,
     amp: 1,
+    type: 2,
     pos: {
-        type: false,
         dir: 0,
         mag: 2,
         x: 0,
         y: 0
     },
     vel: {
-        type: true,
         dir: 0,
         mag: 2,
         x: 0,
         y: 0
     },
     acc: {
-        type: false,
         dir: 0,
         mag: 2,
         x: 0,
@@ -84,7 +80,7 @@ function step()
     window.requestAnimationFrame(step);
 }
 
-ctrlObs();
+//ctrlObs();
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
@@ -136,17 +132,17 @@ function ctrlSrc()
         pwrOff();
     }
 
-    if(src.pos.type)
+    if(src.type === 0)
     {
         typePos();
     }
 
-    else if(src.vel.type)
+    else if(src.type === 1)
     {
         typeVel();
     }
 
-    else if(src.acc.type)
+    else if(src.type === 2)
     {
         typeAcc();
     }
@@ -168,17 +164,17 @@ function ctrlObs()
         pwrOff();
     }
     
-    if(obs.pos.type)
+    if(obs.type === 0)
     {
         typePos();
     }
 
-    else if(obs.vel.type)
+    else if(obs.type === 1)
     {
         typeVel();
     }
 
-    else if(obs.acc.type)
+    else if(obs.type === 2)
     {
         typeAcc();
     }
@@ -529,17 +525,17 @@ function dirLeft()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.dir = 1;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.dir = 1;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.dir = 1;
         }
@@ -547,17 +543,17 @@ function dirLeft()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.dir = 1;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.dir = 1;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.dir = 1;
         }
@@ -574,17 +570,17 @@ function dirRght()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.dir = 2;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.dir = 2;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.dir = 2;
         }
@@ -592,17 +588,17 @@ function dirRght()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.dir = 2;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.dir = 2;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.dir = 2;
         }
@@ -619,17 +615,17 @@ function dirUp()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.dir = 3;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.dir = 3;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.dir = 3;
         }
@@ -637,17 +633,17 @@ function dirUp()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.dir = 3;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.dir = 3;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.dir = 3;
         }
@@ -664,17 +660,17 @@ function dirDown()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.dir = 4;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.dir = 4;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.dir = 4;
         }
@@ -682,17 +678,17 @@ function dirDown()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.dir = 4;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.dir = 4;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.dir = 4;
         }
@@ -709,17 +705,17 @@ function dirZero()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.dir = 0;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.dir = 0;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.dir = 0;
         }
@@ -727,17 +723,17 @@ function dirZero()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.dir = 0;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.dir = 0;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.dir = 0;
         }
@@ -752,17 +748,17 @@ function magLow()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.mag = 1;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.mag = 1;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.mag = 1;
         }
@@ -770,17 +766,17 @@ function magLow()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.mag = 1;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.mag = 1;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.mag = 1;
         }
@@ -795,17 +791,17 @@ function magMed()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.mag = 2;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.mag = 2;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.mag = 2;
         }
@@ -813,17 +809,17 @@ function magMed()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.mag = 2;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.mag = 2;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.mag = 2;
         }
@@ -838,17 +834,17 @@ function magHigh()
 
     if(!obs.ctrl)
     {
-        if(src.pos.type)
+        if(src.type === 0)
         {
             src.pos.mag = 3;
         }
 
-        if(src.vel.type)
+        else if(src.type === 1)
         {
             src.vel.mag = 3;
         }
 
-        if(src.acc.type)
+        else if(src.type === 2)
         {
             src.acc.mag = 3;
         }
@@ -856,17 +852,17 @@ function magHigh()
 
     else
     {
-        if(obs.pos.type)
+        if(obs.type === 0)
         {
             obs.pos.mag = 3;
         }
 
-        if(obs.vel.type)
+        else if(obs.type === 1)
         {
             obs.vel.mag = 3;
         }
 
-        if(obs.acc.type)
+        else if(obs.type === 2)
         {
             obs.acc.mag = 3;
         }
