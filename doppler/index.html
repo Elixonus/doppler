@@ -17,10 +17,13 @@
                 <button type="button" id="time-stop">STOP</button>
                 <h3 id="bufr">BUFR</h3>
                 <button type="button" id="bufr-save">SAVE</button>
-                <button type="button" id="bufr-rest">REST</button>
+                <button type="button" id="bufr-rstr">RSTR</button>
             </div>
             <div id="container-object" class="container">
                 <h2 id="object">Object</h2>
+                <h3 id="ctrl">CTRL</h3>
+                <button type="button" id="ctrl-on">SRC</button>
+                <button type="button" id="ctrl-off">OBS</button>                
                 <div id="container-signal" class="container">
                     <h2 id="signal">Signal</h2>
                     <h3 id="pwd">PWR</h3>
@@ -52,9 +55,21 @@
                 <h2 id="view">View</h2>
                 <canvas id="canvas-view" width="800px" height="600px"></canvas>
             </div>
+            <div id="container-plot" class="container">
+                <h2 id="plot">Plot</h2>
+                <h3 id="freq">FREQ vs TIME</h3>
+                <canvas id="canvas-freq" width="800px" height="200px"></canvas>
+                <h3 id="amp">AMP vs TIME</h3>
+                <canvas id="canvas-amp" width="800px" height="200px"></canvas>
+            </div>
         </div>
 
         <style>
+
+            *
+            {
+                margin: 0;
+            }
 
             body
             {
@@ -108,15 +123,24 @@
                 background-color: #777777;
             }
 
-            #canvas-view
+            canvas
             {
-                width: 100%;
                 background-color: #000000;
             }
 
-            h2, h3
+            #canvas-view
             {
-                margin: 0px;
+                width: 100%;
+            }
+
+            #canvas-freq
+            {
+                width: 100%;
+            }
+
+            #canvas-amp
+            {
+                width: 100%;
             }
 
         </style>
