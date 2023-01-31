@@ -193,6 +193,11 @@ function step()
     ctxView.arc(src.pos.x, src.pos.y, 0.3, 0, 2 * Math.PI);
     ctxView.fillStyle = "#ff0000";
     ctxView.fill();
+
+    ctxView.beginPath();
+    ctxView.arc(obs.pos.x, obs.pos.y, 0.3, 0, 2 * Math.PI);
+    ctxView.fillStyle = "#0000ff";
+    ctxView.fill();
     
     ctxView.restore();
 
@@ -340,11 +345,19 @@ function typePos()
 
     if(obs.ctrl === false)
     {
+        src.vel.x = 0;
+        src.vel.y = 0;
+        src.acc.x = 0;
+        src.acc.y = 0;
         src.type = 1;
     }
 
     else if(obs.ctrl === true)
     {
+        obs.vel.x = 0;
+        obs.vel.y = 0;
+        obs.acc.x = 0;
+        obs.acc.y = 0;
         obs.type = 1;
     }
 
@@ -360,11 +373,15 @@ function typeVel()
 
     if(obs.ctrl === false)
     {
+        src.acc.x = 0;
+        src.acc.y = 0;
         src.type = 2;
     }
 
     else if(obs.ctrl === true)
     {
+        obs.acc.x = 0;
+        obs.acc.y = 0;
         obs.type = 2;
     }
 
