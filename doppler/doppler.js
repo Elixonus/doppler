@@ -24,6 +24,8 @@ const canvasView = document.getElementById("canvas-view");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
 
+
+
 const src = {
     pwr: true,
     freq: 1,
@@ -334,6 +336,8 @@ buttonDirZero.onclick = dirZero;
 buttonMagLow.onclick = magLow;
 buttonMagMed.onclick = magMed;
 buttonMagHigh.onclick = magHigh;
+
+updateButtons();
 
 function timeStrt()
 {
@@ -677,5 +681,115 @@ function magHigh()
     else if(obs.ctrl === true)
     {
         obs.mag = 3;
+    }
+}
+
+function updateButtons()
+{
+    buttonTimeStrt.disabled = false;
+    buttonTimeStop.disabled = false;
+    buttonCtrlSrc.disabled = false;
+    buttonCtrlObs.disabled = false;
+    buttonPwrOn.disabled = false;
+    buttonPwrOff.disabled = false;
+    buttonTypePos.disabled = false;
+    buttonTypeVel.disabled = false;
+    buttonTypeAcc.disabled = false;
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
+    buttonMagLow.disabled = false;
+    buttonMagMed.disabled = false;
+    buttonMagHigh.disabled = false;
+
+    if(run === true)
+    {
+        buttonTimeStrt.disabled = true;
+    }
+
+    else if(run === false)
+    {
+        buttonTimeStop.disabled = true;
+    }
+
+    let obj;
+
+    if(obs.ctrl === false)
+    {
+        buttonCtrlSrc.disabled = true;
+        obj = src;
+    }
+
+    else if(obs.ctrl === true)
+    {
+        buttonCtrlSrc.disabled = true;
+        obj = obs;
+    }
+
+    if(obj.pwr === true)
+    {
+        buttonPwrOn.disabled = true;
+    }
+
+    else if(src.pwr === false)
+    {
+        buttonPwrOff.disabled = true;
+    }
+
+    if(obj.type === 1)
+    {
+        buttonTypePos.disabled = true;
+    }
+
+    else if(obj.type === 2)
+    {
+        buttonTypeVel.disabled = true;
+    }
+
+    else if(obj.type === 3)
+    {
+        buttonTypeAcc.disabled = true;
+    }
+
+    if(obj.dir === 0)
+    {
+        buttonDirZero.disabled = true;
+    }
+
+    else if(obj.dir === 1)
+    {
+        buttonDirLeft.disabled = true;
+    }
+
+    else if(obj.dir === 2)
+    {
+        buttonDirRght.disabled = true;
+    }
+
+    else if(obj.dir === 3)
+    {
+        buttonDirUp.disabled = true;
+    }
+
+    else if(obj.dir === 4)
+    {
+        buttonDirDown.disabled = true;
+    }
+
+    if(obj.mag === 1)
+    {
+        buttonMagLow.disabled = true;
+    }
+
+    else if(obj.mag === 2)
+    {
+        buttonMagMed.disabled = true;
+    }
+
+    else if(obj.mag === 3)
+    {
+        buttonMagHigh.disabled = true;
     }
 }
