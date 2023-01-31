@@ -193,7 +193,7 @@ function step()
         obs.pos.x += 0.005 * obs.vel.x;
         obs.pos.y += 0.005 * obs.vel.y;
 
-        if(src.pwr === true && time % (20 / src.freq) === 0)
+        if(src.pwr === true && time % Math.floor(20 / src.freq) === 0)
         {
             wavs.push({
                 time: 0,
@@ -241,13 +241,22 @@ function step()
 
     ctxView.beginPath();
     ctxView.arc(src.pos.x, src.pos.y, 0.3, 0, 2 * Math.PI);
+
+    if(src.pwr === false)
+    {
+        ctxView.globalAlpha = 0.3;
+    }
+
     ctxView.fillStyle = "#ff0000";
     ctxView.fill();
     
     if(obs.ctrl === false)
     {
+        ctxView.lineWidth = 0.1;
+        ctxView.strokeStyle = "#000000";
+        ctxView.stroke();
         ctxView.lineWidth = 0.05;
-        ctxView.strokeStyle = "#aaaaaa";
+        ctxView.strokeStyle = "#ff0000";
         ctxView.stroke();
     }
 
@@ -258,12 +267,14 @@ function step()
         ctxView.stroke();
     }
 
-    if(src.pwr === true)
+    if(obs.pwr === false)
     {
-        ctxView.beginPath();
-        ctxView.arc(src.pos.x, src.pos.y, 0.05, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#ffff00";
-        ctxView.fill();
+        ctxView.globalAlpha = 0.3;
+    }
+
+    else
+    {
+        ctxView.globalAlpha = 1;
     }
 
     ctxView.beginPath();
@@ -273,8 +284,11 @@ function step()
     
     if(obs.ctrl === true)
     {
+        ctxView.lineWidth = 0.1;
+        ctxView.strokeStyle = "#000000";
+        ctxView.stroke();
         ctxView.lineWidth = 0.05;
-        ctxView.strokeStyle = "#aaaaaa";
+        ctxView.strokeStyle = "#0000ff";
         ctxView.stroke();
     }
 
@@ -283,14 +297,6 @@ function step()
         ctxView.lineWidth = 0.02;
         ctxView.strokeStyle = "#000000";
         ctxView.stroke();
-    }
-
-    if(obs.pwr === true)
-    {
-        ctxView.beginPath();
-        ctxView.arc(obs.pos.x, obs.pos.y, 0.05, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#ffff00";
-        ctxView.fill();
     }
 
     for(let w = 0; w < wavs.length; w++)
@@ -308,17 +314,6 @@ function step()
 
     window.requestAnimationFrame(step);
 }
-
-timeStrt();
-ctrlSrc();
-typePos();
-dirLeft();
-magLow();
-ctrlObs();
-typePos();
-dirRght();
-magLow();
-//ctrlSrc();
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
