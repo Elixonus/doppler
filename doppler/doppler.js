@@ -69,6 +69,7 @@ const obs = {
 
 const wavs = [];
 
+fixTime();
 fixPwr();
 fixType();
 fixDir();
@@ -198,10 +199,12 @@ function step()
         obs.pos.x += 0.005 * obs.vel.x;
         obs.pos.y += 0.005 * obs.vel.y;
 
-        if(src.pwr === true && time % Math.floor(20 / src.freq) === 0)
+        if(src.pwr === true)
         {
             wavs.push({
-                time: 0,
+                time: time,
+                freq: src.freq,
+                amp: src.amp,
                 pos: {
                     x: src.pos.x,
                     y: src.pos.y
@@ -212,30 +215,18 @@ function step()
                 }
             });
         }
-
-        for(let w = 0; w < wavs.length; w++)
-        {
-            if(wavs[w].time >= 1000)
-            {
-                wavs.shift();
-            }
-
-            else
-            {
-                break;
-            }
-        }
         
         for(let w = 0; w < wavs.length; w++)
         {
-            wavs[w].time += 1;
+            if(wavs[w].amp <= 0)
+            {
+                wavs.splice(w, 1);
+                w--;
+            }
         }
         
         time += 1;
     }
-
-
-
 
     const ctxView = canvasView.getContext("2d");
     ctxView.save();
@@ -243,12 +234,6 @@ function step()
     ctxView.fillRect(0, 0, 800, 600);
     ctxView.translate(400, 300);
     ctxView.scale(100, -100);
-    ctxView.save();
-
-    if(src.pwr === false)
-    {
-        ctxView.globalAlpha = 0.3;
-    }
 
     if(obj === src)
     {
@@ -261,18 +246,11 @@ function step()
         ctxView.fillStyle = "#000000";
         ctxView.fill();
     }
-
+    
     ctxView.beginPath();
     ctxView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
     ctxView.fillStyle = "#ff0000";
     ctxView.fill();
-    ctxView.restore();
-    ctxView.save();
-
-    if(obs.pwr === false)
-    {
-        ctxView.globalAlpha = 0.3;
-    }
 
     if(obj === obs)
     {
@@ -285,14 +263,14 @@ function step()
         ctxView.fillStyle = "#000000";
         ctxView.fill();
     }
-
+    
     ctxView.beginPath();
     ctxView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
     ctxView.fillStyle = "#0000ff";
     ctxView.fill();
-    ctxView.restore();
-    
-    for(let w = 0; w < wavs.length; w++)
+    ctxView.save();
+
+    for(let w = 0; w < wavs.length; w += 19)
     {
         ctxView.beginPath();
         ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * wavs[w].time, 0, 2 * Math.PI);
@@ -300,9 +278,9 @@ function step()
         ctxView.lineWidth = 0.03;
         ctxView.strokeStyle = "#ffffff";
         ctxView.stroke();
-        ctxView.globalAlpha = 1;
     }
 
+    ctxView.restore();
     ctxView.restore();
 
     window.requestAnimationFrame(step);
@@ -327,8 +305,6 @@ buttonDirZero.onclick = dirZero;
 buttonMagLow.onclick = magLow;
 buttonMagMed.onclick = magMed;
 buttonMagHigh.onclick = magHigh;
-
-updateButtons();
 
 function timeStrt()
 {
