@@ -1,6 +1,3 @@
-let run = true;
-let time = 0;
-
 const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
 const buttonBufrSave = document.getElementById("button-bufr-save");
@@ -24,7 +21,9 @@ const canvasView = document.getElementById("canvas-view");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
 
-
+let run = true;
+let time = 0;
+let obj = null;
 
 const src = {
     pwr: true,
@@ -48,7 +47,6 @@ const src = {
 };
 
 const obs = {
-    ctrl: true,
     pwr: true,
     freq: 1,
     amp: 1,
@@ -252,7 +250,7 @@ function step()
     ctxView.fillStyle = "#ff0000";
     ctxView.fill();
     
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         ctxView.lineWidth = 0.1;
         ctxView.strokeStyle = "#000000";
@@ -284,7 +282,7 @@ function step()
     ctxView.fillStyle = "#0000ff";
     ctxView.fill();
     
-    if(obs.ctrl === true)
+    if(obj === obs)
     {
         ctxView.lineWidth = 0.1;
         ctxView.strokeStyle = "#000000";
@@ -357,7 +355,7 @@ function ctrlSrc()
 {
     buttonCtrlSrc.disabled = true;
     buttonCtrlObs.disabled = false;
-    obs.ctrl = false;
+    obj = src;
 
     if(src.pwr)
     {
@@ -389,7 +387,7 @@ function ctrlObs()
 {
     buttonCtrlObs.disabled = true;
     buttonCtrlSrc.disabled = false;
-    obs.ctrl = true;
+    obj = obs;
 
     if(obs.pwr)
     {
@@ -422,12 +420,12 @@ function pwrOn()
     buttonPwrOn.disabled = true;
     buttonPwrOff.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.pwr = true;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.pwr = true;
     }
@@ -438,12 +436,12 @@ function pwrOff()
     buttonPwrOff.disabled = true;
     buttonPwrOn.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.pwr = false;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.pwr = false;
     }
@@ -455,14 +453,14 @@ function typePos()
     buttonTypeVel.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.acc.x = 0;
         src.acc.y = 0;
         src.type = 1;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.vel.x = 0;
         obs.vel.y = 0;
@@ -481,14 +479,14 @@ function typeVel()
     buttonTypePos.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.acc.x = 0;
         src.acc.y = 0;
         src.type = 2;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.acc.x = 0;
         obs.acc.y = 0;
@@ -505,12 +503,12 @@ function typeAcc()
     buttonTypePos.disabled = false;
     buttonTypeVel.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.type = 3;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.type = 3;
     }
@@ -527,12 +525,12 @@ function dirLeft()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = 1;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = 1;
     }
@@ -546,12 +544,12 @@ function dirRght()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = 2;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = 2;
     }
@@ -565,12 +563,12 @@ function dirUp()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = 3;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = 3;
     }
@@ -584,12 +582,12 @@ function dirDown()
     buttonDirUp.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = 4;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = 4;
     }
@@ -603,12 +601,12 @@ function dirZero()
     buttonDirUp.disabled = false;
     buttonDirDown.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = 0;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = 0;
     }
@@ -622,12 +620,12 @@ function dirNone()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.dir = -1;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.dir = -1;
     }
@@ -639,12 +637,12 @@ function magLow()
     buttonMagMed.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.mag = 1;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.mag = 1;
     }
@@ -656,12 +654,12 @@ function magMed()
     buttonMagLow.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.mag = 2;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.mag = 2;
     }
@@ -673,36 +671,21 @@ function magHigh()
     buttonMagLow.disabled = false;
     buttonMagMed.disabled = false;
 
-    if(obs.ctrl === false)
+    if(obj === src)
     {
         src.mag = 3;
     }
 
-    else if(obs.ctrl === true)
+    else if(obj === obs)
     {
         obs.mag = 3;
     }
 }
 
-function updateButtons()
+function updateTime()
 {
     buttonTimeStrt.disabled = false;
     buttonTimeStop.disabled = false;
-    buttonCtrlSrc.disabled = false;
-    buttonCtrlObs.disabled = false;
-    buttonPwrOn.disabled = false;
-    buttonPwrOff.disabled = false;
-    buttonTypePos.disabled = false;
-    buttonTypeVel.disabled = false;
-    buttonTypeAcc.disabled = false;
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-    buttonMagLow.disabled = false;
-    buttonMagMed.disabled = false;
-    buttonMagHigh.disabled = false;
 
     if(run === true)
     {
@@ -712,84 +695,5 @@ function updateButtons()
     else if(run === false)
     {
         buttonTimeStop.disabled = true;
-    }
-
-    let obj;
-
-    if(obs.ctrl === false)
-    {
-        buttonCtrlSrc.disabled = true;
-        obj = src;
-    }
-
-    else if(obs.ctrl === true)
-    {
-        buttonCtrlSrc.disabled = true;
-        obj = obs;
-    }
-
-    if(obj.pwr === true)
-    {
-        buttonPwrOn.disabled = true;
-    }
-
-    else if(src.pwr === false)
-    {
-        buttonPwrOff.disabled = true;
-    }
-
-    if(obj.type === 1)
-    {
-        buttonTypePos.disabled = true;
-    }
-
-    else if(obj.type === 2)
-    {
-        buttonTypeVel.disabled = true;
-    }
-
-    else if(obj.type === 3)
-    {
-        buttonTypeAcc.disabled = true;
-    }
-
-    if(obj.dir === 0)
-    {
-        buttonDirZero.disabled = true;
-    }
-
-    else if(obj.dir === 1)
-    {
-        buttonDirLeft.disabled = true;
-    }
-
-    else if(obj.dir === 2)
-    {
-        buttonDirRght.disabled = true;
-    }
-
-    else if(obj.dir === 3)
-    {
-        buttonDirUp.disabled = true;
-    }
-
-    else if(obj.dir === 4)
-    {
-        buttonDirDown.disabled = true;
-    }
-
-    if(obj.mag === 1)
-    {
-        buttonMagLow.disabled = true;
-    }
-
-    else if(obj.mag === 2)
-    {
-        buttonMagMed.disabled = true;
-    }
-
-    else if(obj.mag === 3)
-    {
-        buttonMagHigh.disabled = true;
     }
 }
