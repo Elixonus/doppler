@@ -183,17 +183,17 @@ function step()
 
     if(run === true)
     {
-        src.vel.x += 0.1 * src.acc.x;
-        src.vel.y += 0.1 * src.acc.y;
-        src.pos.x += 0.01 * src.vel.x;
-        src.pos.y += 0.01 * src.vel.y;
+        src.vel.x += 0.05 * src.acc.x;
+        src.vel.y += 0.05 * src.acc.y;
+        src.pos.x += 0.005 * src.vel.x;
+        src.pos.y += 0.005 * src.vel.y;
     
-        obs.vel.x += 0.1 * obs.acc.x;
-        obs.vel.y += 0.1 * obs.acc.y;
-        obs.pos.x += 0.01 * obs.vel.x;
-        obs.pos.y += 0.01 * obs.vel.y;
+        obs.vel.x += 0.05 * obs.acc.x;
+        obs.vel.y += 0.05 * obs.acc.y;
+        obs.pos.x += 0.005 * obs.vel.x;
+        obs.pos.y += 0.005 * obs.vel.y;
 
-        if(time % (20 / src.freq) === 0)
+        if(src.pwr === true && time % (20 / src.freq) === 0)
         {
             wavs.push({
                 time: 0,
@@ -235,20 +235,64 @@ function step()
     const ctxView = canvasView.getContext("2d");
     ctxView.save();
     ctxView.fillStyle = "#000000";
-    ctxView.fillRect(0, 0, canvasView.width, canvasView.height);
-    ctxView.translate(0.5 * canvasView.width, 0.5 * canvasView.height);
+    ctxView.fillRect(0, 0, 800, 600);
+    ctxView.translate(400, 300);
     ctxView.scale(100, -100);
 
     ctxView.beginPath();
     ctxView.arc(src.pos.x, src.pos.y, 0.3, 0, 2 * Math.PI);
     ctxView.fillStyle = "#ff0000";
     ctxView.fill();
+    
+    if(obs.ctrl === false)
+    {
+        ctxView.lineWidth = 0.05;
+        ctxView.strokeStyle = "#aaaaaa";
+        ctxView.stroke();
+    }
+
+    else
+    {
+        ctxView.lineWidth = 0.02;
+        ctxView.strokeStyle = "#000000";
+        ctxView.stroke();
+    }
+
+    if(src.pwr === true)
+    {
+        ctxView.beginPath();
+        ctxView.arc(src.pos.x, src.pos.y, 0.05, 0, 2 * Math.PI);
+        ctxView.fillStyle = "#ffff00";
+        ctxView.fill();
+    }
 
     ctxView.beginPath();
     ctxView.arc(obs.pos.x, obs.pos.y, 0.3, 0, 2 * Math.PI);
     ctxView.fillStyle = "#0000ff";
     ctxView.fill();
     
+    if(obs.ctrl === true)
+    {
+        ctxView.lineWidth = 0.05;
+        ctxView.strokeStyle = "#aaaaaa";
+        ctxView.stroke();
+    }
+
+    else
+    {
+        ctxView.lineWidth = 0.02;
+        ctxView.strokeStyle = "#000000";
+        ctxView.stroke();
+    }
+
+    if(obs.pwr === true)
+    {
+        ctxView.beginPath();
+        ctxView.arc(obs.pos.x, obs.pos.y, 0.05, 0, 2 * Math.PI);
+        ctxView.fillStyle = "#ffff00";
+        ctxView.fill();
+    }
+
     for(let w = 0; w < wavs.length; w++)
     {
         ctxView.beginPath();
