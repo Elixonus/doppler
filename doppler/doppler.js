@@ -33,7 +33,7 @@ const src = {
     dir: 0,
     mag: 2,
     pos: {
-        x: 0,
+        x: -1,
         y: 0
     },
     vel: {
@@ -54,7 +54,7 @@ const obs = {
     dir: 0,
     mag: 2,
     pos: {
-        x: 0,
+        x: 1,
         y: 0
     },
     vel: {
@@ -69,11 +69,16 @@ const obs = {
 
 const wavs = [];
 
+fixPwr();
+fixType();
+fixDir();
+fixMag();
+
 window.requestAnimationFrame(step);
 
 function step()
 {
-    if(src.dir !== -1)
+    if(src.dir !== null)
     {
         let xs;
         let ys;
@@ -127,7 +132,7 @@ function step()
         }
     }
 
-    if(obs.dir !== -1)
+    if(obs.dir !== null)
     {
         let xo;
         let yo;
@@ -220,7 +225,7 @@ function step()
                 break;
             }
         }
-
+        
         for(let w = 0; w < wavs.length; w++)
         {
             wavs[w].time += 1;
@@ -339,23 +344,20 @@ updateButtons();
 
 function timeStrt()
 {
-    buttonTimeStrt.disabled = true;
-    buttonTimeStop.disabled = false;
     run = true;
+    fixTime();
 }
 
 function timeStop()
 {
-    buttonTimeStop.disabled = true;
-    buttonTimeStrt.disabled = false;
     run = false;
+    fixTime();
 }
 
 function ctrlSrc()
 {
-    buttonCtrlSrc.disabled = true;
-    buttonCtrlObs.disabled = false;
     obj = src;
+    fixCtrl();
 
     if(src.pwr)
     {
@@ -385,9 +387,8 @@ function ctrlSrc()
 
 function ctrlObs()
 {
-    buttonCtrlObs.disabled = true;
-    buttonCtrlSrc.disabled = false;
     obj = obs;
+    fixCtrl();
 
     if(obs.pwr)
     {
@@ -415,274 +416,164 @@ function ctrlObs()
     }
 }
 
+function isObj()
+{
+    return (obj === src || obj === obs);
+}
+
 function pwrOn()
 {
-    buttonPwrOn.disabled = true;
-    buttonPwrOff.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.pwr = true;
+        obj.pwr = true;
     }
 
-    else if(obj === obs)
-    {
-        obs.pwr = true;
-    }
+    fixPwr();
 }
 
 function pwrOff()
 {
-    buttonPwrOff.disabled = true;
-    buttonPwrOn.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.pwr = false;
+        obj.pwr = false;
     }
 
-    else if(obj === obs)
-    {
-        obs.pwr = false;
-    }
+    fixPwr();
 }
 
 function typePos()
 {
-    buttonTypePos.disabled = true;
-    buttonTypeVel.disabled = false;
-    buttonTypeAcc.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.acc.x = 0;
-        src.acc.y = 0;
-        src.type = 1;
+        obj.type = 1;
+        obj.vel.x = 0;
+        obj.vel.y = 0;
+        obj.acc.x = 0;
+        obj.acc.y = 0;
     }
 
-    else if(obj === obs)
-    {
-        obs.vel.x = 0;
-        obs.vel.y = 0;
-        obs.acc.x = 0;
-        obs.acc.y = 0;
-        obs.type = 1;
-    }
-
+    fixType();
     dirNone();
     magMed();
 }
 
 function typeVel()
 {
-    buttonTypeVel.disabled = true;
-    buttonTypePos.disabled = false;
-    buttonTypeAcc.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.acc.x = 0;
-        src.acc.y = 0;
-        src.type = 2;
+        obj.type = 2;
+        obj.acc.x = 0;
+        obj.acc.y = 0;
     }
 
-    else if(obj === obs)
-    {
-        obs.acc.x = 0;
-        obs.acc.y = 0;
-        obs.type = 2;
-    }
-
+    fixType();
     dirNone();
     magMed();
 }
 
 function typeAcc()
 {
-    buttonTypeAcc.disabled = true;
-    buttonTypePos.disabled = false;
-    buttonTypeVel.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.type = 3;
+        obj.type = 3;
     }
 
-    else if(obj === obs)
-    {
-        obs.type = 3;
-    }
-
+    fixType();
     dirNone();
     magMed();
 }
 
 function dirLeft()
 {
-    buttonDirLeft.disabled = true;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = 1;
+        obj.dir = 1;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = 1;
-    }
+    fixDir();
 }
 
 function dirRght()
 {
-    buttonDirRght.disabled = true;
-    buttonDirLeft.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = 2;
+        obj.dir = 2;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = 2;
-    }
+    fixDir();
 }
 
 function dirUp()
 {
-    buttonDirUp.disabled = true;
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = 3;
+        obj.dir = 3;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = 3;
-    }
+    fixDir();
 }
 
 function dirDown()
 {
-    buttonDirDown.disabled = true;
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirZero.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = 4;
+        obj.dir = 4;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = 4;
-    }
+    fixDir();
 }
 
 function dirZero()
 {
-    buttonDirZero.disabled = true;
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = 0;
+        obj.dir = 0;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = 0;
-    }
+    fixDir();
 }
 
 function dirNone()
 {
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.dir = -1;
+        obj.dir = null;
     }
 
-    else if(obj === obs)
-    {
-        obs.dir = -1;
-    }
+    fixDir();
 }
 
 function magLow()
 {
-    buttonMagLow.disabled = true;
-    buttonMagMed.disabled = false;
-    buttonMagHigh.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.mag = 1;
+        obj.mag = 1;
     }
 
-    else if(obj === obs)
-    {
-        obs.mag = 1;
-    }
+    fixMag();
 }
 
 function magMed()
 {
-    buttonMagMed.disabled = true;
-    buttonMagLow.disabled = false;
-    buttonMagHigh.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.mag = 2;
+        obj.mag = 2;
     }
 
-    else if(obj === obs)
-    {
-        obs.mag = 2;
-    }
+    fixMag();
 }
 
 function magHigh()
 {
-    buttonMagHigh.disabled = true;
-    buttonMagLow.disabled = false;
-    buttonMagMed.disabled = false;
-
-    if(obj === src)
+    if(isObj() === true)
     {
-        src.mag = 3;
+        obj.mag = 3;
     }
 
-    else if(obj === obs)
-    {
-        obs.mag = 3;
-    }
+    fixMag();
 }
 
-function updateTime()
+function fixTime()
 {
     buttonTimeStrt.disabled = false;
     buttonTimeStop.disabled = false;
@@ -695,5 +586,156 @@ function updateTime()
     else if(run === false)
     {
         buttonTimeStop.disabled = true;
+    }
+}
+
+function fixCtrl()
+{
+    buttonCtrlSrc.disabled = false;
+    buttonCtrlObs.disabled = false;
+
+    if(obj === src)
+    {
+        buttonCtrlSrc.disabled = true;
+    }
+
+    else if(obj === obs)
+    {
+        buttonCtrlObs.disabled = true;
+    }
+}
+
+function fixPwr()
+{
+    buttonPwrOn.disabled = false;
+    buttonPwrOff.disabled = false;
+
+    if(isObj())
+    {
+        if(obj.pwr === true)
+        {
+            buttonPwrOn.disabled = true;
+        }
+    
+        else if(obj.pwr === false)
+        {
+            buttonPwrOff.disabled = true;
+        }
+    }
+
+    else
+    {
+        buttonPwrOn.disabled = true;
+        buttonPwrOff.disabled = true;
+    }
+}
+
+function fixType()
+{
+    buttonTypePos.disabled = false;
+    buttonTypeVel.disabled = false;
+    buttonTypeAcc.disabled = false;
+
+    if(isObj())
+    {
+        if(obj.type === 1)
+        {
+            buttonTypePos.disabled = true;
+        }
+    
+        else if(obj.type === 2)
+        {
+            buttonTypeVel.disabled = true;
+        }
+    
+        else if(obj.type === 3)
+        {
+            buttonTypeAcc.disabled = true;
+        }
+    }
+
+    else
+    {
+        buttonTypePos.disabled = true;
+        buttonTypeVel.disabled = true;
+        buttonTypeAcc.disabled = true;
+    }
+}
+
+function fixDir()
+{
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
+
+    if(isObj())
+    {
+        if(obj.dir === 0)
+        {
+            buttonDirZero.disabled = true;
+        }
+    
+        else if(obj.dir === 1)
+        {
+            buttonDirLeft.disabled = true;
+        }
+    
+        else if(obj.dir === 2)
+        {
+            buttonDirRght.disabled = true;
+        }
+    
+        else if(obj.dir === 3)
+        {
+            buttonDirUp.disabled = true;
+        }
+    
+        else if(obj.dir === 4)
+        {
+            buttonDirDown.disabled = true;
+        }
+    }
+
+    else
+    {
+        buttonDirZero.disabled = true;
+        buttonDirLeft.disabled = true;
+        buttonDirRght.disabled = true;
+        buttonDirUp.disabled = true;
+        buttonDirDown.disabled = true;
+    }
+}
+
+function fixMag()
+{
+    buttonMagLow.disabled = false;
+    buttonMagMed.disabled = false;
+    buttonMagHigh.disabled = false;
+
+    if(isObj())
+    {
+        if(obj.mag === 1)
+        {
+            buttonMagLow.disabled = true;
+        }
+    
+        else if(obj.mag === 2)
+        {
+            buttonMagMed.disabled = true;
+        }
+    
+        else if(obj.mag === 3)
+        {
+            buttonMagHigh.disabled = true;
+        }
+    }
+
+    else
+    {
+        buttonMagLow.disabled = true;
+        buttonMagMed.disabled = true;
+        buttonMagHigh.disabled = true;
     }
 }
