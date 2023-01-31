@@ -1,4 +1,5 @@
 let run = true;
+let time = 0;
 
 const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
@@ -42,7 +43,7 @@ const src = {
         x: 0,
         y: 0
     }
-}
+};
 
 const obs = {
     ctrl: true,
@@ -64,123 +65,172 @@ const obs = {
         x: 0,
         y: 0
     }
-}
+};
+
+const wavs = [];
 
 window.requestAnimationFrame(step);
 
 function step()
 {
-    let xs;
-    let ys;
-
-    if(src.dir === 0)
+    if(src.dir !== -1)
     {
-        xs = 0;
-        ys = 0;
-    }
-
-    else if(src.dir === 1)
-    {
-        xs = -src.mag;
-        ys = 0;
-    }
-
-    else if(src.dir === 2)
-    {
-        xs = src.mag;
-        ys = 0;
-    }
-
-    else if(src.dir === 3)
-    {
-        xs = 0;
-        ys = src.mag;
-    }
-
-    else if(src.dir === 4)
-    {
-        xs = 0;
-        ys = -src.mag;
-    }
-
-    if(src.type === 1)
-    {
-        src.pos.x = xs;
-        src.pos.y = ys;
-    }
-
-    else if(src.type === 2)
-    {
-        src.vel.x = xs;
-        src.vel.y = ys;
-    }
-
-    else if(src.type === 3)
-    {
-        src.acc.x = xs;
-        src.acc.y = ys;
-    }
-
-    let xo;
-    let yo;
-
-    if(obs.dir === 0)
-    {
-        xs = 0;
-        ys = 0;
-    }
-
-    else if(obs.dir === 1)
-    {
-        xs = -obs.mag;
-        ys = 0;
-    }
-
-    else if(obs.dir === 2)
-    {
-        xs = obs.mag;
-        ys = 0;
-    }
-
-    else if(obs.dir === 3)
-    {
-        xs = 0;
-        ys = obs.mag;
-    }
-
-    else if(obs.dir === 4)
-    {
-        xs = 0;
-        ys = -obs.mag;
-    }
-
-    if(obs.type === 1)
-    {
-        obs.pos.x = xs;
-        obs.pos.y = ys;
-    }
-
-    else if(obs.type === 2)
-    {
-        obs.vel.x = xs;
-        obs.vel.y = ys;
-    }
-
-    else if(obs.type === 3)
-    {
-        obs.acc.x = xs;
-        obs.acc.y = ys;
-    }
+        let xs;
+        let ys;
     
-    src.vel.x += 0.1 * src.acc.x;
-    src.vel.y += 0.1 * src.acc.y;
-    src.pos.x += 0.01 * src.vel.x;
-    src.pos.y += 0.01 * src.vel.y;
+        if(src.dir === 0)
+        {
+            xs = 0;
+            ys = 0;
+        }
+    
+        else if(src.dir === 1)
+        {
+            xs = -src.mag;
+            ys = 0;
+        }
+    
+        else if(src.dir === 2)
+        {
+            xs = src.mag;
+            ys = 0;
+        }
+    
+        else if(src.dir === 3)
+        {
+            xs = 0;
+            ys = src.mag;
+        }
+    
+        else if(src.dir === 4)
+        {
+            xs = 0;
+            ys = -src.mag;
+        }
+    
+        if(src.type === 1)
+        {
+            src.pos.x = xs;
+            src.pos.y = ys;
+        }
+    
+        else if(src.type === 2)
+        {
+            src.vel.x = xs;
+            src.vel.y = ys;
+        }
+    
+        else if(src.type === 3)
+        {
+            src.acc.x = xs;
+            src.acc.y = ys;
+        }
+    }
 
-    obs.vel.x += 0.1 * obs.acc.x;
-    obs.vel.y += 0.1 * obs.acc.y;
-    obs.pos.x += 0.01 * obs.vel.x;
-    obs.pos.y += 0.01 * obs.vel.y;
+    if(obs.dir !== -1)
+    {
+        let xo;
+        let yo;
+    
+        if(obs.dir === 0)
+        {
+            xo = 0;
+            yo = 0;
+        }
+    
+        else if(obs.dir === 1)
+        {
+            xo = -obs.mag;
+            yo = 0;
+        }
+    
+        else if(obs.dir === 2)
+        {
+            xo = obs.mag;
+            yo = 0;
+        }
+    
+        else if(obs.dir === 3)
+        {
+            xo = 0;
+            yo = obs.mag;
+        }
+    
+        else if(obs.dir === 4)
+        {
+            xo = 0;
+            yo = -obs.mag;
+        }
+    
+        if(obs.type === 1)
+        {
+            obs.pos.x = xo;
+            obs.pos.y = yo;
+        }
+    
+        else if(obs.type === 2)
+        {
+            obs.vel.x = xo;
+            obs.vel.y = yo;
+        }
+    
+        else if(obs.type === 3)
+        {
+            obs.acc.x = xo;
+            obs.acc.y = yo;
+        }
+    }
+
+    if(run === true)
+    {
+        src.vel.x += 0.1 * src.acc.x;
+        src.vel.y += 0.1 * src.acc.y;
+        src.pos.x += 0.01 * src.vel.x;
+        src.pos.y += 0.01 * src.vel.y;
+    
+        obs.vel.x += 0.1 * obs.acc.x;
+        obs.vel.y += 0.1 * obs.acc.y;
+        obs.pos.x += 0.01 * obs.vel.x;
+        obs.pos.y += 0.01 * obs.vel.y;
+
+        if(time % (20 / src.freq) === 0)
+        {
+            wavs.push({
+                time: 0,
+                pos: {
+                    x: src.pos.x,
+                    y: src.pos.y
+                },
+                vel: {
+                    x: src.vel.x,
+                    y: src.vel.y
+                }
+            });
+        }
+
+        for(let w = 0; w < wavs.length; w++)
+        {
+            if(wavs[w].time >= 1000)
+            {
+                wavs.shift();
+            }
+
+            else
+            {
+                break;
+            }
+        }
+
+        for(let w = 0; w < wavs.length; w++)
+        {
+            wavs[w].time += 1;
+        }
+        
+        time += 1;
+    }
+
+
+
 
     const ctxView = canvasView.getContext("2d");
     ctxView.save();
@@ -199,13 +249,32 @@ function step()
     ctxView.fillStyle = "#0000ff";
     ctxView.fill();
     
+    for(let w = 0; w < wavs.length; w++)
+    {
+        ctxView.beginPath();
+        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * wavs[w].time, 0, 2 * Math.PI);
+        ctxView.globalAlpha = 1 - 0.001 * wavs[w].time;
+        ctxView.lineWidth = 0.03;
+        ctxView.strokeStyle = "#ffffff";
+        ctxView.stroke();
+        ctxView.globalAlpha = 1;
+    }
+
     ctxView.restore();
 
     window.requestAnimationFrame(step);
 }
 
 timeStrt();
+ctrlSrc();
+typePos();
+dirLeft();
+magLow();
 ctrlObs();
+typePos();
+dirRght();
+magLow();
+//ctrlSrc();
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
@@ -345,8 +414,6 @@ function typePos()
 
     if(obs.ctrl === false)
     {
-        src.vel.x = 0;
-        src.vel.y = 0;
         src.acc.x = 0;
         src.acc.y = 0;
         src.type = 1;
@@ -361,7 +428,7 @@ function typePos()
         obs.type = 1;
     }
 
-    dirZero();
+    dirNone();
     magMed();
 }
 
@@ -385,7 +452,7 @@ function typeVel()
         obs.type = 2;
     }
 
-    dirZero();
+    dirNone();
     magMed();
 }
 
@@ -405,7 +472,7 @@ function typeAcc()
         obs.type = 3;
     }
 
-    dirZero();
+    dirNone();
     magMed();
 }
 
@@ -501,6 +568,25 @@ function dirZero()
     else if(obs.ctrl === true)
     {
         obs.dir = 0;
+    }
+}
+
+function dirNone()
+{
+    buttonDirLeft.disabled = false;
+    buttonDirRght.disabled = false;
+    buttonDirUp.disabled = false;
+    buttonDirDown.disabled = false;
+    buttonDirZero.disabled = false;
+
+    if(obs.ctrl === false)
+    {
+        src.dir = -1;
+    }
+
+    else if(obs.ctrl === true)
+    {
+        obs.dir = -1;
     }
 }
 
