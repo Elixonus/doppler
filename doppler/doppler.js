@@ -201,10 +201,22 @@ function step()
 
         if(src.pwr === true)
         {
+            for(let w = 0; w < wavs.length; w++)
+            {
+                wavs[w].amp = 1
+                wavs[w].rad = 0.01 * (time - wavs[w].time);
+
+                if(w === 0)
+                {
+                    console.log(wavs[w].rad, time - wavs[w].time);
+                }
+            }
+            
             wavs.push({
                 time: time,
                 freq: src.freq,
                 amp: src.amp,
+                rad: 0,
                 pos: {
                     x: src.pos.x,
                     y: src.pos.y
@@ -215,14 +227,10 @@ function step()
                 }
             });
         }
-        
-        for(let w = 0; w < wavs.length; w++)
+
+        if(time - wavs[0].time >= 1000)
         {
-            if(wavs[w].amp <= 0)
-            {
-                wavs.splice(w, 1);
-                w--;
-            }
+            wavs.splice(0, 1);
         }
         
         time += 1;
@@ -270,11 +278,11 @@ function step()
     ctxView.fill();
     ctxView.save();
 
-    for(let w = 0; w < wavs.length; w += 19)
+    for(let w = 0; w < wavs.length; w += 20)
     {
         ctxView.beginPath();
-        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * wavs[w].time, 0, 2 * Math.PI);
-        ctxView.globalAlpha = 1 - 0.001 * wavs[w].time;
+        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, wavs[w].rad, 0, 2 * Math.PI);
+        ctxView.globalAlpha = 1 - (time - wavs[w].time) / 1000;
         ctxView.lineWidth = 0.03;
         ctxView.strokeStyle = "#ffffff";
         ctxView.stroke();
