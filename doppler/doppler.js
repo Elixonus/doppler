@@ -212,8 +212,8 @@ function doStep()
 
         if(src.pwr === true)
         {
-            wavs[time % 1000] = {
-                time: Math.floor(time),
+            wavs[(time - src.time) % 1000] = {
+                time: time,
                 freq: src.freq,
                 amp: src.amp,
                 pos: {
@@ -249,7 +249,7 @@ function doStep()
     for(let w = 0; w < wavs.length - 1; w += 20)
     {
         ctxView.beginPath();
-        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, wavs[w].rad, 0, 2 * Math.PI);
+        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
         ctxView.globalAlpha = 1 - (time - wavs[w].time) / 1000;
         ctxView.lineWidth = 0.03;
         ctxView.strokeStyle = "#ffffff";
@@ -537,7 +537,6 @@ function setPwrOn()
     {
         src.pwr = true;
         fixPwr();
-        src.time = time;
     }
 }
 
@@ -801,7 +800,7 @@ function fixMag()
         buttonMagLow.disabled = false;
         buttonMagMed.disabled = false;
         buttonMagHigh.disabled = false;
-        
+
         if(obj.mag === 1)
         {
             buttonMagLow.disabled = true;
