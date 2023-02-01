@@ -379,8 +379,33 @@ function bufrRstr()
 {
     run = bufr.run;
     time = bufr.time;
-    obj = bufr.obj;
-    src = bufr.src;
+    obj = null;
+    src.pwr = bufr.src.pwr;
+    src.freq = bufr.src.freq;
+    src.amp = bufr.src.amp;
+    src.type = bufr.src.type;
+    src.dir = bufr.src.dir;
+    src.mag = bufr.src.mag;
+    src.pos.x = bufr.src.pos.x;
+    src.pos.y = bufr.src.pos.y;
+    src.vel.x = bufr.src.vel.x;
+    src.vel.y = bufr.src.vel.y;
+    src.acc.x = bufr.src.acc.x;
+    src.acc.y = bufr.src.acc.y;
+
+    obs.pwr = bufr.obs.pwr;
+    obs.freq = bufr.obs.freq;
+    obs.amp = bufr.obs.amp;
+    obs.type = bufr.obs.type;
+    obs.dir = bufr.obs.dir;
+    obs.mag = bufr.obs.mag;
+    obs.pos.x = bufr.obs.pos.x;
+    obs.pos.y = bufr.obs.pos.y;
+    obs.vel.x = bufr.obs.vel.x;
+    obs.vel.y = bufr.obs.vel.y;
+    obs.acc.x = bufr.obs.acc.x;
+    obs.acc.y = bufr.obs.acc.y;
+
     obs = bufr.obs;
     wavs = [];
 
