@@ -78,9 +78,9 @@ fixType();
 fixDir();
 fixMag();
 
-window.requestAnimationFrame(step);
+window.requestAnimationFrame(doStep);
 
-function step()
+function doStep()
 {
     if(src.dir !== null)
     {
@@ -91,7 +91,7 @@ function step()
             vec.x = 0;
             vec.y = 0;
         }
-    
+
         else if(src.dir === 1)
         {
             vec.x = -src.mag;
@@ -134,7 +134,7 @@ function step()
             src.acc.y = vec.y;
         }
     }
-    
+
     if(obs.dir !== null)
     {
         let vec = {};
@@ -271,7 +271,7 @@ function step()
     ctxView.restore();
     ctxView.restore();
 
-    window.requestAnimationFrame(step);
+    window.requestAnimationFrame(doStep);
 }
 
 buttonTimeStrt.onclick = setTimeStrt;
