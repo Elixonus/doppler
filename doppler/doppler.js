@@ -23,9 +23,10 @@ const canvasAmp = document.getElementById("canvas-amp");
 
 let run = true;
 let time = 0;
+let bufr = null;
 let obj = null;
 
-const src = {
+let src = {
     pwr: true,
     freq: 1,
     amp: 1,
@@ -46,7 +47,7 @@ const src = {
     }
 };
 
-const obs = {
+let obs = {
     pwr: true,
     freq: 1,
     amp: 1,
@@ -67,9 +68,11 @@ const obs = {
     }
 };
 
-const wavs = [];
+let wavs = [];
 
 fixTime();
+fixBufr();
+fixCtrl();
 fixPwr();
 fixType();
 fixDir();
@@ -199,21 +202,16 @@ function step()
         obs.pos.x += 0.005 * obs.vel.x;
         obs.pos.y += 0.005 * obs.vel.y;
 
+        for(let w = 0; w < wavs.length; w++)
+        {
+            wavs[w].amp = 1
+            wavs[w].rad = 0.01 * (time - wavs[w].time);
+        }
+
         if(src.pwr === true)
         {
-            for(let w = 0; w < wavs.length; w++)
-            {
-                wavs[w].amp = 1
-                wavs[w].rad = 0.01 * (time - wavs[w].time);
-
-                if(w === 0)
-                {
-                    console.log(wavs[w].rad, time - wavs[w].time);
-                }
-            }
-            
             wavs.push({
-                time: time,
+                time: Math.floor(time),
                 freq: src.freq,
                 amp: src.amp,
                 rad: 0,
@@ -230,7 +228,7 @@ function step()
 
         if(time - wavs[0].time >= 1000)
         {
-            wavs.splice(0, 1);
+            wavs.shift();
         }
         
         time += 1;
@@ -278,7 +276,7 @@ function step()
     ctxView.fill();
     ctxView.save();
 
-    for(let w = 0; w < wavs.length; w += 20)
+    for(let w = wavs.length - 1 - (time % 20); w > 0; w -= 20)
     {
         ctxView.beginPath();
         ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, wavs[w].rad, 0, 2 * Math.PI);
@@ -296,8 +294,8 @@ function step()
 
 buttonTimeStrt.onclick = timeStrt;
 buttonTimeStop.onclick = timeStop;
-// buttonBufrSave.onclick = bufrSave();
-// buttonBufrRstr.onclick = bufrRstr();
+buttonBufrSave.onclick = bufrSave;
+buttonBufrRstr.onclick = bufrRstr;
 buttonCtrlSrc.onclick = ctrlSrc;
 buttonCtrlObs.onclick = ctrlObs;
 buttonPwrOn.onclick = pwrOn;
@@ -324,6 +322,74 @@ function timeStop()
 {
     run = false;
     fixTime();
+}
+
+function bufrSave()
+{
+    bufr = {
+        run: run,
+        time: time,
+        obj: null,
+        src: {
+            pwr: src.pwr,
+            freq: src.freq,
+            amp: src.amp,
+            type: src.type,
+            dir: src.dir,
+            mag: src.mag,
+            pos: {
+                x: src.pos.x,
+                y: src.pos.y
+            },
+            vel: {
+                x: src.vel.x,
+                y: src.vel.y
+            },
+            acc: {
+                x: src.acc.x,
+                y: src.acc.y
+            }
+        },
+        obs: {
+            pwr: obs.pwr,
+            freq: obs.freq,
+            amp: obs.amp,
+            type: obs.type,
+            dir: obs.dir,
+            mag: obs.mag,
+            pos: {
+                x: obs.pos.x,
+                y: obs.pos.y
+            },
+            vel: {
+                x: obs.vel.x,
+                y: obs.vel.y
+            },
+            acc: {
+                x: obs.acc.x,
+                y: obs.acc.y
+            }
+        }
+    };
+
+    fixBufr();
+}
+
+function bufrRstr()
+{
+    run = bufr.run;
+    time = bufr.time;
+    obj = bufr.obj;
+    src = bufr.src;
+    obs = bufr.obs;
+    wavs = [];
+
+    fixTime();
+    fixCtrl();
+    fixPwr();
+    fixType();
+    fixDir();
+    fixMag();
 }
 
 function ctrlSrc()
@@ -558,6 +624,16 @@ function fixTime()
     else if(run === false)
     {
         buttonTimeStop.disabled = true;
+    }
+}
+
+function fixBufr()
+{
+    buttonBufrRstr.disabled = false;
+
+    if(bufr === null)
+    {
+        buttonBufrRstr.disabled = true;
     }
 }
 
