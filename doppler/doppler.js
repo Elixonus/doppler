@@ -392,7 +392,6 @@ function bufrRstr()
     src.vel.y = bufr.src.vel.y;
     src.acc.x = bufr.src.acc.x;
     src.acc.y = bufr.src.acc.y;
-
     obs.pwr = bufr.obs.pwr;
     obs.freq = bufr.obs.freq;
     obs.amp = bufr.obs.amp;
@@ -405,10 +404,7 @@ function bufrRstr()
     obs.vel.y = bufr.obs.vel.y;
     obs.acc.x = bufr.obs.acc.x;
     obs.acc.y = bufr.obs.acc.y;
-
-    obs = bufr.obs;
     wavs = [];
-
     fixTime();
     fixCtrl();
     fixPwr();
