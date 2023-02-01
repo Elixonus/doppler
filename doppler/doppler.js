@@ -84,109 +84,107 @@ function step()
 {
     if(src.dir !== null)
     {
-        let xs;
-        let ys;
+        let vec = {};
     
         if(src.dir === 0)
         {
-            xs = 0;
-            ys = 0;
+            vec.x = 0;
+            vec.y = 0;
         }
     
         else if(src.dir === 1)
         {
-            xs = -src.mag;
-            ys = 0;
+            vec.x = -src.mag;
+            vec.y = 0;
         }
     
         else if(src.dir === 2)
         {
-            xs = src.mag;
-            ys = 0;
+            vec.x = src.mag;
+            vec.y = 0;
         }
     
         else if(src.dir === 3)
         {
-            xs = 0;
-            ys = src.mag;
+            vec.x = 0;
+            vec.y = src.mag;
         }
     
         else if(src.dir === 4)
         {
-            xs = 0;
-            ys = -src.mag;
+            vec.x = 0;
+            vec.y = -src.mag;
         }
     
         if(src.type === 1)
         {
-            src.pos.x = xs;
-            src.pos.y = ys;
+            src.pos.x = vec.x;
+            src.pos.y = vec.y;
         }
     
         else if(src.type === 2)
         {
-            src.vel.x = xs;
-            src.vel.y = ys;
+            src.vel.x = vec.x;
+            src.vel.y = vec.y;
         }
     
         else if(src.type === 3)
         {
-            src.acc.x = xs;
-            src.acc.y = ys;
+            src.acc.x = vec.x;
+            src.acc.y = vec.y;
         }
     }
 
     if(obs.dir !== null)
     {
-        let xo;
-        let yo;
+        let vec = {};
     
         if(obs.dir === 0)
         {
-            xo = 0;
-            yo = 0;
+            vec.x = 0;
+            vec.y = 0;
         }
     
         else if(obs.dir === 1)
         {
-            xo = -obs.mag;
-            yo = 0;
+            vec.x = -obs.mag;
+            vec.y = 0;
         }
     
         else if(obs.dir === 2)
         {
-            xo = obs.mag;
-            yo = 0;
+            vec.x = obs.mag;
+            vec.y = 0;
         }
     
         else if(obs.dir === 3)
         {
-            xo = 0;
-            yo = obs.mag;
+            vec.x = 0;
+            vec.y = obs.mag;
         }
     
         else if(obs.dir === 4)
         {
-            xo = 0;
-            yo = -obs.mag;
+            vec.x = 0;
+            vec.y = -obs.mag;
         }
     
         if(obs.type === 1)
         {
-            obs.pos.x = xo;
-            obs.pos.y = yo;
+            obs.pos.x = vec.x;
+            obs.pos.y = vec.y;
         }
     
         else if(obs.type === 2)
         {
-            obs.vel.x = xo;
-            obs.vel.y = yo;
+            obs.vel.x = vec.x;
+            obs.vel.y = vec.y;
         }
     
         else if(obs.type === 3)
         {
-            obs.acc.x = xo;
-            obs.acc.y = yo;
+            obs.acc.x = vec.x;
+            obs.acc.y = vec.y;
         }
     }
 
@@ -210,6 +208,7 @@ function step()
 
         if(src.pwr === true)
         {
+            /*
             wavs.push({
                 time: Math.floor(time),
                 freq: src.freq,
@@ -223,14 +222,23 @@ function step()
                     x: src.vel.x,
                     y: src.vel.y
                 }
-            });
+            });*/
+            wavs[time % 1000] = {
+                time: Math.floor(time),
+                freq: src.freq,
+                amp: src.amp,
+                rad: 0,
+                pos: {
+                    x: src.pos.x,
+                    y: src.pos.y
+                },
+                vel: {
+                    x: src.vel.x,
+                    y: src.vel.y
+                }
+            }
         }
 
-        if(time - wavs[0].time >= 1000)
-        {
-            wavs.shift();
-        }
-        
         time += 1;
     }
 
@@ -276,7 +284,7 @@ function step()
     ctxView.fill();
     ctxView.save();
 
-    for(let w = wavs.length - 1 - (time % 20); w > 0; w -= 20)
+    for(let w = 0; w < wavs.length - 1; w += 20)
     {
         ctxView.beginPath();
         ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, wavs[w].rad, 0, 2 * Math.PI);
