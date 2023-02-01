@@ -27,6 +27,7 @@ let bufr = null;
 let obj = null;
 
 let src = {
+    time: 0,
     pwr: true,
     freq: 1,
     amp: 1,
@@ -48,9 +49,6 @@ let src = {
 };
 
 let obs = {
-    pwr: false,
-    freq: 1,
-    amp: 1,
     type: 2,
     dir: 0,
     mag: 2,
@@ -120,12 +118,18 @@ function doStep()
         {
             src.pos.x = vec.x;
             src.pos.y = vec.y;
+            src.vel.x = 0;
+            src.vel.y = 0;
+            src.acc.x = 0;
+            src.acc.y = 0;
         }
     
         else if(src.type === 2)
         {
             src.vel.x = vec.x;
             src.vel.y = vec.y;
+            src.acc.x = 0;
+            src.acc.y = 0;
         }
     
         else if(src.type === 3)
@@ -173,12 +177,18 @@ function doStep()
         {
             obs.pos.x = vec.x;
             obs.pos.y = vec.y;
+            obs.vel.x = 0;
+            obs.vel.y = 0;
+            obs.acc.x = 0;
+            obs.acc.y = 0;
         }
     
         else if(obs.type === 2)
         {
             obs.vel.x = vec.x;
             obs.vel.y = vec.y;
+            obs.acc.x = 0;
+            obs.acc.y = 0;
         }
     
         else if(obs.type === 3)
@@ -200,34 +210,12 @@ function doStep()
         obs.pos.x += 0.005 * obs.vel.x;
         obs.pos.y += 0.005 * obs.vel.y;
 
-        for(let w = 0; w < wavs.length; w++)
-        {
-            wavs[w].amp = 1
-            wavs[w].rad = 0.01 * (time - wavs[w].time);
-        }
-
         if(src.pwr === true)
         {
-            /*
-            wavs.push({
-                time: Math.floor(time),
-                freq: src.freq,
-                amp: src.amp,
-                rad: 0,
-                pos: {
-                    x: src.pos.x,
-                    y: src.pos.y
-                },
-                vel: {
-                    x: src.vel.x,
-                    y: src.vel.y
-                }
-            });*/
             wavs[time % 1000] = {
                 time: Math.floor(time),
                 freq: src.freq,
                 amp: src.amp,
-                rad: 0,
                 pos: {
                     x: src.pos.x,
                     y: src.pos.y
@@ -400,12 +388,12 @@ function setCtrlSrc()
     obj = src;
     fixCtrl();
 
-    if(src.pwr)
+    if(src.pwr === true)
     {
         setPwrOn();
     }
 
-    else
+    else if(src.pwr === false)
     {
         setPwrOff();
     }
@@ -423,6 +411,46 @@ function setCtrlSrc()
     else if(src.type === 3)
     {
         setTypeAcc();
+    }
+
+    if(src.dir === 0)
+    {
+        setDirZero();
+    }
+
+    else if(src.dir === 1)
+    {
+        setDirLeft();
+    }
+
+    else if(src.dir === 2)
+    {
+        setDirRght();
+    }
+
+    else if(src.dir === 3)
+    {
+        setDirUp();
+    }
+
+    else if(src.dir === 4)
+    {
+        setDirDown();
+    }
+
+    if(src.mag === 1)
+    {
+        setMagLow();
+    }
+
+    else if(src.mag === 2)
+    {
+        setMagMed();
+    }
+    
+    else if(src.mag === 3)
+    {
+        setMagHigh();
     }
 }
 
@@ -445,6 +473,46 @@ function setCtrlObs()
     else if(obs.type === 3)
     {
         setTypeAcc();
+    }
+
+    if(obs.dir === 0)
+    {
+        setDirZero();
+    }
+
+    else if(obs.dir === 1)
+    {
+        setDirLeft();
+    }
+
+    else if(obs.dir === 2)
+    {
+        setDirRght();
+    }
+
+    else if(obs.dir === 3)
+    {
+        setDirUp();
+    }
+
+    else if(obs.dir === 4)
+    {
+        setDirDown();
+    }
+
+    if(obs.mag === 1)
+    {
+        setMagLow();
+    }
+
+    else if(obs.mag === 2)
+    {
+        setMagMed();
+    }
+    
+    else if(obs.mag === 3)
+    {
+        setMagHigh();
     }
 }
 
@@ -469,6 +537,7 @@ function setPwrOn()
     {
         src.pwr = true;
         fixPwr();
+        src.time = time;
     }
 }
 
@@ -487,13 +556,6 @@ function setTypePos()
     {
         obj.type = 1;
         fixType();
-        obj.dir = null;
-        fixDir();
-        setMagMed();
-        obj.vel.x = 0;
-        obj.vel.y = 0;
-        obj.acc.x = 0;
-        obj.acc.y = 0;
     }
 }
 
@@ -503,11 +565,6 @@ function setTypeVel()
     {
         obj.type = 2;
         fixType();
-        obj.dir = null;
-        fixDir();
-        setMagMed();
-        obj.acc.x = 0;
-        obj.acc.y = 0;
     }
 }
 
@@ -517,9 +574,6 @@ function setTypeAcc()
     {
         obj.type = 3;
         fixType();
-        obj.dir = null;
-        fixDir();
-        setMagMed();
     }
 }
 
@@ -639,11 +693,11 @@ function fixCtrl()
 
 function fixPwr()
 {
-    buttonPwrOn.disabled = false;
-    buttonPwrOff.disabled = false;
-
     if(isCtrlSrc())
     {
+        buttonPwrOn.disabled = false;
+        buttonPwrOff.disabled = false;
+
         if(src.pwr === true)
         {
             buttonPwrOn.disabled = true;
@@ -664,12 +718,12 @@ function fixPwr()
 
 function fixType()
 {
-    buttonTypePos.disabled = false;
-    buttonTypeVel.disabled = false;
-    buttonTypeAcc.disabled = false;
-
     if(isCtrl())
     {
+        buttonTypePos.disabled = false;
+        buttonTypeVel.disabled = false;
+        buttonTypeAcc.disabled = false;
+
         if(obj.type === 1)
         {
             buttonTypePos.disabled = true;
@@ -696,14 +750,14 @@ function fixType()
 
 function fixDir()
 {
-    buttonDirLeft.disabled = false;
-    buttonDirRght.disabled = false;
-    buttonDirUp.disabled = false;
-    buttonDirDown.disabled = false;
-    buttonDirZero.disabled = false;
-
     if(isCtrl())
     {
+        buttonDirLeft.disabled = false;
+        buttonDirRght.disabled = false;
+        buttonDirUp.disabled = false;
+        buttonDirDown.disabled = false;
+        buttonDirZero.disabled = false;
+
         if(obj.dir === 0)
         {
             buttonDirZero.disabled = true;
@@ -742,12 +796,12 @@ function fixDir()
 
 function fixMag()
 {
-    buttonMagLow.disabled = false;
-    buttonMagMed.disabled = false;
-    buttonMagHigh.disabled = false;
-
     if(isCtrl())
     {
+        buttonMagLow.disabled = false;
+        buttonMagMed.disabled = false;
+        buttonMagHigh.disabled = false;
+        
         if(obj.mag === 1)
         {
             buttonMagLow.disabled = true;
