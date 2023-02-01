@@ -25,7 +25,6 @@ let bufr = null;
 let obj = null;
 
 let src = {
-    time: 0,
     freq: 1,
     amp: 1,
     type: 2,
@@ -244,7 +243,7 @@ function doFrame()
     ctxView.fill();
     ctxView.save();
 
-    for(let w = 0; w < wavs.length - 1; w += 20)
+    for(let w = 0; w < wavs.length; w += 20)
     {
         ctxView.beginPath();
         ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
@@ -298,50 +297,52 @@ function setTimeStop()
 
 function doBufrSave()
 {
-    bufr = {
-        run: run,
-        time: time,
-        obj: null,
-        src: {
-            freq: src.freq,
-            amp: src.amp,
-            type: src.type,
-            dir: src.dir,
-            mag: src.mag,
-            pos: {
-                x: src.pos.x,
-                y: src.pos.y
-            },
-            vel: {
-                x: src.vel.x,
-                y: src.vel.y
-            },
-            acc: {
-                x: src.acc.x,
-                y: src.acc.y
-            }
+    bufr = {};
+    bufr.run = run;
+    bufr.time = time;
+    bufr.obj = null;
+
+    bufr.src = {
+        freq: src.freq,
+        amp: src.amp,
+        type: src.type,
+        dir: src.dir,
+        mag: src.mag,
+        pos: {
+            x: src.pos.x,
+            y: src.pos.y
         },
-        obs: {
-            freq: null,
-            amp: null,
-            type: obs.type,
-            dir: obs.dir,
-            mag: obs.mag,
-            pos: {
-                x: obs.pos.x,
-                y: obs.pos.y
-            },
-            vel: {
-                x: obs.vel.x,
-                y: obs.vel.y
-            },
-            acc: {
-                x: obs.acc.x,
-                y: obs.acc.y
-            }
+        vel: {
+            x: src.vel.x,
+            y: src.vel.y
         },
-        wavs: []
+        acc: {
+            x: src.acc.x,
+            y: src.acc.y
+        }
     };
+
+    bufr.obs = {
+        freq: obs.freq,
+        amp: obs.amp,
+        type: obs.type,
+        dir: obs.dir,
+        mag: obs.mag,
+        pos: {
+            x: obs.pos.x,
+            y: obs.pos.y
+        },
+        vel: {
+            x: obs.vel.x,
+            y: obs.vel.y
+        },
+        acc: {
+            x: obs.acc.x,
+            y: obs.acc.y
+        }
+    };
+    
+    bufr.wavs = [];
 
     for(let w = 0; w < wavs.length; w++)
     {
@@ -393,7 +394,7 @@ function doBufrRstr()
     obs.acc.x = bufr.obs.acc.x;
     obs.acc.y = bufr.obs.acc.y;
 
-    for(let w = 0; w < wavs.length; w++)
+    for(let w = 0; w < bufr.wavs.length; w++)
     {
         wavs[w].time = bufr.wavs[w].time;
         wavs[w].freq = bufr.wavs[w].freq;
