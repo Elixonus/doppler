@@ -489,6 +489,7 @@ function setTypePos()
         fixType();
         obj.dir = null;
         fixDir();
+        setMagMed();
         obj.vel.x = 0;
         obj.vel.y = 0;
         obj.acc.x = 0;
@@ -504,6 +505,7 @@ function setTypeVel()
         fixType();
         obj.dir = null;
         fixDir();
+        setMagMed();
         obj.acc.x = 0;
         obj.acc.y = 0;
     }
@@ -517,6 +519,7 @@ function setTypeAcc()
         fixType();
         obj.dir = null;
         fixDir();
+        setMagMed();
     }
 }
 
