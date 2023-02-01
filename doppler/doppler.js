@@ -4,8 +4,6 @@ const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
-const buttonPwrOn = document.getElementById("button-pwr-on");
-const buttonPwrOff = document.getElementById("button-pwr-off");
 const buttonTypePos = document.getElementById("button-type-pos");
 const buttonTypeVel = document.getElementById("button-type-vel");
 const buttonTypeAcc = document.getElementById("button-type-acc");
@@ -28,7 +26,6 @@ let obj = null;
 
 let src = {
     time: 0,
-    pwr: true,
     freq: 1,
     amp: 1,
     type: 2,
@@ -68,15 +65,19 @@ let obs = {
 
 let wavs = [];
 
+for(let w = 0; w < 1000; w++)
+{
+    doStep();
+}
+
 fixTime();
 fixBufr();
 fixCtrl();
-fixPwr();
 fixType();
 fixDir();
 fixMag();
 
-window.requestAnimationFrame(doStep);
+window.requestAnimationFrame(doFrame);
 
 function doStep()
 {
@@ -198,38 +199,35 @@ function doStep()
         }
     }
 
-    if(run === true)
-    {
-        src.vel.x += 0.05 * src.acc.x;
-        src.vel.y += 0.05 * src.acc.y;
-        src.pos.x += 0.005 * src.vel.x;
-        src.pos.y += 0.005 * src.vel.y;
-    
-        obs.vel.x += 0.05 * obs.acc.x;
-        obs.vel.y += 0.05 * obs.acc.y;
-        obs.pos.x += 0.005 * obs.vel.x;
-        obs.pos.y += 0.005 * obs.vel.y;
+    src.vel.x += 0.05 * src.acc.x;
+    src.vel.y += 0.05 * src.acc.y;
+    src.pos.x += 0.005 * src.vel.x;
+    src.pos.y += 0.005 * src.vel.y;
 
-        if(src.pwr === true)
-        {
-            wavs[(time - src.time) % 1000] = {
-                time: time,
-                freq: src.freq,
-                amp: src.amp,
-                pos: {
-                    x: src.pos.x,
-                    y: src.pos.y
-                },
-                vel: {
-                    x: src.vel.x,
-                    y: src.vel.y
-                }
-            }
+    obs.vel.x += 0.05 * obs.acc.x;
+    obs.vel.y += 0.05 * obs.acc.y;
+    obs.pos.x += 0.005 * obs.vel.x;
+    obs.pos.y += 0.005 * obs.vel.y;
+
+    wavs[time % 1000] = {
+        time: time,
+        freq: src.freq,
+        amp: src.amp,
+        pos: {
+            x: src.pos.x,
+            y: src.pos.y
+        },
+        vel: {
+            x: src.vel.x,
+            y: src.vel.y
         }
-
-        time += 1;
     }
 
+    time += 1;
+}
+
+function doFrame()
+{
     const ctxView = canvasView.getContext("2d");
     ctxView.save();
     ctxView.fillStyle = "#000000";
@@ -250,7 +248,8 @@ function doStep()
     {
         ctxView.beginPath();
         ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-        ctxView.globalAlpha = 1 - (time - wavs[w].time) / 1000;
+        ctxView.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
+
         ctxView.lineWidth = 0.03;
         ctxView.strokeStyle = "#ffffff";
         ctxView.stroke();
@@ -259,7 +258,12 @@ function doStep()
     ctxView.restore();
     ctxView.restore();
 
-    window.requestAnimationFrame(doStep);
+    if(run === true)
+    {
+        doStep();
+    }
+
+    window.requestAnimationFrame(doFrame);
 }
 
 buttonTimeStrt.onclick = setTimeStrt;
@@ -268,8 +272,6 @@ buttonBufrSave.onclick = doBufrSave;
 buttonBufrRstr.onclick = doBufrRstr;
 buttonCtrlSrc.onclick = setCtrlSrc;
 buttonCtrlObs.onclick = setCtrlObs;
-buttonPwrOn.onclick = setPwrOn;
-buttonPwrOff.onclick = setPwrOff;
 buttonTypePos.onclick = setTypePos;
 buttonTypeVel.onclick = setTypeVel;
 buttonTypeAcc.onclick = setTypeAcc;
@@ -301,7 +303,6 @@ function doBufrSave()
         time: time,
         obj: null,
         src: {
-            pwr: src.pwr,
             freq: src.freq,
             amp: src.amp,
             type: src.type,
@@ -321,7 +322,6 @@ function doBufrSave()
             }
         },
         obs: {
-            pwr: false,
             freq: null,
             amp: null,
             type: obs.type,
@@ -339,8 +339,26 @@ function doBufrSave()
                 x: obs.acc.x,
                 y: obs.acc.y
             }
-        }
+        },
+        wavs: []
     };
+
+    for(let w = 0; w < wavs.length; w++)
+    {
+        bufr.wavs[w] = {
+            time: wavs[w].time,
+            freq: wavs[w].freq,
+            amp: wavs[w].amp,
+            pos: {
+                x: wavs[w].pos.x,
+                y: wavs[w].pos.y
+            },
+            vel: {
+                x: wavs[w].pos.x,
+                y: wavs[w].pos.y
+            }
+        };
+    }
 
     fixBufr();
 }
@@ -350,7 +368,7 @@ function doBufrRstr()
     run = bufr.run;
     time = bufr.time;
     obj = null;
-    src.pwr = bufr.src.pwr;
+
     src.freq = bufr.src.freq;
     src.amp = bufr.src.amp;
     src.type = bufr.src.type;
@@ -362,7 +380,7 @@ function doBufrRstr()
     src.vel.y = bufr.src.vel.y;
     src.acc.x = bufr.src.acc.x;
     src.acc.y = bufr.src.acc.y;
-    obs.pwr = bufr.obs.pwr;
+
     obs.freq = bufr.obs.freq;
     obs.amp = bufr.obs.amp;
     obs.type = bufr.obs.type;
@@ -374,10 +392,20 @@ function doBufrRstr()
     obs.vel.y = bufr.obs.vel.y;
     obs.acc.x = bufr.obs.acc.x;
     obs.acc.y = bufr.obs.acc.y;
-    wavs = [];
+
+    for(let w = 0; w < wavs.length; w++)
+    {
+        wavs[w].time = bufr.wavs[w].time;
+        wavs[w].freq = bufr.wavs[w].freq;
+        wavs[w].amp = bufr.wavs[w].amp;
+        wavs[w].pos.x = bufr.wavs[w].pos.x;
+        wavs[w].pos.y = bufr.wavs[w].pos.y;
+        wavs[w].vel.x = bufr.wavs[w].vel.x;
+        wavs[w].vel.y = bufr.wavs[w].vel.y;
+    }
+
     fixTime();
     fixCtrl();
-    fixPwr();
     fixType();
     fixDir();
     fixMag();
@@ -387,16 +415,6 @@ function setCtrlSrc()
 {
     obj = src;
     fixCtrl();
-
-    if(src.pwr === true)
-    {
-        setPwrOn();
-    }
-
-    else if(src.pwr === false)
-    {
-        setPwrOff();
-    }
 
     if(src.type === 1)
     {
@@ -458,7 +476,6 @@ function setCtrlObs()
 {
     obj = obs;
     fixCtrl();
-    fixPwr();
 
     if(obs.type === 1)
     {
@@ -529,24 +546,6 @@ function isCtrlSrc()
 function isCtrlObs()
 {
     return (obj === obs);
-}
-
-function setPwrOn()
-{
-    if(isCtrlSrc() === true)
-    {
-        src.pwr = true;
-        fixPwr();
-    }
-}
-
-function setPwrOff()
-{
-    if(isCtrlSrc() === true)
-    {
-        src.pwr = false;
-        fixPwr();
-    }
 }
 
 function setTypePos()
@@ -687,31 +686,6 @@ function fixCtrl()
     else if(obj === obs)
     {
         buttonCtrlObs.disabled = true;
-    }
-}
-
-function fixPwr()
-{
-    if(isCtrlSrc())
-    {
-        buttonPwrOn.disabled = false;
-        buttonPwrOff.disabled = false;
-
-        if(src.pwr === true)
-        {
-            buttonPwrOn.disabled = true;
-        }
-    
-        else if(src.pwr === false)
-        {
-            buttonPwrOff.disabled = true;
-        }
-    }
-
-    else
-    {
-        buttonPwrOn.disabled = true;
-        buttonPwrOff.disabled = true;
     }
 }
 
