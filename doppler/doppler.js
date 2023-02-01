@@ -48,7 +48,7 @@ let src = {
 };
 
 let obs = {
-    pwr: true,
+    pwr: false,
     freq: 1,
     amp: 1,
     type: 2,
@@ -85,7 +85,7 @@ function step()
     if(src.dir !== null)
     {
         let vec = {};
-    
+
         if(src.dir === 0)
         {
             vec.x = 0;
@@ -115,7 +115,7 @@ function step()
             vec.x = 0;
             vec.y = -src.mag;
         }
-    
+
         if(src.type === 1)
         {
             src.pos.x = vec.x;
@@ -134,7 +134,7 @@ function step()
             src.acc.y = vec.y;
         }
     }
-
+    
     if(obs.dir !== null)
     {
         let vec = {};
@@ -248,36 +248,10 @@ function step()
     ctxView.fillRect(0, 0, 800, 600);
     ctxView.translate(400, 300);
     ctxView.scale(100, -100);
-
-    if(obj === src)
-    {
-        ctxView.beginPath();
-        ctxView.arc(src.pos.x, src.pos.y, 0.29, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#ff0000";
-        ctxView.fill();
-        ctxView.beginPath();
-        ctxView.arc(src.pos.x, src.pos.y, 0.23, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#000000";
-        ctxView.fill();
-    }
-    
     ctxView.beginPath();
     ctxView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
     ctxView.fillStyle = "#ff0000";
-    ctxView.fill();
-
-    if(obj === obs)
-    {
-        ctxView.beginPath();
-        ctxView.arc(obs.pos.x, obs.pos.y, 0.29, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#0000ff";
-        ctxView.fill();
-        ctxView.beginPath();
-        ctxView.arc(obs.pos.x, obs.pos.y, 0.23, 0, 2 * Math.PI);
-        ctxView.fillStyle = "#000000";
-        ctxView.fill();
-    }
-    
+    ctxView.fill();    
     ctxView.beginPath();
     ctxView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
     ctxView.fillStyle = "#0000ff";
@@ -300,39 +274,39 @@ function step()
     window.requestAnimationFrame(step);
 }
 
-buttonTimeStrt.onclick = timeStrt;
-buttonTimeStop.onclick = timeStop;
-buttonBufrSave.onclick = bufrSave;
-buttonBufrRstr.onclick = bufrRstr;
-buttonCtrlSrc.onclick = ctrlSrc;
-buttonCtrlObs.onclick = ctrlObs;
-buttonPwrOn.onclick = pwrOn;
-buttonPwrOff.onclick = pwrOff;
-buttonTypePos.onclick = typePos;
-buttonTypeVel.onclick = typeVel;
-buttonTypeAcc.onclick = typeAcc;
-buttonDirLeft.onclick = dirLeft;
-buttonDirRght.onclick = dirRght;
-buttonDirUp.onclick = dirUp;
-buttonDirDown.onclick = dirDown;
-buttonDirZero.onclick = dirZero;
-buttonMagLow.onclick = magLow;
-buttonMagMed.onclick = magMed;
-buttonMagHigh.onclick = magHigh;
+buttonTimeStrt.onclick = setTimeStrt;
+buttonTimeStop.onclick = setTimeStop;
+buttonBufrSave.onclick = doBufrSave;
+buttonBufrRstr.onclick = doBufrRstr;
+buttonCtrlSrc.onclick = setCtrlSrc;
+buttonCtrlObs.onclick = setCtrlObs;
+buttonPwrOn.onclick = setPwrOn;
+buttonPwrOff.onclick = setPwrOff;
+buttonTypePos.onclick = setTypePos;
+buttonTypeVel.onclick = setTypeVel;
+buttonTypeAcc.onclick = setTypeAcc;
+buttonDirLeft.onclick = setDirLeft;
+buttonDirRght.onclick = setDirRght;
+buttonDirUp.onclick = setDirUp;
+buttonDirDown.onclick = setDirDown;
+buttonDirZero.onclick = setDirZero;
+buttonMagLow.onclick = setMagLow;
+buttonMagMed.onclick = setMagMed;
+buttonMagHigh.onclick = setMagHigh;
 
-function timeStrt()
+function setTimeStrt()
 {
     run = true;
     fixTime();
 }
 
-function timeStop()
+function setTimeStop()
 {
     run = false;
     fixTime();
 }
 
-function bufrSave()
+function doBufrSave()
 {
     bufr = {
         run: run,
@@ -359,9 +333,9 @@ function bufrSave()
             }
         },
         obs: {
-            pwr: obs.pwr,
-            freq: obs.freq,
-            amp: obs.amp,
+            pwr: false,
+            freq: null,
+            amp: null,
             type: obs.type,
             dir: obs.dir,
             mag: obs.mag,
@@ -383,7 +357,7 @@ function bufrSave()
     fixBufr();
 }
 
-function bufrRstr()
+function doBufrRstr()
 {
     run = bufr.run;
     time = bufr.time;
@@ -421,223 +395,201 @@ function bufrRstr()
     fixMag();
 }
 
-function ctrlSrc()
+function setCtrlSrc()
 {
     obj = src;
     fixCtrl();
 
     if(src.pwr)
     {
-        pwrOn();
+        setPwrOn();
     }
 
     else
     {
-        pwrOff();
+        setPwrOff();
     }
 
     if(src.type === 1)
     {
-        typePos();
+        setTypePos();
     }
 
     else if(src.type === 2)
     {
-        typeVel();
+        setTypeVel();
     }
 
     else if(src.type === 3)
     {
-        typeAcc();
+        setTypeAcc();
     }
 }
 
-function ctrlObs()
+function setCtrlObs()
 {
     obj = obs;
     fixCtrl();
+    fixPwr();
 
-    if(obs.pwr)
-    {
-        pwrOn();
-    }
-
-    else
-    {
-        pwrOff();
-    }
-    
     if(obs.type === 1)
     {
-        typePos();
+        setTypePos();
     }
 
     else if(obs.type === 2)
     {
-        typeVel();
+        setTypeVel();
     }
 
     else if(obs.type === 3)
     {
-        typeAcc();
+        setTypeAcc();
     }
 }
 
-function isObj()
+function isCtrl()
 {
     return (obj === src || obj === obs);
 }
 
-function pwrOn()
+function isCtrlSrc()
 {
-    if(isObj() === true)
-    {
-        obj.pwr = true;
-    }
-
-    fixPwr();
+    return (obj === src);
 }
 
-function pwrOff()
+function isCtrlObs()
 {
-    if(isObj() === true)
-    {
-        obj.pwr = false;
-    }
-
-    fixPwr();
+    return (obj === obs);
 }
 
-function typePos()
+function setPwrOn()
 {
-    if(isObj() === true)
+    if(isCtrlSrc() === true)
+    {
+        src.pwr = true;
+        fixPwr();
+    }
+}
+
+function setPwrOff()
+{
+    if(isCtrlSrc() === true)
+    {
+        src.pwr = false;
+        fixPwr();
+    }
+}
+
+function setTypePos()
+{
+    if(isCtrl() === true)
     {
         obj.type = 1;
+        fixType();
+        obj.dir = null;
+        fixDir();
         obj.vel.x = 0;
         obj.vel.y = 0;
         obj.acc.x = 0;
         obj.acc.y = 0;
     }
-
-    fixType();
-    dirNone();
-    magMed();
 }
 
-function typeVel()
+function setTypeVel()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.type = 2;
+        fixType();
+        obj.dir = null;
+        fixDir();
         obj.acc.x = 0;
         obj.acc.y = 0;
     }
-
-    fixType();
-    dirNone();
-    magMed();
 }
 
-function typeAcc()
+function setTypeAcc()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.type = 3;
+        fixType();
+        obj.dir = null;
+        fixDir();
     }
-
-    fixType();
-    dirNone();
-    magMed();
 }
 
-function dirLeft()
+function setDirLeft()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.dir = 1;
+        fixDir();
     }
-
-    fixDir();
 }
 
-function dirRght()
+function setDirRght()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.dir = 2;
+        fixDir();
     }
-
-    fixDir();
 }
 
-function dirUp()
+function setDirUp()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.dir = 3;
+        fixDir();
     }
-
-    fixDir();
 }
 
-function dirDown()
+function setDirDown()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.dir = 4;
+        fixDir();
     }
-
-    fixDir();
 }
 
-function dirZero()
+function setDirZero()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.dir = 0;
+        fixDir();
     }
-
-    fixDir();
 }
 
-function dirNone()
+function setMagLow()
 {
-    if(isObj() === true)
-    {
-        obj.dir = null;
-    }
-
-    fixDir();
-}
-
-function magLow()
-{
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.mag = 1;
+        fixMag();
     }
-
-    fixMag();
 }
 
-function magMed()
+function setMagMed()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.mag = 2;
+        fixMag();
     }
-
-    fixMag();
 }
 
-function magHigh()
+function setMagHigh()
 {
-    if(isObj() === true)
+    if(isCtrl() === true)
     {
         obj.mag = 3;
+        fixMag();
     }
-
-    fixMag();
 }
 
 function fixTime()
@@ -687,14 +639,14 @@ function fixPwr()
     buttonPwrOn.disabled = false;
     buttonPwrOff.disabled = false;
 
-    if(isObj())
+    if(isCtrlSrc())
     {
-        if(obj.pwr === true)
+        if(src.pwr === true)
         {
             buttonPwrOn.disabled = true;
         }
     
-        else if(obj.pwr === false)
+        else if(src.pwr === false)
         {
             buttonPwrOff.disabled = true;
         }
@@ -713,7 +665,7 @@ function fixType()
     buttonTypeVel.disabled = false;
     buttonTypeAcc.disabled = false;
 
-    if(isObj())
+    if(isCtrl())
     {
         if(obj.type === 1)
         {
@@ -747,7 +699,7 @@ function fixDir()
     buttonDirDown.disabled = false;
     buttonDirZero.disabled = false;
 
-    if(isObj())
+    if(isCtrl())
     {
         if(obj.dir === 0)
         {
@@ -791,7 +743,7 @@ function fixMag()
     buttonMagMed.disabled = false;
     buttonMagHigh.disabled = false;
 
-    if(isObj())
+    if(isCtrl())
     {
         if(obj.mag === 1)
         {
