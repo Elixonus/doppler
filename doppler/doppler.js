@@ -17,6 +17,18 @@ const buttonMagHigh = document.getElementById("button-mag-high");
 const canvasView = document.getElementById("canvas-view");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
+const ctxView = canvasView.getContext("2d");
+const ctxFreq = canvasFreq.getContext("2d");
+const ctxAmp = canvasAmp.getContext("2d");
+const ctxAudio = new window.AudioContext();
+const audio = ctxAudio.createOscillator();
+audio.type = "square";
+audio.connect(ctxAudio.destination);
+
+document.body.onclick = function()
+{
+    audio.start();
+}
 
 let run = true;
 let time = 0;
@@ -207,6 +219,7 @@ function doStep()
     freqs[time % 1000] = freq;
     let amp = wav.amp * Math.pow(0.999, time - wav.time);
     amps[time % 1000] = amp;
+    audio.frequency.value = 300 * freq;
     document.getElementById("label-pos").innerHTML = `F_O = ${Math.round(100 * freq) / 100}, A_O = ${Math.round(100 * amp) / 100}`;
     time += 1;
 }
@@ -254,8 +267,6 @@ function doFrame()
     const ctxAmp = canvasAmp.getContext("2d");
     ctxAmp.fillStyle = "#000000";
     ctxAmp.fillRect(0, 0, 800, 200);
-
-
 
 
     if(run === true)
