@@ -44,6 +44,8 @@ let src = {
 };
 
 let obs = {
+    freq: null,
+    amp: null,
     type: 1,
     dir: 0,
     mag: 2,
@@ -61,7 +63,6 @@ let obs = {
     }
 };
 
-let wav = null;
 let wavs = [];
 let freqs = [];
 let amps = [];
@@ -86,63 +87,86 @@ function doStep()
     {
         if(obj.dir !== null)
         {
-            let vec = {};
-    
-            if(obj.dir === 0)
-            {
-                vec.x = 0;
-                vec.y = 0;
-            }
-    
-            else if(obj.dir === 1)
-            {
-                vec.x = -obj.mag;
-                vec.y = 0;
-            }
-        
-            else if(obj.dir === 2)
-            {
-                vec.x = obj.mag;
-                vec.y = 0;
-            }
-        
-            else if(obj.dir === 3)
-            {
-                vec.x = 0;
-                vec.y = obj.mag;
-            }
-        
-            else if(obj.dir === 4)
-            {
-                vec.x = 0;
-                vec.y = -obj.mag;
-            }
-        
             if(obj.type === 1)
             {
-                obj.vel.x = vec.x;
-                obj.vel.y = vec.y;
+                if(obj.dir === 0)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 1)
+                {
+                    obj.vel.x = -0.004 * obj.mag;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 2)
+                {
+                    obj.vel.x = 0.004 * obj.mag;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 3)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = 0.004 * obj.mag;
+                }
+
+                else if(obj.dir === 4)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = -0.004 * obj.mag;
+                }
+
                 obj.acc.x = 0;
                 obj.acc.y = 0;
             }
         
             else if(obj.type === 2)
             {
-                obj.acc.x = vec.x;
-                obj.acc.y = vec.y;
+                if(obj.dir === 0)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 1)
+                {
+                    obj.acc.x = -0.0001 * obj.mag;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 2)
+                {
+                    obj.acc.x = 0.0001 * obj.mag;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 3)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = 0.0001 * obj.mag;
+                }
+
+                else if(obj.dir === 4)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = -0.0001 * obj.mag;
+                }
             }
         }
     }
 
-    src.vel.x += 0.02 * src.acc.x;
-    src.vel.y += 0.02 * src.acc.y;
-    src.pos.x += 0.005 * src.vel.x;
-    src.pos.y += 0.005 * src.vel.y;
+    src.vel.x += src.acc.x;
+    src.vel.y += src.acc.y;
+    src.pos.x += src.vel.x;
+    src.pos.y += src.vel.y;
 
-    obs.vel.x += 0.02 * obs.acc.x;
-    obs.vel.y += 0.02 * obs.acc.y;
-    obs.pos.x += 0.005 * obs.vel.x;
-    obs.pos.y += 0.005 * obs.vel.y;
+    obs.vel.x += obs.acc.x;
+    obs.vel.y += obs.acc.y;
+    obs.pos.x += obs.vel.x;
+    obs.pos.y += obs.vel.y;
 
     wavs[time % 1000] = {
         time: time,
@@ -175,8 +199,13 @@ function doStep()
         }
     }
 
-    wav = wavs[wd];
-
+    let wav = wavs[wd];
+    let dist = Math.hypot(wav.pos.x - obs.pos.x, wav.pos.y - obs.pos.y);
+    let vel1 = (wav.vel.x * (wav.pos.x - obs.pos.x) + wav.vel.y * (wav.pos.y - obs.pos.y)) / dist;
+    let vel2 = (obs.vel.x * (obs.pos.x - wav.pos.x) + obs.vel.y * (obs.pos.y - wav.pos.y)) / dist;
+    let freq = wav.freq * (0.01 - vel2) / (0.01 + vel1);
+    freqs[time % 1000] = freq;
+    document.getElementById("label-pos").innerHTML = `F_O = ${Math.round(100 * freq) / 100}`;
     time += 1;
 }
 
@@ -209,27 +238,12 @@ function doFrame()
         ctxView.stroke();
     }
 
-    ctxView.beginPath();
-    ctxView.arc(wav.pos.x, wav.pos.y, 0.01 * (time - wav.time), 0, 2 * Math.PI);
-    ctxView.globalAlpha = 1;
-
-    ctxView.lineWidth = 0.03;
-    ctxView.strokeStyle = "#ffff00";
-    ctxView.stroke();
-
-    for(let w = 1; w < 20; w++)
-    {
-        ctxView.beginPath();
-        ctxView.arc(wavs[(wavs.indexOf(wav) + w) % 1000].pos.x, wavs[(wavs.indexOf(wav) + w) % 1000].pos.y, 0.01 * (time - wavs[(wavs.indexOf(wav) + w) % 1000].time), 0, 2 * Math.PI);
-        ctxView.globalAlpha = (1 - w / 20);
-    
-        ctxView.lineWidth = 0.03;
-        ctxView.strokeStyle = "#ffff00";
-        ctxView.stroke();
-    }
-
     ctxView.restore();
     ctxView.restore();
+
+    ctxView.fillStyle = "#ff0000";
+    ctxView.fillRect(0, 300, 100, -100 * freqs[(time - 1) % 1000]);
+
 
     if(run === true)
     {
