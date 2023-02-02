@@ -205,26 +205,32 @@ function doStep()
     let vel2 = (obs.vel.x * (obs.pos.x - wav.pos.x) + obs.vel.y * (obs.pos.y - wav.pos.y)) / dist;
     let freq = wav.freq * (0.01 - vel2) / (0.01 + vel1);
     freqs[time % 1000] = freq;
-    document.getElementById("label-pos").innerHTML = `F_O = ${Math.round(100 * freq) / 100}`;
+    let amp = wav.amp * Math.pow(0.999, time - wav.time);
+    amps[time % 1000] = amp;
+    document.getElementById("label-pos").innerHTML = `F_O = ${Math.round(100 * freq) / 100}, A_O = ${Math.round(100 * amp) / 100}`;
     time += 1;
 }
 
 function doFrame()
 {
     const ctxView = canvasView.getContext("2d");
-    ctxView.save();
     ctxView.fillStyle = "#000000";
     ctxView.fillRect(0, 0, 800, 600);
+
+    ctxView.save();
     ctxView.translate(400, 300);
     ctxView.scale(100, -100);
-    ctxView.beginPath();
-    ctxView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
-    ctxView.fillStyle = "#ff0000";
-    ctxView.fill();    
+
     ctxView.beginPath();
     ctxView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
     ctxView.fillStyle = "#0000ff";
     ctxView.fill();
+
+    ctxView.beginPath();
+    ctxView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
+    ctxView.fillStyle = "#ff0000";
+    ctxView.fill();
+
     ctxView.save();
 
     for(let w = 0; w < wavs.length; w += 20)
@@ -241,8 +247,15 @@ function doFrame()
     ctxView.restore();
     ctxView.restore();
 
-    ctxView.fillStyle = "#ff0000";
-    ctxView.fillRect(0, 300, 100, -100 * freqs[(time - 1) % 1000]);
+    const ctxFreq = canvasFreq.getContext("2d");
+    ctxFreq.fillStyle = "#000000";
+    ctxFreq.fillRect(0, 0, 800, 200);
+
+    const ctxAmp = canvasAmp.getContext("2d");
+    ctxAmp.fillStyle = "#000000";
+    ctxAmp.fillRect(0, 0, 800, 200);
+
+
 
 
     if(run === true)
@@ -285,7 +298,7 @@ function setTimeStop()
 function doBufrSave()
 {
     bufr = {};
-    bufr.run = run;
+    bufr.run = false;
     bufr.time = time;
     bufr.obj = null;
 
@@ -355,7 +368,7 @@ function doBufrRstr()
 {
     run = bufr.run;
     time = bufr.time;
-    obj = null;
+    obj = bufr.obj;
 
     src.freq = bufr.src.freq;
     src.amp = bufr.src.amp;
