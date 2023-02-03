@@ -8,9 +8,9 @@
     </head>
     
     <body>
-        <div id="container-doppler" class="container">
+        <div id="container-doppler" class="container container-1">
             <h1 id="label-doppler" class="label">Doppler Effect Simulation</h1>
-            <div id="container-general" class="container">
+            <div id="container-general" class="container container-2">
                 <h2 id="label-general" class="label label-section">General</h2>
                 <h3 id="label-time" class="label label-button">TIME</h3>
                 <button type="button" id="button-time-strt" class="button">STRT</button>
@@ -19,7 +19,7 @@
                 <button type="button" id="button-bufr-save" class="button">SAVE</button>
                 <button type="button" id="button-bufr-rstr" class="button">RSTR</button>
             </div>
-            <div id="container-object" class=" container">
+            <div id="container-object" class="container container-2">
                 <h2 id="label-object" class="label label-section">Object</h2>
                 <h3 id="label-ctrl" class="label label-button">CTRL</h3>
                 <button type="button" id="button-ctrl-src" class="button">SRC</button>
@@ -44,14 +44,12 @@
                     </div>
                 </div>
             </div>
-            <div id="container-view" class="container">
+            <div id="container-view" class="container container-2">
                 <h2 id="label-view" class="label label-section">View</h2>
                 <h3 id="label-pos" class="label">POS vs TIME</h3>
-                <div id="container-canvas-view" class="container">
-                    <canvas id="canvas-view" class="canvas" width="800px" height="600px"></canvas>
-                </div>
+                <canvas id="canvas-view" class="canvas" width="800px" height="600px"></canvas>
             </div>
-            <div id="container-plot" class="container">
+            <div id="container-plot" class="container container-2">
                 <h2 id="label-plot" class="label label-section">Plot</h2>
                 <h3 id="label-freq" class="label">FREQ vs TIME</h3>
                 <canvas id="canvas-freq" class="canvas" width="800px" height="200px"></canvas>
@@ -64,30 +62,35 @@
 
             body
             {
-                padding: 10px;
                 display: flex;
                 justify-content: center;
                 text-align: center;
+                padding: 30px;
                 background-color: #fffdd0;
             }
-            
-            canvas
+
+            .container-1
             {
-                width: 100%;
+                width: 600px;
+                background-color: #aaaaaa;
+                box-shadow: 0 0 30px #000000;
+                border: 5px solid #000000;
             }
 
-            .container
+            .container-2
             {
                 margin: 10px;
                 padding: 10px;
                 background-color: #ffffff;
                 border: 5px solid #000000;
             }
-
-            #container-doppler
+            
+            canvas
             {
-                width: 700px;
-                background-color: #aaaaaa;
+                width: 500px;
+                margin: 10px;
+                outline: 5px dashed #000000;
+                outline-offset: 5px;
             }
 
         </style>

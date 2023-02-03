@@ -67,12 +67,9 @@ let wavs = [];
 let freqs = [];
 let amps = [];
 
-for(let n = 0; n < 2; n++)
+for(let w = 0; w < 1000; w++)
 {
-    for(let w = 0; w < 1000; w++)
-    {
-        doStep();
-    }
+    //doStep();
 }
 
 fixTime();
@@ -412,14 +409,14 @@ function doBufrSave()
 
     for(let f = 0; f < freqs.length; f++)
     {
-        bufr.freqs[f] = freqs[f];
+        bufr.freqs[f] = src.freq;
     }
 
     bufr.amps = [];
 
     for(let a = 0; a < amps.length; a++)
     {
-        bufr.amps[a] = amps[a];
+        bufr.amps[a] = src.amp;
     }
 
     fixBufr();
@@ -476,12 +473,9 @@ function doBufrRstr()
         amps[a] = bufr.amps[a];
     }
     
-    for(let n = 0; n < 2; n++)
+    for(let w = 0; w < 1000; w++)
     {
-        for(let w = 0; w < 1000; w++)
-        {
-            doStep();
-        }
+        doStep();
     }
 
     fixTime();
