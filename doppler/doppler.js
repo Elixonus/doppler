@@ -2,8 +2,8 @@ const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
 const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
-const buttonSoundOn = document.getElementById("button-snd-on");
-const buttonSoundOff = document.getElementById("button-snd-off");
+const buttonSndOn = document.getElementById("button-snd-on");
+const buttonSndOff = document.getElementById("button-snd-off");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
 const buttonTypeVel = document.getElementById("button-type-vel");
@@ -27,6 +27,7 @@ let run = true;
 let time = 0;
 let bufr = null;
 let snd = false;
+let gd = true;
 let obj = null;
 
 let src = {
@@ -82,7 +83,7 @@ for(let w = 0; w < 1000; w++)
 
 fixTime();
 fixBufr();
-fixSound();
+fixSnd();
 fixCtrl();
 fixType();
 fixDir();
@@ -239,6 +240,16 @@ function doFrame()
     contextPos.fillStyle = "#00ff00";
     contextPos.fill();
 
+    if(gd === true)
+    {
+        contextPos.beginPath();
+        contextPos.lineTo(obs.pos.x, obs.pos.y);
+        contextPos.lineTo(obs.pos.x + 50 * obs.vel.x, obs.pos.y + 50 * obs.vel.y);
+        contextPos.lineWidth = 0.05;
+        contextPos.strokeStyle = "#00ff00";
+        contextPos.stroke();
+    }
+
     contextPos.beginPath();
     contextPos.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
     contextPos.fillStyle = "#ff0000";
@@ -257,6 +268,28 @@ function doFrame()
     }
 
     contextPos.restore();
+
+    if(gd === true)
+    {
+        contextPos.beginPath();
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
+        contextPos.lineWidth = 0.05;
+        contextPos.strokeStyle = "#ffff00";
+        contextPos.stroke();
+
+        contextPos.beginPath();
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
+        contextPos.fillStyle = "#ffff00";
+        contextPos.fill();
+
+        contextPos.beginPath();
+        contextPos.lineTo(obs.wav.pos.x, obs.wav.pos.y);
+        contextPos.lineTo(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
+        contextPos.lineWidth = 0.05;
+        contextPos.strokeStyle = "#ffff00";
+        contextPos.stroke();
+    }
+
     contextPos.restore();
 
     const contextFreq = canvasFreq.getContext("2d");
@@ -333,7 +366,7 @@ function doFrame()
 
     if(snd === true)
     {
-        setSound();
+        setSnd();
     }
 
     if(run === true)
@@ -348,8 +381,8 @@ buttonTimeStrt.onclick = setTimeStrt;
 buttonTimeStop.onclick = setTimeStop;
 buttonBufrSave.onclick = doBufrSave;
 buttonBufrRstr.onclick = doBufrRstr;
-buttonSoundOn.onclick = setSoundOn;
-buttonSoundOff.onclick = setSoundOff;
+buttonSndOn.onclick = setSndOn;
+buttonSndOff.onclick = setSndOff;
 buttonCtrlSrc.onclick = setCtrlSrc;
 buttonCtrlObs.onclick = setCtrlObs;
 buttonTypeVel.onclick = setTypeVel;
@@ -521,7 +554,7 @@ function doBufrRstr()
     fixMag();
 }
 
-function setSoundOn()
+function setSndOn()
 {
     if(snd === false)
     {
@@ -531,24 +564,24 @@ function setSoundOn()
         volume = contextAudio.createGain();
         oscillator.connect(volume);
         volume.connect(contextAudio.destination);
-        setSound();
+        setSnd();
         oscillator.start();
         snd = true;
-        fixSound();
+        fixSnd();
     }
 }
 
-function setSoundOff()
+function setSndOff()
 {
     if(snd === true)
     {
         snd = false;
-        fixSound();
+        fixSnd();
         oscillator.stop();
     }
 }
 
-function setSound()
+function setSnd()
 {
     if(snd === true)
     {
@@ -809,19 +842,19 @@ function fixBufr()
     }
 }
 
-function fixSound()
+function fixSnd()
 {
-    buttonSoundOn.disabled = false;
-    buttonSoundOff.disabled = false;
+    buttonSndOn.disabled = false;
+    buttonSndOff.disabled = false;
 
     if(snd === true)
     {
-        buttonSoundOn.disabled = true;
+        buttonSndOn.disabled = true;
     }
 
     else if(snd === false)
     {
-        buttonSoundOff.disabled = true;
+        buttonSndOff.disabled = true;
     }
 }
 
