@@ -69,7 +69,7 @@ let amps = [];
 
 for(let w = 0; w < 1000; w++)
 {
-    //doStep();
+    doStep();
 }
 
 fixTime();
@@ -255,21 +255,29 @@ function doFrame()
     ctxFreq.scale(800, -200);
 
     ctxFreq.beginPath();
+    ctxFreq.lineTo(0, 0.5);
+    ctxFreq.lineTo(1, 0.5);
+    ctxFreq.lineTo(1, 0);
+    ctxFreq.lineTo(0, 0);
+    ctxFreq.fillStyle = "#ff0000";
+    ctxFreq.fill();
+    ctxFreq.lineWidth = 0.01;
+    ctxFreq.strokeStyle = "#ff0000";
+    ctxFreq.stroke();
+
+    ctxFreq.beginPath();
 
     for(let f = 0; f < freqs.length; f++)
     {
         ctxFreq.lineTo(f / (freqs.length - 1), 0.5 * freqs[(f + time) % 1000]);
     }
 
+    ctxFreq.lineTo(1, 0);
+    ctxFreq.lineTo(0, 0);
+    ctxFreq.fillStyle = "#00ff00";
+    ctxFreq.fill();
     ctxFreq.lineWidth = 0.01;
-    ctxFreq.strokeStyle = "#00ff00";
-    ctxFreq.stroke();
-
-    ctxFreq.beginPath();
-    ctxFreq.lineTo(0, 0.5);
-    ctxFreq.lineTo(1, 0.5);
-    ctxFreq.lineWidth = 0.01;
-    ctxFreq.strokeStyle = "#ff0000";
+    ctxFreq.strokeStyle = "#00aa00";
     ctxFreq.stroke();
 
     ctxFreq.restore();
@@ -283,21 +291,29 @@ function doFrame()
     ctxAmp.scale(800, -200);
 
     ctxAmp.beginPath();
+    ctxAmp.lineTo(0, 0.8);
+    ctxAmp.lineTo(1, 0.8);
+    ctxAmp.lineTo(1, 0);
+    ctxAmp.lineTo(0, 0);
+    ctxAmp.fillStyle = "#ff0000";
+    ctxAmp.fill();
+    ctxAmp.lineWidth = 0.01;
+    ctxAmp.strokeStyle = "#ff0000";
+    ctxAmp.stroke();
+
+    ctxAmp.beginPath();
 
     for(let a = 0; a < amps.length; a++)
     {
         ctxAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
     }
 
+    ctxAmp.lineTo(1, 0);
+    ctxAmp.lineTo(0, 0);
+    ctxAmp.fillStyle = "#00ff00";
+    ctxAmp.fill();
     ctxAmp.lineWidth = 0.01;
     ctxAmp.strokeStyle = "#00ff00";
-    ctxAmp.stroke();
-
-    ctxAmp.beginPath();
-    ctxAmp.lineTo(0, 0.8);
-    ctxAmp.lineTo(1, 0.8);
-    ctxAmp.lineWidth = 0.01;
-    ctxAmp.strokeStyle = "#ff0000";
     ctxAmp.stroke();
 
     ctxAmp.restore();
