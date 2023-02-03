@@ -29,7 +29,7 @@ let run = true;
 let time = 0;
 let bufr = null;
 let snd = false;
-let gd = true;
+let gd = false;
 let obj = null;
 
 let src = {
@@ -295,77 +295,68 @@ function doFrame()
 
     contextPos.restore();
 
-    const contextFreq = canvasFreq.getContext("2d");
-    contextFreq.fillStyle = "#000000";
-    contextFreq.fillRect(0, 0, 800, 200);
-
-    contextFreq.save();
-    contextFreq.translate(0, 200);
-    contextFreq.scale(800, -200);
-
-    contextFreq.beginPath();
-    contextFreq.lineTo(0, 0.5);
-    contextFreq.lineTo(1, 0.5);
-    contextFreq.lineTo(1, 0);
-    contextFreq.lineTo(0, 0);
-    contextFreq.fillStyle = "#ff0000";
-    contextFreq.fill();
-    contextFreq.lineWidth = 0.01;
-    contextFreq.strokeStyle = "#ff0000";
-    contextFreq.stroke();
-
-    contextFreq.beginPath();
-
-    for(let f = 0; f < freqs.length; f++)
+    if(time % 25 === 0)
     {
-        contextFreq.lineTo(f / (freqs.length - 1), 0.5 * freqs[(f + time) % 1000]);
+        const contextFreq = canvasFreq.getContext("2d");
+        contextFreq.fillStyle = "#000000";
+        contextFreq.fillRect(0, 0, 800, 200);
+    
+        contextFreq.save();
+        contextFreq.translate(0, 200);
+        contextFreq.scale(800, -200);
+    
+        contextFreq.beginPath();
+    
+        for(let f = 0; f < freqs.length; f++)
+        {
+            contextFreq.lineTo(f / (freqs.length - 1), Math.min(0.25 * freqs[(f + time) % 1000], 1));
+        }
+    
+        contextFreq.lineTo(1, 0);
+        contextFreq.lineTo(0, 0);
+        contextFreq.fillStyle = "#00ff00";
+        contextFreq.fill();
+
+        contextFreq.beginPath();
+        contextFreq.lineTo(0, 0.25);
+        contextFreq.lineTo(1, 0.25);
+        contextFreq.lineWidth = 0.03;
+        contextFreq.strokeStyle = "#ff0000";
+        contextFreq.stroke();
+
+        contextFreq.restore();
+    
+        const contextAmp = canvasAmp.getContext("2d");
+        contextAmp.fillStyle = "#000000";
+        contextAmp.fillRect(0, 0, 800, 200);
+    
+        contextAmp.save();
+        contextAmp.translate(0, 200);
+        contextAmp.scale(800, -200);
+    
+
+    
+        contextAmp.beginPath();
+    
+        for(let a = 0; a < amps.length; a++)
+        {
+            contextAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
+        }
+
+        contextAmp.lineTo(1, 0);
+        contextAmp.lineTo(0, 0);
+        contextAmp.fillStyle = "#00ff00";
+        contextAmp.fill();
+
+        contextAmp.beginPath();
+        contextAmp.lineTo(0, 0.8);
+        contextAmp.lineTo(1, 0.8);
+        contextAmp.lineWidth = 0.03;
+        contextAmp.strokeStyle = "#ff0000";
+        contextAmp.stroke();
+
+        contextAmp.restore();
     }
-
-    contextFreq.lineTo(1, 0);
-    contextFreq.lineTo(0, 0);
-    contextFreq.fillStyle = "#00ff00";
-    contextFreq.fill();
-    contextFreq.lineWidth = 0.01;
-    contextFreq.strokeStyle = "#00aa00";
-    contextFreq.stroke();
-
-    contextFreq.restore();
-
-    const contextAmp = canvasAmp.getContext("2d");
-    contextAmp.fillStyle = "#000000";
-    contextAmp.fillRect(0, 0, 800, 200);
-
-    contextAmp.save();
-    contextAmp.translate(0, 200);
-    contextAmp.scale(800, -200);
-
-    contextAmp.beginPath();
-    contextAmp.lineTo(0, 0.8);
-    contextAmp.lineTo(1, 0.8);
-    contextAmp.lineTo(1, 0);
-    contextAmp.lineTo(0, 0);
-    contextAmp.fillStyle = "#ff0000";
-    contextAmp.fill();
-    contextAmp.lineWidth = 0.01;
-    contextAmp.strokeStyle = "#ff0000";
-    contextAmp.stroke();
-
-    contextAmp.beginPath();
-
-    for(let a = 0; a < amps.length; a++)
-    {
-        contextAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
-    }
-
-    contextAmp.lineTo(1, 0);
-    contextAmp.lineTo(0, 0);
-    contextAmp.fillStyle = "#00ff00";
-    contextAmp.fill();
-    contextAmp.lineWidth = 0.01;
-    contextAmp.strokeStyle = "#00ff00";
-    contextAmp.stroke();
-
-    contextAmp.restore();
 
     if(snd === true)
     {
