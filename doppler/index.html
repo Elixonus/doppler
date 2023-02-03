@@ -15,32 +15,32 @@
                 <h3 id="label-time" class="label label-button">TIME</h3>
                 <button type="button" id="button-time-strt" class="button">STRT</button>
                 <button type="button" id="button-time-stop" class="button">STOP</button>
-                <h3 id="label-bufr" class="label label-button">BUFR</h3>
+                <h3 id="label-bufr" class="label label-button">BUFFER</h3>
                 <button type="button" id="button-bufr-save" class="button">SAVE</button>
                 <button type="button" id="button-bufr-rstr" class="button">RSTR</button>
-                <h3 id="label-sound" class="label label-button">SOUND</h3>
-                <button type="button" id="button-sound-on" class="button">ON</button>
-                <button type="button" id="button-sound-off" class="button">OFF</button>
+                <h3 id="label-snd" class="label label-button">SOUND</h3>
+                <button type="button" id="button-snd-on" class="button">ON</button>
+                <button type="button" id="button-snd-off" class="button">OFF</button>
             </div>
             <div id="container-object" class="container container-2">
                 <h2 id="label-object" class="label label-section">Object</h2>
-                <h3 id="label-ctrl" class="label label-button">CTRL</h3>
+                <h3 id="label-ctrl" class="label label-button">CONTROL</h3>
                 <button type="button" id="button-ctrl-src" class="button">SRC</button>
                 <button type="button" id="button-ctrl-obs" class="button">OBS</button>                
                 <div id="container-motion" class="container container-3">
                     <h2 id="label-motion" class="label label-section">Motion</h2>
                     <h3 id="label-type" class="label label-button">TYPE</h3>
-                    <button type="button" id="button-type-vel" class="button">VEL</button>
-                    <button type="button" id="button-type-acc" class="button">ACC</button>
+                    <button type="button" id="button-type-vel" class="button">VELOCITY</button>
+                    <button type="button" id="button-type-acc" class="button">ACCELERATION</button>
                     <div id="container-vector" class="container container-4">
                         <h2 id="label-vector" class="label label-section">Vector</h2>
-                        <h3 id="label-dir" class="label label-button">DIR</h3>
+                        <h3 id="label-dir" class="label label-button">DIRECTION</h3>
                         <button type="button" id="button-dir-left" class="button">LEFT</button>
-                        <button type="button" id="button-dir-rght" class="button">RGHT</button>
+                        <button type="button" id="button-dir-rght" class="button">RIGHT</button>
                         <button type="button" id="button-dir-up" class="button">UP</button>
                         <button type="button" id="button-dir-down" class="button">DOWN</button>
                         <button type="button" id="button-dir-zero" class="button">ZERO</button>
-                        <h3 id="label-mag" class="label label-button">MAG</h3>
+                        <h3 id="label-mag" class="label label-button">MAGNITUDE</h3>
                         <button type="button" id="button-mag-low" class="button">LOW</button>
                         <button type="button" id="button-mag-med" class="button">MED</button>
                         <button type="button" id="button-mag-high" class="button">HIGH</button>
@@ -93,7 +93,7 @@
             {
                 margin: 30px;
                 padding: 10px;
-                outline: 6px dashed #000000;
+                outline: 6px dashed #aaaaaa;
                 border-radius: 10px;
             }
 
@@ -121,11 +121,10 @@
 
             .button
             {
-                margin: 2px;
                 background-color: #888888;
                 color: #ffffff;
-                outline: 2px solid #000000;
-                border-radius: 2px;
+                border: 4px solid #444444;
+                border-radius: 5px;
                 cursor: pointer;
             }
 

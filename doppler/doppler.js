@@ -2,8 +2,8 @@ const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
 const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
-const buttonSoundOn = document.getElementById("button-sound-on");
-const buttonSoundOff = document.getElementById("button-sound-off");
+const buttonSoundOn = document.getElementById("button-snd-on");
+const buttonSoundOff = document.getElementById("button-snd-off");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
 const buttonTypeVel = document.getElementById("button-type-vel");
@@ -26,7 +26,7 @@ let volume;
 let run = true;
 let time = 0;
 let bufr = null;
-let sound = false;
+let snd = false;
 let obj = null;
 
 let src = {
@@ -325,7 +325,7 @@ function doFrame()
 
     contextAmp.restore();
 
-    if(sound === true)
+    if(snd === true)
     {
         setSound();
     }
@@ -517,7 +517,7 @@ function doBufrRstr()
 
 function setSoundOn()
 {
-    if(sound === false)
+    if(snd === false)
     {
         contextAudio = new window.AudioContext();
         oscillator = contextAudio.createOscillator();
@@ -527,16 +527,16 @@ function setSoundOn()
         volume.connect(contextAudio.destination);
         setSound();
         oscillator.start();
-        sound = true;
+        snd = true;
         fixSound();
     }
 }
 
 function setSoundOff()
 {
-    if(sound === true)
+    if(snd === true)
     {
-        sound = false;
+        snd = false;
         fixSound();
         oscillator.stop();
     }
@@ -544,7 +544,7 @@ function setSoundOff()
 
 function setSound()
 {
-    if(sound === true)
+    if(snd === true)
     {
         if(run === true)
         {
@@ -808,12 +808,12 @@ function fixSound()
     buttonSoundOn.disabled = false;
     buttonSoundOff.disabled = false;
 
-    if(sound === true)
+    if(snd === true)
     {
         buttonSoundOn.disabled = true;
     }
 
-    else if(sound === false)
+    else if(snd === false)
     {
         buttonSoundOff.disabled = true;
     }
