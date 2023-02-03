@@ -2,6 +2,8 @@ const buttonTimeStrt = document.getElementById("button-time-strt");
 const buttonTimeStop = document.getElementById("button-time-stop");
 const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
+const buttonSoundOn = document.getElementById("button-sound-on");
+const buttonSoundOff = document.getElementById("button-sound-off");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
 const buttonTypeVel = document.getElementById("button-type-vel");
@@ -17,10 +19,14 @@ const buttonMagHigh = document.getElementById("button-mag-high");
 const canvasView = document.getElementById("canvas-view");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
+let contextAudio;
+let oscillator;
+let volume;
 
 let run = true;
 let time = 0;
 let bufr = null;
+let sound = false;
 let obj = null;
 
 let src = {
@@ -74,6 +80,7 @@ for(let w = 0; w < 1000; w++)
 
 fixTime();
 fixBufr();
+fixSound();
 fixCtrl();
 fixType();
 fixDir();
@@ -318,6 +325,11 @@ function doFrame()
 
     ctxAmp.restore();
 
+    if(sound === true)
+    {
+        setSound();
+    }
+
     if(run === true)
     {
         doStep();
@@ -330,6 +342,8 @@ buttonTimeStrt.onclick = setTimeStrt;
 buttonTimeStop.onclick = setTimeStop;
 buttonBufrSave.onclick = doBufrSave;
 buttonBufrRstr.onclick = doBufrRstr;
+buttonSoundOn.onclick = setSoundOn;
+buttonSoundOff.onclick = setSoundOff;
 buttonCtrlSrc.onclick = setCtrlSrc;
 buttonCtrlObs.onclick = setCtrlObs;
 buttonTypeVel.onclick = setTypeVel;
@@ -499,6 +513,52 @@ function doBufrRstr()
     fixType();
     fixDir();
     fixMag();
+}
+
+function setSoundOn()
+{
+    if(sound === false)
+    {
+        contextAudio = new window.AudioContext();
+        oscillator = contextAudio.createOscillator();
+        oscillator.type = "sawtooth";
+        volume = contextAudio.createGain();
+        oscillator.connect(volume);
+        volume.connect(contextAudio.destination);
+        setSound();
+        oscillator.start();
+        sound = true;
+        fixSound();
+    }
+}
+
+function setSoundOff()
+{
+    if(sound === true)
+    {
+        sound = false;
+        fixSound();
+        oscillator.stop();
+        oscillator.disconnect(contextAudio.destination);
+    }
+}
+
+function setSound()
+{
+    if(sound === true)
+    {
+        if(run === true)
+        {
+            oscillator.frequency.value = Math.min(1000 * obs.freq, 3000);
+            volume.gain.value = 0.2 * obs.amp;
+        }
+
+        else if(run === false)
+        {
+            oscillator.frequency.value = 0;
+            volume.gain.value = 0;
+        }
+    }
 }
 
 function setCtrlSrc()
@@ -741,6 +801,22 @@ function fixBufr()
     if(bufr === null)
     {
         buttonBufrRstr.disabled = true;
+    }
+}
+
+function fixSound()
+{
+    buttonSoundOn.disabled = false;
+    buttonSoundOff.disabled = false;
+
+    if(sound === true)
+    {
+        buttonSoundOn.disabled = true;
+    }
+
+    else if(sound === false)
+    {
+        buttonSoundOff.disabled = true;
     }
 }
 
