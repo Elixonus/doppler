@@ -30,6 +30,7 @@ let snd = false;
 let obj = null;
 
 let src = {
+    wav: null,
     freq: 1,
     amp: 1,
     type: 1,
@@ -50,6 +51,7 @@ let src = {
 };
 
 let obs = {
+    wav: null,
     freq: null,
     amp: null,
     type: 1,
@@ -175,7 +177,9 @@ function doStep()
     obs.pos.x += obs.vel.x;
     obs.pos.y += obs.vel.y;
 
-    wavs[time % 1000] = {
+    let ws = time % 1000;
+
+    wavs[ws] = {
         time: time,
         freq: src.freq,
         amp: src.amp,
@@ -188,6 +192,8 @@ function doStep()
             y: src.vel.y
         }
     }
+
+    src.wav = wavs[ws];
 
     let diffs = [];
 
@@ -206,12 +212,12 @@ function doStep()
         }
     }
 
-    let wav = wavs[wo];
-    let dist = Math.hypot(wav.pos.x - obs.pos.x, wav.pos.y - obs.pos.y);
-    let velw = (wav.vel.x * (wav.pos.x - obs.pos.x) + wav.vel.y * (wav.pos.y - obs.pos.y)) / dist;
-    let velo = (obs.vel.x * (obs.pos.x - wav.pos.x) + obs.vel.y * (obs.pos.y - wav.pos.y)) / dist;
-    obs.freq = Math.abs(wav.freq * (0.01 - velo) / (0.01 + velw));
-    obs.amp = wav.amp * Math.pow(0.995, time - wav.time);
+    obs.wav = wavs[wo];
+    let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
+    let velw = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
+    let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
+    obs.freq = Math.abs(obs.wav.freq * (0.01 - velo) / (0.01 + velw));
+    obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
     freqs[time % 1000] = obs.freq;
     amps[time % 1000] = obs.amp;
 
