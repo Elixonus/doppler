@@ -16,7 +16,7 @@ const buttonDirZero = document.getElementById("button-dir-zero");
 const buttonMagLow = document.getElementById("button-mag-low");
 const buttonMagMed = document.getElementById("button-mag-med");
 const buttonMagHigh = document.getElementById("button-mag-high");
-const canvasView = document.getElementById("canvas-view");
+const canvasPos = document.getElementById("canvas-pos");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
 let contextAudio;
@@ -220,38 +220,38 @@ function doStep()
 
 function doFrame()
 {
-    const contextView = canvasView.getContext("2d");
-    contextView.fillStyle = "#000000";
-    contextView.fillRect(0, 0, 800, 600);
+    const contextPos = canvasPos.getContext("2d");
+    contextPos.fillStyle = "#000000";
+    contextPos.fillRect(0, 0, 800, 600);
 
-    contextView.save();
-    contextView.translate(400, 300);
-    contextView.scale(100, -100);
+    contextPos.save();
+    contextPos.translate(400, 300);
+    contextPos.scale(100, -100);
 
-    contextView.beginPath();
-    contextView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
-    contextView.fillStyle = "#00ff00";
-    contextView.fill();
+    contextPos.beginPath();
+    contextPos.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
+    contextPos.fillStyle = "#00ff00";
+    contextPos.fill();
 
-    contextView.beginPath();
-    contextView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
-    contextView.fillStyle = "#ff0000";
-    contextView.fill();
+    contextPos.beginPath();
+    contextPos.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
+    contextPos.fillStyle = "#ff0000";
+    contextPos.fill();
 
-    contextView.save();
+    contextPos.save();
 
     for(let w = 0; w < wavs.length; w += 20)
     {
-        contextView.beginPath();
-        contextView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-        contextView.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
-        contextView.lineWidth = 0.03;
-        contextView.strokeStyle = "#ffffff";
-        contextView.stroke();
+        contextPos.beginPath();
+        contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
+        contextPos.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
+        contextPos.lineWidth = 0.03;
+        contextPos.strokeStyle = "#ffffff";
+        contextPos.stroke();
     }
 
-    contextView.restore();
-    contextView.restore();
+    contextPos.restore();
+    contextPos.restore();
 
     const contextFreq = canvasFreq.getContext("2d");
     contextFreq.fillStyle = "#000000";
