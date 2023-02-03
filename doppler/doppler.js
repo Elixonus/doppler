@@ -220,110 +220,110 @@ function doStep()
 
 function doFrame()
 {
-    const ctxView = canvasView.getContext("2d");
-    ctxView.fillStyle = "#000000";
-    ctxView.fillRect(0, 0, 800, 600);
+    const contextView = canvasView.getContext("2d");
+    contextView.fillStyle = "#000000";
+    contextView.fillRect(0, 0, 800, 600);
 
-    ctxView.save();
-    ctxView.translate(400, 300);
-    ctxView.scale(100, -100);
+    contextView.save();
+    contextView.translate(400, 300);
+    contextView.scale(100, -100);
 
-    ctxView.beginPath();
-    ctxView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
-    ctxView.fillStyle = "#00ff00";
-    ctxView.fill();
+    contextView.beginPath();
+    contextView.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
+    contextView.fillStyle = "#00ff00";
+    contextView.fill();
 
-    ctxView.beginPath();
-    ctxView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
-    ctxView.fillStyle = "#ff0000";
-    ctxView.fill();
+    contextView.beginPath();
+    contextView.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
+    contextView.fillStyle = "#ff0000";
+    contextView.fill();
 
-    ctxView.save();
+    contextView.save();
 
     for(let w = 0; w < wavs.length; w += 20)
     {
-        ctxView.beginPath();
-        ctxView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-        ctxView.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
-        ctxView.lineWidth = 0.03;
-        ctxView.strokeStyle = "#ffffff";
-        ctxView.stroke();
+        contextView.beginPath();
+        contextView.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
+        contextView.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
+        contextView.lineWidth = 0.03;
+        contextView.strokeStyle = "#ffffff";
+        contextView.stroke();
     }
 
-    ctxView.restore();
-    ctxView.restore();
+    contextView.restore();
+    contextView.restore();
 
-    const ctxFreq = canvasFreq.getContext("2d");
-    ctxFreq.fillStyle = "#000000";
-    ctxFreq.fillRect(0, 0, 800, 200);
+    const contextFreq = canvasFreq.getContext("2d");
+    contextFreq.fillStyle = "#000000";
+    contextFreq.fillRect(0, 0, 800, 200);
 
-    ctxFreq.save();
-    ctxFreq.translate(0, 200);
-    ctxFreq.scale(800, -200);
+    contextFreq.save();
+    contextFreq.translate(0, 200);
+    contextFreq.scale(800, -200);
 
-    ctxFreq.beginPath();
-    ctxFreq.lineTo(0, 0.5);
-    ctxFreq.lineTo(1, 0.5);
-    ctxFreq.lineTo(1, 0);
-    ctxFreq.lineTo(0, 0);
-    ctxFreq.fillStyle = "#ff0000";
-    ctxFreq.fill();
-    ctxFreq.lineWidth = 0.01;
-    ctxFreq.strokeStyle = "#ff0000";
-    ctxFreq.stroke();
+    contextFreq.beginPath();
+    contextFreq.lineTo(0, 0.5);
+    contextFreq.lineTo(1, 0.5);
+    contextFreq.lineTo(1, 0);
+    contextFreq.lineTo(0, 0);
+    contextFreq.fillStyle = "#ff0000";
+    contextFreq.fill();
+    contextFreq.lineWidth = 0.01;
+    contextFreq.strokeStyle = "#ff0000";
+    contextFreq.stroke();
 
-    ctxFreq.beginPath();
+    contextFreq.beginPath();
 
     for(let f = 0; f < freqs.length; f++)
     {
-        ctxFreq.lineTo(f / (freqs.length - 1), 0.5 * freqs[(f + time) % 1000]);
+        contextFreq.lineTo(f / (freqs.length - 1), 0.5 * freqs[(f + time) % 1000]);
     }
 
-    ctxFreq.lineTo(1, 0);
-    ctxFreq.lineTo(0, 0);
-    ctxFreq.fillStyle = "#00ff00";
-    ctxFreq.fill();
-    ctxFreq.lineWidth = 0.01;
-    ctxFreq.strokeStyle = "#00aa00";
-    ctxFreq.stroke();
+    contextFreq.lineTo(1, 0);
+    contextFreq.lineTo(0, 0);
+    contextFreq.fillStyle = "#00ff00";
+    contextFreq.fill();
+    contextFreq.lineWidth = 0.01;
+    contextFreq.strokeStyle = "#00aa00";
+    contextFreq.stroke();
 
-    ctxFreq.restore();
+    contextFreq.restore();
 
-    const ctxAmp = canvasAmp.getContext("2d");
-    ctxAmp.fillStyle = "#000000";
-    ctxAmp.fillRect(0, 0, 800, 200);
+    const contextAmp = canvasAmp.getContext("2d");
+    contextAmp.fillStyle = "#000000";
+    contextAmp.fillRect(0, 0, 800, 200);
 
-    ctxAmp.save();
-    ctxAmp.translate(0, 200);
-    ctxAmp.scale(800, -200);
+    contextAmp.save();
+    contextAmp.translate(0, 200);
+    contextAmp.scale(800, -200);
 
-    ctxAmp.beginPath();
-    ctxAmp.lineTo(0, 0.8);
-    ctxAmp.lineTo(1, 0.8);
-    ctxAmp.lineTo(1, 0);
-    ctxAmp.lineTo(0, 0);
-    ctxAmp.fillStyle = "#ff0000";
-    ctxAmp.fill();
-    ctxAmp.lineWidth = 0.01;
-    ctxAmp.strokeStyle = "#ff0000";
-    ctxAmp.stroke();
+    contextAmp.beginPath();
+    contextAmp.lineTo(0, 0.8);
+    contextAmp.lineTo(1, 0.8);
+    contextAmp.lineTo(1, 0);
+    contextAmp.lineTo(0, 0);
+    contextAmp.fillStyle = "#ff0000";
+    contextAmp.fill();
+    contextAmp.lineWidth = 0.01;
+    contextAmp.strokeStyle = "#ff0000";
+    contextAmp.stroke();
 
-    ctxAmp.beginPath();
+    contextAmp.beginPath();
 
     for(let a = 0; a < amps.length; a++)
     {
-        ctxAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
+        contextAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
     }
 
-    ctxAmp.lineTo(1, 0);
-    ctxAmp.lineTo(0, 0);
-    ctxAmp.fillStyle = "#00ff00";
-    ctxAmp.fill();
-    ctxAmp.lineWidth = 0.01;
-    ctxAmp.strokeStyle = "#00ff00";
-    ctxAmp.stroke();
+    contextAmp.lineTo(1, 0);
+    contextAmp.lineTo(0, 0);
+    contextAmp.fillStyle = "#00ff00";
+    contextAmp.fill();
+    contextAmp.lineWidth = 0.01;
+    contextAmp.strokeStyle = "#00ff00";
+    contextAmp.stroke();
 
-    ctxAmp.restore();
+    contextAmp.restore();
 
     if(sound === true)
     {
@@ -539,7 +539,6 @@ function setSoundOff()
         sound = false;
         fixSound();
         oscillator.stop();
-        oscillator.disconnect(contextAudio.destination);
     }
 }
 
