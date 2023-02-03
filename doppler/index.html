@@ -9,7 +9,7 @@
     
     <body>
         <div id="container-doppler" class="container container-1">
-            <h1 id="label-doppler" class="label">Doppler Effect Simulation</h1>
+            <h1 id="label-doppler" class="title">Doppler Effect Simulation</h1>
             <div id="container-general" class="container container-2">
                 <h2 id="label-general" class="label label-section">General</h2>
                 <h3 id="label-time" class="label label-button">TIME</h3>
@@ -24,12 +24,12 @@
                 <h3 id="label-ctrl" class="label label-button">CTRL</h3>
                 <button type="button" id="button-ctrl-src" class="button">SRC</button>
                 <button type="button" id="button-ctrl-obs" class="button">OBS</button>                
-                <div id="container-motion" class="container">
+                <div id="container-motion" class="container container-3">
                     <h2 id="label-motion" class="label label-section">Motion</h2>
                     <h3 id="label-type" class="label label-button">TYPE</h3>
                     <button type="button" id="button-type-vel" class="button">VEL</button>
                     <button type="button" id="button-type-acc" class="button">ACC</button>
-                    <div id="container-vector" class="container">
+                    <div id="container-vector" class="container container-4">
                         <h2 id="label-vector" class="label label-section">Vector</h2>
                         <h3 id="label-dir" class="label label-button">DIR</h3>
                         <button type="button" id="button-dir-left" class="button">LEFT</button>
@@ -65,31 +65,83 @@
                 display: flex;
                 justify-content: center;
                 text-align: center;
-                padding: 30px;
                 background-color: #fffdd0;
             }
 
             .container-1
             {
                 width: 600px;
-                background-color: #aaaaaa;
-                box-shadow: 0 0 30px #000000;
-                border: 5px solid #000000;
+                margin: 30px;
+                padding: 10px;
+                background-color: #888888;
+                box-shadow: 0 5px 30px #000000;
+                outline: 5px solid #000000;
             }
 
             .container-2
             {
-                margin: 10px;
-                padding: 10px;
+                margin: 20px;
+                padding: 20px;
                 background-color: #ffffff;
-                border: 5px solid #000000;
+                outline: 5px solid #000000;
+            }
+
+            .container-3
+            {
+                margin: 30px;
+                padding: 10px;
+                outline: 6px dashed #000000;
+                border-radius: 10px;
+            }
+
+            .container-4
+            {
+                margin: 30px;
+                padding: 20px;
+                background-color: #f8f8f8;
+                outline: 6px dashed #dddddd;
+                border-radius: 10px;
+            }
+
+            .label
+            {
+                margin: 10px;
+            }
+
+            .title
+            {
+                margin: 20px;
+                padding: 15px;
+                background-color: #ffffff;
+                outline: 5px solid #000000;
+            }
+
+            .button
+            {
+                margin: 2px;
+                background-color: #888888;
+                color: #ffffff;
+                outline: 2px solid #000000;
+                border-radius: 2px;
+                cursor: pointer;
+            }
+
+            .button:hover
+            {
+                opacity: 0.5;
+            }
+
+            .button:disabled
+            {
+                opacity: 0.2;
             }
             
-            canvas
+            .canvas
             {
-                width: 500px;
-                margin: 10px;
-                outline: 5px dashed #000000;
+                width: 450px;
+                margin: 20px;
+                border-radius: 10px;
+                outline: 6px solid #000000;
                 outline-offset: 5px;
             }
 
