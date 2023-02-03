@@ -4,6 +4,8 @@ const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
 const buttonSndOn = document.getElementById("button-snd-on");
 const buttonSndOff = document.getElementById("button-snd-off");
+const buttonGdOn = document.getElementById("button-gd-on");
+const buttonGdOff = document.getElementById("button-gd-off");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
 const buttonTypeVel = document.getElementById("button-type-vel");
@@ -84,6 +86,7 @@ for(let w = 0; w < 1000; w++)
 fixTime();
 fixBufr();
 fixSnd();
+fixGd();
 fixCtrl();
 fixType();
 fixDir();
@@ -383,6 +386,8 @@ buttonBufrSave.onclick = doBufrSave;
 buttonBufrRstr.onclick = doBufrRstr;
 buttonSndOn.onclick = setSndOn;
 buttonSndOff.onclick = setSndOff;
+buttonGdOn.onclick = setGdOn;
+buttonGdOff.onclick = setGdOff;
 buttonCtrlSrc.onclick = setCtrlSrc;
 buttonCtrlObs.onclick = setCtrlObs;
 buttonTypeVel.onclick = setTypeVel;
@@ -597,6 +602,18 @@ function setSnd()
             volume.gain.value = 0;
         }
     }
+}
+
+function setGdOn()
+{
+    gd = true;
+    fixGd();
+}
+
+function setGdOff()
+{
+    gd = false;
+    fixGd();
 }
 
 function setCtrlSrc()
@@ -855,6 +872,22 @@ function fixSnd()
     else if(snd === false)
     {
         buttonSndOff.disabled = true;
+    }
+}
+
+function fixGd()
+{
+    buttonGdOn.disabled = false;
+    buttonGdOff.disabled = false;
+
+    if(gd === true)
+    {
+        buttonGdOn.disabled = true;
+    }
+
+    else if(gd === false)
+    {
+        buttonGdOff.disabled = true;
     }
 }
 
