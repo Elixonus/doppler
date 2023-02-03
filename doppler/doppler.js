@@ -17,21 +17,10 @@ const buttonMagHigh = document.getElementById("button-mag-high");
 const canvasView = document.getElementById("canvas-view");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
-const ctxView = canvasView.getContext("2d");
-const ctxFreq = canvasFreq.getContext("2d");
-const ctxAmp = canvasAmp.getContext("2d");
-const ctxAudio = new window.AudioContext();
-const audio = ctxAudio.createOscillator();
-audio.type = "square";
-audio.connect(ctxAudio.destination);
-
-document.body.onclick = function()
-{
-    audio.start();
-}
 
 let run = true;
 let time = 0;
+let roll = 0;
 let bufr = null;
 let obj = null;
 
@@ -180,7 +169,7 @@ function doStep()
     obs.pos.x += obs.vel.x;
     obs.pos.y += obs.vel.y;
 
-    wavs[time % 1000] = {
+    wavs[roll] = {
         time: time,
         freq: src.freq,
         amp: src.amp,
@@ -215,13 +204,15 @@ function doStep()
     let dist = Math.hypot(wav.pos.x - obs.pos.x, wav.pos.y - obs.pos.y);
     let vel1 = (wav.vel.x * (wav.pos.x - obs.pos.x) + wav.vel.y * (wav.pos.y - obs.pos.y)) / dist;
     let vel2 = (obs.vel.x * (obs.pos.x - wav.pos.x) + obs.vel.y * (obs.pos.y - wav.pos.y)) / dist;
-    let freq = wav.freq * (0.01 - vel2) / (0.01 + vel1);
-    freqs[time % 1000] = freq;
-    let amp = wav.amp * Math.pow(0.999, time - wav.time);
-    amps[time % 1000] = amp;
-    audio.frequency.value = 300 * freq;
+    freq = wav.freq * (0.01 - vel2) / (0.01 + vel1);
+    amp = wav.amp * Math.pow(0.999, time - wav.time);
+
+    freqs[roll] = freq;
+    amps[roll] = amp;
     document.getElementById("label-pos").innerHTML = `F_O = ${Math.round(100 * freq) / 100}, A_O = ${Math.round(100 * amp) / 100}`;
+
     time += 1;
+    roll = time % 1000;
 }
 
 function doFrame()
