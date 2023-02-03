@@ -475,6 +475,14 @@ function doBufrRstr()
     {
         amps[a] = bufr.amps[a];
     }
+    
+    for(let n = 0; n < 2; n++)
+    {
+        for(let w = 0; w < 1000; w++)
+        {
+            doStep();
+        }
+    }
 
     fixTime();
     fixCtrl();
