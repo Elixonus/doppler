@@ -243,7 +243,7 @@ function doFrame()
     contextPos.fillStyle = "#00ff00";
     contextPos.fill();
 
-    if(gd === true)
+    if(gd === true && Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
     {
         contextPos.beginPath();
         contextPos.lineTo(obs.pos.x, obs.pos.y);
@@ -251,12 +251,46 @@ function doFrame()
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#00ff00";
         contextPos.stroke();
+
+        contextPos.save();
+        contextPos.translate(obs.pos.x + 50 * obs.vel.x, obs.pos.y + 50 * obs.vel.y);
+        contextPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
+        contextPos.beginPath();
+        contextPos.lineTo(0, 0.1);
+        contextPos.lineTo(0, -0.1);
+        contextPos.lineTo(0.1, 0);
+        contextPos.closePath();
+        contextPos.fillStyle = "#00ff00";
+        contextPos.fill();
+        contextPos.restore();
     }
 
     contextPos.beginPath();
     contextPos.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
     contextPos.fillStyle = "#ff0000";
     contextPos.fill();
+
+    if(gd === true && Math.hypot(src.vel.x, src.vel.y) > 0.001)
+    {
+        contextPos.beginPath();
+        contextPos.lineTo(src.pos.x, src.pos.y);
+        contextPos.lineTo(src.pos.x + 50 * src.vel.x, src.pos.y + 50 * src.vel.y);
+        contextPos.lineWidth = 0.05;
+        contextPos.strokeStyle = "#ff0000";
+        contextPos.stroke();
+
+        contextPos.save();
+        contextPos.translate(src.pos.x + 50 * src.vel.x, src.pos.y + 50 * src.vel.y);
+        contextPos.rotate(Math.atan2(src.vel.y, src.vel.x));
+        contextPos.beginPath();
+        contextPos.lineTo(0, 0.1);
+        contextPos.lineTo(0, -0.1);
+        contextPos.lineTo(0.1, 0);
+        contextPos.closePath();
+        contextPos.fillStyle = "#ff0000";
+        contextPos.fill();
+        contextPos.restore();
+    }
 
     contextPos.save();
 
@@ -266,7 +300,7 @@ function doFrame()
         {
             contextPos.beginPath();
             contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-            contextPos.globalAlpha = Math.max(1 - (time - wavs[w].time) / 500, 0);
+            contextPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 500, 0), 1);
             contextPos.lineWidth = 0.03;
             contextPos.strokeStyle = "#ffffff";
             contextPos.stroke();
@@ -288,12 +322,26 @@ function doFrame()
         contextPos.fillStyle = "#ffff00";
         contextPos.fill();
 
-        contextPos.beginPath();
-        contextPos.lineTo(obs.wav.pos.x, obs.wav.pos.y);
-        contextPos.lineTo(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
-        contextPos.lineWidth = 0.05;
-        contextPos.strokeStyle = "#ffff00";
-        contextPos.stroke();
+        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
+        {
+            contextPos.beginPath();
+            contextPos.lineTo(obs.wav.pos.x, obs.wav.pos.y);
+            contextPos.lineTo(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
+            contextPos.lineWidth = 0.05;
+            contextPos.strokeStyle = "#ffff00";
+            contextPos.stroke();
+    
+            contextPos.save();
+            contextPos.translate(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
+            contextPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
+            contextPos.beginPath();
+            contextPos.lineTo(0, 0.1);
+            contextPos.lineTo(0, -0.1);
+            contextPos.lineTo(0.1, 0);
+            contextPos.closePath();
+            contextPos.fill();
+            contextPos.restore();
+        }
     }
 
     contextPos.restore();
