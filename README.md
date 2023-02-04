@@ -12,7 +12,7 @@ Source is controllable in velocity or acceleration and can be in one of three st
 
 ## Waves
 
-Waves propagate in time with their amplitude attenuate exponentially. Only the crest of the waves are illustrated in the simulation. Currently when multiple waves collide, interference is not accounted for.
+Waves propagate in time with their amplitude attenuatuating exponentially. Only the crest of the waves are illustrated in the simulation. Currently when multiple waves collide, interference is not accounted for.
 
 ## Observer
 
@@ -30,7 +30,7 @@ The buffer button group can be used to save the current simulation time and rest
 
 The sound button group can be used to interpret the observed signal as a sound wave.
 
-The owave button group can be used to show the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
+The owave button group can be used to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
 
 The control button group can be used to toggle between modifying the properties of the source and observer.
 
