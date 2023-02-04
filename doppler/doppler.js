@@ -78,7 +78,7 @@ let wavs = [];
 let freqs = [];
 let amps = [];
 
-for(let w = 0; w < 1000; w++)
+for(let w = 0; w < 2000; w++)
 {
     doStep();
 }
@@ -262,12 +262,15 @@ function doFrame()
 
     for(let w = 0; w < wavs.length; w += 20)
     {
-        contextPos.beginPath();
-        contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-        contextPos.globalAlpha = Math.max(1 - (time - wavs[w].time) / 1000, 0);
-        contextPos.lineWidth = 0.03;
-        contextPos.strokeStyle = "#ffffff";
-        contextPos.stroke();
+        if(time - wavs[w].time < 500)
+        {
+            contextPos.beginPath();
+            contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
+            contextPos.globalAlpha = Math.max(1 - (time - wavs[w].time) / 500, 0);
+            contextPos.lineWidth = 0.03;
+            contextPos.strokeStyle = "#ffffff";
+            contextPos.stroke();
+        }
     }
 
     contextPos.restore();
@@ -295,7 +298,7 @@ function doFrame()
 
     contextPos.restore();
 
-    if(time % 25 === 0)
+    if(time % 10 === 0)
     {
         const contextFreq = canvasFreq.getContext("2d");
         contextFreq.fillStyle = "#000000";
@@ -333,9 +336,6 @@ function doFrame()
         contextAmp.save();
         contextAmp.translate(0, 200);
         contextAmp.scale(800, -200);
-    
-
-    
         contextAmp.beginPath();
     
         for(let a = 0; a < amps.length; a++)
