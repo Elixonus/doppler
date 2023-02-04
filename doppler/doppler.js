@@ -376,6 +376,7 @@ buttonDirZero.onclick = setDirZero;
 buttonMagLow.onclick = setMagLow;
 buttonMagMed.onclick = setMagMed;
 buttonMagHigh.onclick = setMagHigh;
+document.onkeydown = keyDown();
 
 function setTimeStrt()
 {
@@ -1066,5 +1067,61 @@ function fixMag()
         buttonMagLow.disabled = true;
         buttonMagMed.disabled = true;
         buttonMagHigh.disabled = true;
+    }
+}
+
+function keyDown(event)
+{
+    if(event.key.toUpperCase() === "C")
+    {
+        if(obj === src)
+        {
+            setCtrlObs();
+        }
+
+        else if(obj === obs)
+        {
+            setCtrlSrc();
+        }
+    }
+
+    else if(event.key.toUpperCase() === "S")
+    {
+        setDirZero();
+    }
+
+    else if(event.key.toUpperCase() === "A")
+    {
+        setDirLeft();
+    }
+
+    else if(event.key.toUpperCase() === "D")
+    {
+        setDirRght();
+    }
+
+    else if(event.key.toUpperCase() === "W")
+    {
+        setDirUp();
+    }
+
+    else if(event.key.toUpperCase() === "X")
+    {
+        setDirDown();
+    }
+
+    else if(event.key === "1")
+    {
+        setMagLow();
+    }
+
+    else if(event.key === "2")
+    {
+        setMagMed();
+    }
+
+    else if(event.key === "3")
+    {
+        setMagHigh();
     }
 }
