@@ -4,8 +4,8 @@ const buttonBufrSave = document.getElementById("button-bufr-save");
 const buttonBufrRstr = document.getElementById("button-bufr-rstr");
 const buttonSndOn = document.getElementById("button-snd-on");
 const buttonSndOff = document.getElementById("button-snd-off");
-const buttonGdOn = document.getElementById("button-gd-on");
-const buttonGdOff = document.getElementById("button-gd-off");
+const buttonOwvOn = document.getElementById("button-owv-on");
+const buttonOwvOff = document.getElementById("button-owv-off");
 const buttonCtrlSrc = document.getElementById("button-ctrl-src");
 const buttonCtrlObs = document.getElementById("button-ctrl-obs");
 const buttonTypeVel = document.getElementById("button-type-vel");
@@ -21,6 +21,9 @@ const buttonMagHigh = document.getElementById("button-mag-high");
 const canvasPos = document.getElementById("canvas-pos");
 const canvasFreq = document.getElementById("canvas-freq");
 const canvasAmp = document.getElementById("canvas-amp");
+const contextPos = canvasPos.getContext("2d");
+const contextFreq = canvasFreq.getContext("2d");
+const contextAmp = canvasAmp.getContext("2d");
 let contextAudio;
 let oscillator;
 let volume;
@@ -29,7 +32,7 @@ let run = true;
 let time = 0;
 let bufr = null;
 let snd = false;
-let gd = false;
+let owv = false;
 let obj = null;
 
 let src = {
@@ -86,7 +89,7 @@ for(let w = 0; w < 2000; w++)
 fixTime();
 fixBufr();
 fixSnd();
-fixGd();
+fixOwv();
 fixCtrl();
 fixType();
 fixDir();
@@ -96,81 +99,6 @@ window.requestAnimationFrame(doFrame);
 
 function doStep()
 {
-    if(obj !== null)
-    {
-        if(obj.dir !== null)
-        {
-            if(obj.type === 1)
-            {
-                if(obj.dir === 0)
-                {
-                    obj.vel.x = 0;
-                    obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 1)
-                {
-                    obj.vel.x = -0.004 * obj.mag;
-                    obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 2)
-                {
-                    obj.vel.x = 0.004 * obj.mag;
-                    obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 3)
-                {
-                    obj.vel.x = 0;
-                    obj.vel.y = 0.004 * obj.mag;
-                }
-
-                else if(obj.dir === 4)
-                {
-                    obj.vel.x = 0;
-                    obj.vel.y = -0.004 * obj.mag;
-                }
-
-                obj.acc.x = 0;
-                obj.acc.y = 0;
-            }
-        
-            else if(obj.type === 2)
-            {
-                if(obj.dir === 0)
-                {
-                    obj.acc.x = 0;
-                    obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 1)
-                {
-                    obj.acc.x = -0.0001 * obj.mag;
-                    obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 2)
-                {
-                    obj.acc.x = 0.0001 * obj.mag;
-                    obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 3)
-                {
-                    obj.acc.x = 0;
-                    obj.acc.y = 0.0001 * obj.mag;
-                }
-
-                else if(obj.dir === 4)
-                {
-                    obj.acc.x = 0;
-                    obj.acc.y = -0.0001 * obj.mag;
-                }
-            }
-        }
-    }
-
     src.vel.x += src.acc.x;
     src.vel.y += src.acc.y;
     src.pos.x += src.vel.x;
@@ -230,7 +158,6 @@ function doStep()
 
 function doFrame()
 {
-    const contextPos = canvasPos.getContext("2d");
     contextPos.fillStyle = "#000000";
     contextPos.fillRect(0, 0, 800, 600);
 
@@ -243,7 +170,7 @@ function doFrame()
     contextPos.fillStyle = "#00ff00";
     contextPos.fill();
 
-    if(gd === true && Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
+    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
     {
         contextPos.beginPath();
         contextPos.lineTo(obs.pos.x, obs.pos.y);
@@ -270,7 +197,7 @@ function doFrame()
     contextPos.fillStyle = "#ff0000";
     contextPos.fill();
 
-    if(gd === true && Math.hypot(src.vel.x, src.vel.y) > 0.001)
+    if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
     {
         contextPos.beginPath();
         contextPos.lineTo(src.pos.x, src.pos.y);
@@ -309,13 +236,25 @@ function doFrame()
 
     contextPos.restore();
 
-    if(gd === true)
+    if(owv === true && time - obs.wav.time < 500)
     {
+        contextPos.save();
         contextPos.beginPath();
         contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
+
+        if(time - obs.wav.time < 400)
+        {
+            contextPos.globalAlpha = 1;
+        }
+
+        else
+        {
+            contextPos.globalAlpha = Math.min(Math.max(5 - (time - obs.wav.time) / 100, 0), 1);
+        }
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ffff00";
         contextPos.stroke();
+        contextPos.restore();
 
         contextPos.beginPath();
         contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
@@ -348,7 +287,6 @@ function doFrame()
 
     if(time % 10 === 0)
     {
-        const contextFreq = canvasFreq.getContext("2d");
         contextFreq.fillStyle = "#000000";
         contextFreq.fillRect(0, 0, 800, 200);
     
@@ -377,7 +315,6 @@ function doFrame()
 
         contextFreq.restore();
     
-        const contextAmp = canvasAmp.getContext("2d");
         contextAmp.fillStyle = "#000000";
         contextAmp.fillRect(0, 0, 800, 200);
     
@@ -425,8 +362,8 @@ buttonBufrSave.onclick = doBufrSave;
 buttonBufrRstr.onclick = doBufrRstr;
 buttonSndOn.onclick = setSndOn;
 buttonSndOff.onclick = setSndOff;
-buttonGdOn.onclick = setGdOn;
-buttonGdOff.onclick = setGdOff;
+buttonOwvOn.onclick = setOwvOn;
+buttonOwvOff.onclick = setOwvOff;
 buttonCtrlSrc.onclick = setCtrlSrc;
 buttonCtrlObs.onclick = setCtrlObs;
 buttonTypeVel.onclick = setTypeVel;
@@ -512,8 +449,8 @@ function doBufrSave()
                 y: wavs[w].pos.y
             },
             vel: {
-                x: wavs[w].pos.x,
-                y: wavs[w].pos.y
+                x: wavs[w].vel.x,
+                y: wavs[w].vel.y
             }
         };
     }
@@ -522,14 +459,14 @@ function doBufrSave()
 
     for(let f = 0; f < freqs.length; f++)
     {
-        bufr.freqs[f] = src.freq;
+        bufr.freqs[f] = freqs[f];
     }
 
     bufr.amps = [];
 
     for(let a = 0; a < amps.length; a++)
     {
-        bufr.amps[a] = src.amp;
+        bufr.amps[a] = amps[a];
     }
 
     fixBufr();
@@ -585,11 +522,6 @@ function doBufrRstr()
     {
         amps[a] = bufr.amps[a];
     }
-    
-    for(let w = 0; w < 1000; w++)
-    {
-        doStep();
-    }
 
     fixTime();
     fixCtrl();
@@ -643,16 +575,16 @@ function setSnd()
     }
 }
 
-function setGdOn()
+function setOwvOn()
 {
-    gd = true;
-    fixGd();
+    owv = true;
+    fixOwv();
 }
 
-function setGdOff()
+function setOwvOff()
 {
-    gd = false;
-    fixGd();
+    owv = false;
+    fixOwv();
 }
 
 function setCtrlSrc()
@@ -788,6 +720,7 @@ function setTypeVel()
     {
         obj.type = 1;
         fixType();
+        setMtn();
     }
 }
 
@@ -797,6 +730,7 @@ function setTypeAcc()
     {
         obj.type = 2;
         fixType();
+        setMtn();
     }
 }
 
@@ -806,6 +740,7 @@ function setDirLeft()
     {
         obj.dir = 1;
         fixDir();
+        setMtn();
     }
 }
 
@@ -815,6 +750,7 @@ function setDirRght()
     {
         obj.dir = 2;
         fixDir();
+        setMtn();
     }
 }
 
@@ -824,6 +760,7 @@ function setDirUp()
     {
         obj.dir = 3;
         fixDir();
+        setMtn();
     }
 }
 
@@ -833,6 +770,7 @@ function setDirDown()
     {
         obj.dir = 4;
         fixDir();
+        setMtn();
     }
 }
 
@@ -842,6 +780,7 @@ function setDirZero()
     {
         obj.dir = 0;
         fixDir();
+        setMtn();
     }
 }
 
@@ -851,6 +790,7 @@ function setMagLow()
     {
         obj.mag = 1;
         fixMag();
+        setMtn();
     }
 }
 
@@ -860,6 +800,7 @@ function setMagMed()
     {
         obj.mag = 2;
         fixMag();
+        setMtn();
     }
 }
 
@@ -869,6 +810,85 @@ function setMagHigh()
     {
         obj.mag = 3;
         fixMag();
+        setMtn();
+    }
+}
+
+function setMtn()
+{
+    if(obj !== null)
+    {
+        if(obj.dir !== null)
+        {
+            if(obj.type === 1)
+            {
+                if(obj.dir === 0)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 1)
+                {
+                    obj.vel.x = -0.004 * obj.mag;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 2)
+                {
+                    obj.vel.x = 0.004 * obj.mag;
+                    obj.vel.y = 0;
+                }
+
+                else if(obj.dir === 3)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = 0.004 * obj.mag;
+                }
+
+                else if(obj.dir === 4)
+                {
+                    obj.vel.x = 0;
+                    obj.vel.y = -0.004 * obj.mag;
+                }
+
+                obj.acc.x = 0;
+                obj.acc.y = 0;
+            }
+        
+            else if(obj.type === 2)
+            {
+                if(obj.dir === 0)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 1)
+                {
+                    obj.acc.x = -0.0001 * obj.mag;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 2)
+                {
+                    obj.acc.x = 0.0001 * obj.mag;
+                    obj.acc.y = 0;
+                }
+
+                else if(obj.dir === 3)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = 0.0001 * obj.mag;
+                }
+
+                else if(obj.dir === 4)
+                {
+                    obj.acc.x = 0;
+                    obj.acc.y = -0.0001 * obj.mag;
+                }
+            }
+        }
     }
 }
 
@@ -914,19 +934,19 @@ function fixSnd()
     }
 }
 
-function fixGd()
+function fixOwv()
 {
-    buttonGdOn.disabled = false;
-    buttonGdOff.disabled = false;
+    buttonOwvOn.disabled = false;
+    buttonOwvOff.disabled = false;
 
-    if(gd === true)
+    if(owv === true)
     {
-        buttonGdOn.disabled = true;
+        buttonOwvOn.disabled = true;
     }
 
-    else if(gd === false)
+    else if(owv === false)
     {
-        buttonGdOff.disabled = true;
+        buttonOwvOff.disabled = true;
     }
 }
 
