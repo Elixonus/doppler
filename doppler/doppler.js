@@ -257,7 +257,7 @@ function doFrame()
         contextPos.stroke();
 
         contextPos.beginPath();
-        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.1, 0, 2 * Math.PI);
         contextPos.fillStyle = "#ffff00";
         contextPos.fill();
 
