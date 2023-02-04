@@ -81,7 +81,7 @@ let wavs = [];
 let freqs = [];
 let amps = [];
 
-for(let w = 0; w < 2000; w++)
+for(let w = 0; w < 0; w++)
 {
     doStep();
 }
@@ -129,29 +129,38 @@ function doStep()
 
     let diffs = [];
 
-    for(let w = 0; w < wavs.length; w++)
+    for(let w = 0; w < 1000; w++)
     {
-        diffs[w] = Math.abs(0.01 * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y));
-    }
-
-    let wo = 0;
-
-    for(let w = 1; w < wavs.length; w++)
-    {
-        if(diffs[w] < diffs[wo])
+        if(wavs[w] !== undefined)
         {
-            wo = w;
+            diffs[w] = 0.01 * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
         }
     }
 
-    obs.wav = wavs[wo];
-    let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
-    let velw = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
-    let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
-    obs.freq = Math.abs(obs.wav.freq * (0.01 - velo) / (0.01 + velw));
-    obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
-    freqs[time % 1000] = obs.freq;
-    amps[time % 1000] = obs.amp;
+    let wo = null;
+
+    for(let w = 0; w < 1000; w++)
+    {
+        if(diffs[w] !== undefined)
+        {
+            if((wo === null || diffs[w] < diffs[wo]) && diffs[w] > 0)
+            {
+                wo = w;
+            }
+        }
+    }
+
+    if(wo !== null)
+    {
+        obs.wav = wavs[wo];
+        let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
+        let velw = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
+        let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
+        obs.freq = Math.abs(obs.wav.freq * (0.01 - velo) / (0.01 + velw));
+        obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
+        freqs[time % 1000] = obs.freq;
+        amps[time % 1000] = obs.amp;
+    }
 
     time += 1;
 }
@@ -221,40 +230,31 @@ function doFrame()
 
     contextPos.save();
 
-    for(let w = 0; w < wavs.length; w += 20)
+    for(let w = 0; w < 1000; w += 20)
     {
-        if(time - wavs[w].time < 500)
+        if(wavs[w] !== undefined)
         {
-            contextPos.beginPath();
-            contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-            contextPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 500, 0), 1);
-            contextPos.lineWidth = 0.03;
-            contextPos.strokeStyle = "#ffffff";
-            contextPos.stroke();
+            if(time - wavs[w].time < 500)
+            {
+                contextPos.beginPath();
+                contextPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
+                contextPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 500, 0), 1);
+                contextPos.lineWidth = 0.03;
+                contextPos.strokeStyle = "#ffffff";
+                contextPos.stroke();
+            }
         }
     }
 
     contextPos.restore();
 
-    if(owv === true && time - obs.wav.time < 500)
+    if(owv === true && obs.wav !== null && time - obs.wav.time < 500)
     {
-        contextPos.save();
         contextPos.beginPath();
         contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
-
-        if(time - obs.wav.time < 400)
-        {
-            contextPos.globalAlpha = 1;
-        }
-
-        else
-        {
-            contextPos.globalAlpha = Math.min(Math.max(5 - (time - obs.wav.time) / 100, 0), 1);
-        }
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ffff00";
         contextPos.stroke();
-        contextPos.restore();
 
         contextPos.beginPath();
         contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
@@ -294,17 +294,11 @@ function doFrame()
         contextFreq.translate(0, 200);
         contextFreq.scale(800, -200);
     
-        contextFreq.beginPath();
-    
-        for(let f = 0; f < freqs.length; f++)
+        for(let f = 0; f < 1000; f += 10)
         {
-            contextFreq.lineTo(f / (freqs.length - 1), Math.min(0.25 * freqs[(f + time) % 1000], 1));
+            contextFreq.fillStyle = "#00ff00";
+            contextFreq.fillRect(f / (1000 - 1), 0, 0.009, Math.min(0.25 * freqs[(f + time) % 1000], 1));
         }
-    
-        contextFreq.lineTo(1, 0);
-        contextFreq.lineTo(0, 0);
-        contextFreq.fillStyle = "#00ff00";
-        contextFreq.fill();
 
         contextFreq.beginPath();
         contextFreq.lineTo(0, 0.25);
@@ -321,17 +315,12 @@ function doFrame()
         contextAmp.save();
         contextAmp.translate(0, 200);
         contextAmp.scale(800, -200);
-        contextAmp.beginPath();
     
-        for(let a = 0; a < amps.length; a++)
+        for(let a = 0; a < 1000; a += 10)
         {
-            contextAmp.lineTo(a / (amps.length - 1), 0.8 * amps[(a + time) % 1000]);
+            contextAmp.fillStyle = "#00ff00";
+            contextAmp.fillRect(a / (1000 - 1), 0, 0.009, 0.8 * amps[(a + time) % 1000]);
         }
-
-        contextAmp.lineTo(1, 0);
-        contextAmp.lineTo(0, 0);
-        contextAmp.fillStyle = "#00ff00";
-        contextAmp.fill();
 
         contextAmp.beginPath();
         contextAmp.lineTo(0, 0.8);
@@ -376,7 +365,7 @@ buttonDirZero.onclick = setDirZero;
 buttonMagLow.onclick = setMagLow;
 buttonMagMed.onclick = setMagMed;
 buttonMagHigh.onclick = setMagHigh;
-document.onkeydown = keyDown();
+document.onkeydown = doKeyDown;
 
 function setTimeStrt()
 {
@@ -439,35 +428,44 @@ function doBufrSave()
     
     bufr.wavs = [];
 
-    for(let w = 0; w < wavs.length; w++)
+    for(let w = 0; w < 1000; w++)
     {
-        bufr.wavs[w] = {
-            time: wavs[w].time,
-            freq: wavs[w].freq,
-            amp: wavs[w].amp,
-            pos: {
-                x: wavs[w].pos.x,
-                y: wavs[w].pos.y
-            },
-            vel: {
-                x: wavs[w].vel.x,
-                y: wavs[w].vel.y
-            }
-        };
+        if(wavs[w] !== undefined)
+        {
+            bufr.wavs[w] = {
+                time: wavs[w].time,
+                freq: wavs[w].freq,
+                amp: wavs[w].amp,
+                pos: {
+                    x: wavs[w].pos.x,
+                    y: wavs[w].pos.y
+                },
+                vel: {
+                    x: wavs[w].vel.x,
+                    y: wavs[w].vel.y
+                }
+            };
+        }
     }
 
     bufr.freqs = [];
 
-    for(let f = 0; f < freqs.length; f++)
+    for(let f = 0; f < 1000; f++)
     {
-        bufr.freqs[f] = freqs[f];
+        if(freqs[f] !== undefined)
+        {
+            bufr.freqs[f] = freqs[f];
+        }
     }
 
     bufr.amps = [];
 
-    for(let a = 0; a < amps.length; a++)
+    for(let a = 0; a < 1000; a++)
     {
-        bufr.amps[a] = amps[a];
+        if(amps[a] !== undefined)
+        {
+            bufr.amps[a] = amps[a];
+        }
     }
 
     fixBufr();
@@ -503,25 +501,49 @@ function doBufrRstr()
     obs.acc.x = bufr.obs.acc.x;
     obs.acc.y = bufr.obs.acc.y;
 
-    for(let w = 0; w < bufr.wavs.length; w++)
+    for(let w = 0; w < 1000; w++)
     {
-        wavs[w].time = bufr.wavs[w].time;
-        wavs[w].freq = bufr.wavs[w].freq;
-        wavs[w].amp = bufr.wavs[w].amp;
-        wavs[w].pos.x = bufr.wavs[w].pos.x;
-        wavs[w].pos.y = bufr.wavs[w].pos.y;
-        wavs[w].vel.x = bufr.wavs[w].vel.x;
-        wavs[w].vel.y = bufr.wavs[w].vel.y;
+        if(bufr.wavs[w] !== undefined)
+        {
+            wavs[w].time = bufr.wavs[w].time;
+            wavs[w].freq = bufr.wavs[w].freq;
+            wavs[w].amp = bufr.wavs[w].amp;
+            wavs[w].pos.x = bufr.wavs[w].pos.x;
+            wavs[w].pos.y = bufr.wavs[w].pos.y;
+            wavs[w].vel.x = bufr.wavs[w].vel.x;
+            wavs[w].vel.y = bufr.wavs[w].vel.y;
+        }
+
+        else
+        {
+            wavs[w] = undefined;
+        }
     }
 
-    for(let f = 0; f < bufr.freqs.length; f++)
+    for(let f = 0; f < 1000; f++)
     {
-        freqs[f] = bufr.freqs[f];
+        if(bufr.freqs[f] !== undefined)
+        {
+            freqs[f] = bufr.freqs[f];
+        }
+
+        else
+        {
+            freqs[f] = undefined;
+        }
     }
 
-    for(let a = 0; a < bufr.amps.length; a++)
+    for(let a = 0; a < 1000; a++)
     {
-        amps[a] = bufr.amps[a];
+        if(bufr.amps[a] !== undefined)
+        {
+            amps[a] = bufr.amps[a];
+        }
+
+        else
+        {
+            amps[a] = undefined;
+        }
     }
 
     fixTime();
@@ -1070,7 +1092,7 @@ function fixMag()
     }
 }
 
-function keyDown(event)
+function doKeyDown(event)
 {
     if(event.key.toUpperCase() === "C")
     {
@@ -1080,6 +1102,11 @@ function keyDown(event)
         }
 
         else if(obj === obs)
+        {
+            setCtrlSrc();
+        }
+
+        else
         {
             setCtrlSrc();
         }

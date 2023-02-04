@@ -42,4 +42,4 @@ The vector button group can be used to set the vector of the motion type of the 
 
 Does not implement the effects of wave interference.
 
-Observer can only detect one frequency and amplitude at a timeo
+Observer can only detect one frequency and amplitude at a time
