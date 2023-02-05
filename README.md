@@ -36,19 +36,21 @@ Then, the perceived frequency and amplitude is calculated using a vector positio
 
 ## Functionality
 
-`TIME` button group can be used to pause the simulation, possibly to change the properties of the source and observer.
+`TIME` button group (P) can be used to pause the simulation, possibly to change the properties of the source and observer.
 
-`BUFFER` button group can be used to save the current simulation time and restore the saved time later on.
+`BUFFER` button group (S/R) can be used to save the current simulation time and restore the saved time later on.
 
-`SOUND` button group can be used to interpret the observed signal as a sound wave.
+`SOUND` button group (M) can be used to interpret the observed signal as a sound wave.
 
-`OWAVE` button group can be used to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
+`OWAVE` button group (O) can be used to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
 
-`CONTROL` button group can be used to toggle between modifying the properties of the source and observer.
+`CONTROL` button group (C) can be used to toggle between modifying the properties of the source and observer.
 
-`TYPE` button group can be used to toggle between modifying the velocity and acceleration of the controlled object.
+`TYPE` button group (T) can be used to toggle between modifying the velocity and acceleration of the controlled object.
 
-`VECTOR` button group can be used to set the vector of the motion type of the controlled object.
+`DIRECTION` button group (ArrowLeft/ArrowRight/ArrowUp/0) can be used to set the direction of the vector (including origin) of the motion type of the controlled object.
+
+`MAGNITUDE` button group (1/2/3) can be used to set the magnitude of the vector (excluding origin) of the motion type of the controlled object.
 
 ## Limitations
 
