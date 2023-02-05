@@ -473,84 +473,87 @@ function doBufrSave()
 
 function doBufrRstr()
 {
-    run = bufr.run;
-    time = bufr.time;
-    obj = bufr.obj;
-
-    src.freq = bufr.src.freq;
-    src.amp = bufr.src.amp;
-    src.type = bufr.src.type;
-    src.dir = bufr.src.dir;
-    src.mag = bufr.src.mag;
-    src.pos.x = bufr.src.pos.x;
-    src.pos.y = bufr.src.pos.y;
-    src.vel.x = bufr.src.vel.x;
-    src.vel.y = bufr.src.vel.y;
-    src.acc.x = bufr.src.acc.x;
-    src.acc.y = bufr.src.acc.y;
-
-    obs.freq = bufr.obs.freq;
-    obs.amp = bufr.obs.amp;
-    obs.type = bufr.obs.type;
-    obs.dir = bufr.obs.dir;
-    obs.mag = bufr.obs.mag;
-    obs.pos.x = bufr.obs.pos.x;
-    obs.pos.y = bufr.obs.pos.y;
-    obs.vel.x = bufr.obs.vel.x;
-    obs.vel.y = bufr.obs.vel.y;
-    obs.acc.x = bufr.obs.acc.x;
-    obs.acc.y = bufr.obs.acc.y;
-
-    for(let w = 0; w < 1000; w++)
+    if(bufr !== null)
     {
-        if(bufr.wavs[w] !== undefined)
+        run = bufr.run;
+        time = bufr.time;
+        obj = bufr.obj;
+    
+        src.freq = bufr.src.freq;
+        src.amp = bufr.src.amp;
+        src.type = bufr.src.type;
+        src.dir = bufr.src.dir;
+        src.mag = bufr.src.mag;
+        src.pos.x = bufr.src.pos.x;
+        src.pos.y = bufr.src.pos.y;
+        src.vel.x = bufr.src.vel.x;
+        src.vel.y = bufr.src.vel.y;
+        src.acc.x = bufr.src.acc.x;
+        src.acc.y = bufr.src.acc.y;
+    
+        obs.freq = bufr.obs.freq;
+        obs.amp = bufr.obs.amp;
+        obs.type = bufr.obs.type;
+        obs.dir = bufr.obs.dir;
+        obs.mag = bufr.obs.mag;
+        obs.pos.x = bufr.obs.pos.x;
+        obs.pos.y = bufr.obs.pos.y;
+        obs.vel.x = bufr.obs.vel.x;
+        obs.vel.y = bufr.obs.vel.y;
+        obs.acc.x = bufr.obs.acc.x;
+        obs.acc.y = bufr.obs.acc.y;
+    
+        for(let w = 0; w < 1000; w++)
         {
-            wavs[w].time = bufr.wavs[w].time;
-            wavs[w].freq = bufr.wavs[w].freq;
-            wavs[w].amp = bufr.wavs[w].amp;
-            wavs[w].pos.x = bufr.wavs[w].pos.x;
-            wavs[w].pos.y = bufr.wavs[w].pos.y;
-            wavs[w].vel.x = bufr.wavs[w].vel.x;
-            wavs[w].vel.y = bufr.wavs[w].vel.y;
+            if(bufr.wavs[w] !== undefined)
+            {
+                wavs[w].time = bufr.wavs[w].time;
+                wavs[w].freq = bufr.wavs[w].freq;
+                wavs[w].amp = bufr.wavs[w].amp;
+                wavs[w].pos.x = bufr.wavs[w].pos.x;
+                wavs[w].pos.y = bufr.wavs[w].pos.y;
+                wavs[w].vel.x = bufr.wavs[w].vel.x;
+                wavs[w].vel.y = bufr.wavs[w].vel.y;
+            }
+    
+            else
+            {
+                wavs[w] = undefined;
+            }
         }
-
-        else
+    
+        for(let f = 0; f < 1000; f++)
         {
-            wavs[w] = undefined;
+            if(bufr.freqs[f] !== undefined)
+            {
+                freqs[f] = bufr.freqs[f];
+            }
+    
+            else
+            {
+                freqs[f] = undefined;
+            }
         }
+    
+        for(let a = 0; a < 1000; a++)
+        {
+            if(bufr.amps[a] !== undefined)
+            {
+                amps[a] = bufr.amps[a];
+            }
+    
+            else
+            {
+                amps[a] = undefined;
+            }
+        }
+    
+        fixTime();
+        fixCtrl();
+        fixType();
+        fixDir();
+        fixMag();
     }
-
-    for(let f = 0; f < 1000; f++)
-    {
-        if(bufr.freqs[f] !== undefined)
-        {
-            freqs[f] = bufr.freqs[f];
-        }
-
-        else
-        {
-            freqs[f] = undefined;
-        }
-    }
-
-    for(let a = 0; a < 1000; a++)
-    {
-        if(bufr.amps[a] !== undefined)
-        {
-            amps[a] = bufr.amps[a];
-        }
-
-        else
-        {
-            amps[a] = undefined;
-        }
-    }
-
-    fixTime();
-    fixCtrl();
-    fixType();
-    fixDir();
-    fixMag();
 }
 
 function setSndOn()
@@ -1094,7 +1097,56 @@ function fixMag()
 
 function doKeyDown(event)
 {
-    if(event.key.toUpperCase() === "C")
+    if(event.key.toUpperCase() === "P")
+    {
+        if(run === true)
+        {
+            setTimeStop();
+        }
+
+        else if(run === false)
+        {
+            setTimeStrt();
+        }
+    }
+
+    else if(event.key.toUpperCase() === "S")
+    {
+        doBufrSave();
+    }
+
+    else if(event.key.toUpperCase() === "R")
+    {
+        doBufrRstr();
+    }
+
+    else if(event.key.toUpperCase() === "M")
+    {
+        if(snd === true)
+        {
+            setSndOff();
+        }
+
+        else if(snd === false)
+        {
+            setSndOn();
+        }
+    }
+
+    else if(event.key.toUpperCase() === "O")
+    {
+        if(owv === true)
+        {
+            setOwvOff();
+        }
+
+        else if(owv === false)
+        {
+            setOwvOn();
+        }
+    }
+
+    else if(event.key.toUpperCase() === "C")
     {
         if(obj === src)
         {
@@ -1112,29 +1164,49 @@ function doKeyDown(event)
         }
     }
 
-    else if(event.key.toUpperCase() === "S")
+    else if(event.key.toUpperCase() === "T")
     {
-        setDirZero();
+        if(isCtrl())
+        {
+            if(obj.type === 1)
+            {
+                setTypeAcc();
+            }
+
+            else if(obj.type === 2)
+            {
+                setTypeVel();
+            }
+        }
     }
 
-    else if(event.key.toUpperCase() === "A")
+    else if(event.key === "ArrowLeft")
     {
+        event.preventDefault();
         setDirLeft();
     }
 
-    else if(event.key.toUpperCase() === "D")
+    else if(event.key === "ArrowRight")
     {
+        event.preventDefault();
         setDirRght();
     }
 
-    else if(event.key.toUpperCase() === "W")
+    else if(event.key === "ArrowUp")
     {
+        event.preventDefault();
         setDirUp();
     }
 
-    else if(event.key.toUpperCase() === "X")
+    else if(event.key === "ArrowDown")
     {
+        event.preventDefault();
         setDirDown();
+    }
+
+    else if(event.key === "0")
+    {
+        setDirZero();
     }
 
     else if(event.key === "1")
