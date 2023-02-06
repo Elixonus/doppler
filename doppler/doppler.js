@@ -81,11 +81,6 @@ let wavs = [];
 let freqs = [];
 let amps = [];
 
-for(let w = 0; w < 0; w++)
-{
-    doStep();
-}
-
 fixTime();
 fixBufr();
 fixSnd();
@@ -154,12 +149,12 @@ function doStep()
     {
         obs.wav = wavs[wo];
         let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
-        let velw = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
+        let vels = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
         let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
-        obs.freq = Math.abs(obs.wav.freq * (0.01 - velo) / (0.01 + velw));
+        obs.freq = obs.wav.freq * (0.01 - velo) / (0.01 + vels);
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
-        freqs[time % 1000] = obs.freq;
-        amps[time % 1000] = obs.amp;
+        freqs[ws] = obs.freq;
+        amps[ws] = obs.amp;
     }
 
     time += 1;
@@ -181,15 +176,15 @@ function doFrame()
 
     if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
     {
+        contextPos.save();
+        contextPos.translate(obs.pos.x, obs.pos.y);
         contextPos.beginPath();
-        contextPos.lineTo(obs.pos.x, obs.pos.y);
-        contextPos.lineTo(obs.pos.x + 50 * obs.vel.x, obs.pos.y + 50 * obs.vel.y);
+        contextPos.lineTo(0, 0);
+        contextPos.translate(50 * obs.vel.x, 50 * obs.vel.y);
+        contextPos.lineTo(0, 0);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#00ff00";
         contextPos.stroke();
-
-        contextPos.save();
-        contextPos.translate(obs.pos.x + 50 * obs.vel.x, obs.pos.y + 50 * obs.vel.y);
         contextPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         contextPos.beginPath();
         contextPos.lineTo(0, 0.1);
@@ -208,15 +203,15 @@ function doFrame()
 
     if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
     {
+        contextPos.save();
+        contextPos.translate(src.pos.x, src.pos.y);
         contextPos.beginPath();
-        contextPos.lineTo(src.pos.x, src.pos.y);
-        contextPos.lineTo(src.pos.x + 50 * src.vel.x, src.pos.y + 50 * src.vel.y);
+        contextPos.lineTo(0, 0);
+        contextPos.translate(50 * src.vel.x, 50 * src.vel.y);
+        contextPos.lineTo(0, 0);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ff0000";
         contextPos.stroke();
-
-        contextPos.save();
-        contextPos.translate(src.pos.x + 50 * src.vel.x, src.pos.y + 50 * src.vel.y);
         contextPos.rotate(Math.atan2(src.vel.y, src.vel.x));
         contextPos.beginPath();
         contextPos.lineTo(0, 0.1);
@@ -248,36 +243,39 @@ function doFrame()
 
     contextPos.restore();
 
-    if(owv === true && obs.wav !== null && time - obs.wav.time < 500)
+    let wav = obs.wav;
+
+    if(owv === true && wav !== null && time - wav.time < 500)
     {
         contextPos.beginPath();
-        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
+        contextPos.arc(wav.pos.x, wav.pos.y, 0.01 * (time - wav.time), 0, 2 * Math.PI);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ffff00";
         contextPos.stroke();
 
         contextPos.beginPath();
-        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.1, 0, 2 * Math.PI);
+        contextPos.arc(wav.pos.x, wav.pos.y, 0.1, 0, 2 * Math.PI);
         contextPos.fillStyle = "#ffff00";
         contextPos.fill();
 
-        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
+        if(Math.hypot(wav.vel.x, wav.vel.y) > 0.001)
         {
+            contextPos.save();
+            contextPos.translate(wav.pos.x, wav.pos.y);
             contextPos.beginPath();
-            contextPos.lineTo(obs.wav.pos.x, obs.wav.pos.y);
-            contextPos.lineTo(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
+            contextPos.lineTo(0, 0);
+            contextPos.translate(50 * wav.vel.x, 50 * wav.vel.y);
+            contextPos.lineTo(0, 0);
             contextPos.lineWidth = 0.05;
             contextPos.strokeStyle = "#ffff00";
             contextPos.stroke();
-    
-            contextPos.save();
-            contextPos.translate(obs.wav.pos.x + 50 * obs.wav.vel.x, obs.wav.pos.y + 50 * obs.wav.vel.y);
-            contextPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
+            contextPos.rotate(Math.atan2(wav.vel.y, wav.vel.x));
             contextPos.beginPath();
             contextPos.lineTo(0, 0.1);
             contextPos.lineTo(0, -0.1);
             contextPos.lineTo(0.1, 0);
             contextPos.closePath();
+            contextPos.fillStyle = "#ffff00";
             contextPos.fill();
             contextPos.restore();
         }
@@ -293,19 +291,20 @@ function doFrame()
         contextFreq.save();
         contextFreq.translate(0, 200);
         contextFreq.scale(800, -200);
-    
+
+        contextFreq.fillStyle = "#ff0000";
+        contextFreq.fillRect(Math.max(1 - time / 1000, 0), 0, Math.min(time / 1000, 1), 0.25);
+
         for(let f = 0; f < 1000; f += 10)
         {
-            contextFreq.fillStyle = "#00ff00";
-            contextFreq.fillRect(f / (1000 - 1), 0, 0.009, Math.min(0.25 * freqs[(f + time) % 1000], 1));
-        }
+            let freq = freqs[(f + time) % 1000];
 
-        contextFreq.beginPath();
-        contextFreq.lineTo(0, 0.25);
-        contextFreq.lineTo(1, 0.25);
-        contextFreq.lineWidth = 0.03;
-        contextFreq.strokeStyle = "#ff0000";
-        contextFreq.stroke();
+            if(freq !== undefined)
+            {
+                contextFreq.fillStyle = "#00ff00";
+                contextFreq.fillRect(f / (1000 - 1), 0, 0.009, Math.min(0.25 * Math.abs(freq), 1));
+            }
+        }
 
         contextFreq.restore();
     
@@ -316,18 +315,19 @@ function doFrame()
         contextAmp.translate(0, 200);
         contextAmp.scale(800, -200);
     
+        contextAmp.fillStyle = "#ff0000";
+        contextAmp.fillRect(Math.max(1 - time / 1000, 0), 0, Math.min(time / 1000, 1), 0.8);
+
         for(let a = 0; a < 1000; a += 10)
         {
-            contextAmp.fillStyle = "#00ff00";
-            contextAmp.fillRect(a / (1000 - 1), 0, 0.009, 0.8 * amps[(a + time) % 1000]);
-        }
+            let amp = amps[(a + time) % 1000];
 
-        contextAmp.beginPath();
-        contextAmp.lineTo(0, 0.8);
-        contextAmp.lineTo(1, 0.8);
-        contextAmp.lineWidth = 0.03;
-        contextAmp.strokeStyle = "#ff0000";
-        contextAmp.stroke();
+            if(amp !== undefined)
+            {
+                contextAmp.fillStyle = "#00ff00";
+                contextAmp.fillRect(a / (1000 - 1), 0, 0.009, 0.8 * amp);
+            }
+        }
 
         contextAmp.restore();
     }
@@ -587,9 +587,9 @@ function setSnd()
 {
     if(snd === true)
     {
-        if(run === true)
+        if(run === true && obs.freq !== null && obs.amp !== null)
         {
-            oscillator.frequency.value = Math.min(1000 * obs.freq, 3000);
+            oscillator.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.freq), 1), 3000);
             volume.gain.value = 0.2 * obs.amp;
         }
 
@@ -746,7 +746,7 @@ function setTypeVel()
     {
         obj.type = 1;
         fixType();
-        setMtn();
+        setType();
     }
 }
 
@@ -756,91 +756,11 @@ function setTypeAcc()
     {
         obj.type = 2;
         fixType();
-        setMtn();
+        setType();
     }
 }
 
-function setDirLeft()
-{
-    if(isCtrl() === true)
-    {
-        obj.dir = 1;
-        fixDir();
-        setMtn();
-    }
-}
-
-function setDirRght()
-{
-    if(isCtrl() === true)
-    {
-        obj.dir = 2;
-        fixDir();
-        setMtn();
-    }
-}
-
-function setDirUp()
-{
-    if(isCtrl() === true)
-    {
-        obj.dir = 3;
-        fixDir();
-        setMtn();
-    }
-}
-
-function setDirDown()
-{
-    if(isCtrl() === true)
-    {
-        obj.dir = 4;
-        fixDir();
-        setMtn();
-    }
-}
-
-function setDirZero()
-{
-    if(isCtrl() === true)
-    {
-        obj.dir = 0;
-        fixDir();
-        setMtn();
-    }
-}
-
-function setMagLow()
-{
-    if(isCtrl() === true)
-    {
-        obj.mag = 1;
-        fixMag();
-        setMtn();
-    }
-}
-
-function setMagMed()
-{
-    if(isCtrl() === true)
-    {
-        obj.mag = 2;
-        fixMag();
-        setMtn();
-    }
-}
-
-function setMagHigh()
-{
-    if(isCtrl() === true)
-    {
-        obj.mag = 3;
-        fixMag();
-        setMtn();
-    }
-}
-
-function setMtn()
+function setType()
 {
     if(obj !== null)
     {
@@ -915,6 +835,86 @@ function setMtn()
                 }
             }
         }
+    }
+}
+
+function setDirLeft()
+{
+    if(isCtrl() === true)
+    {
+        obj.dir = 1;
+        fixDir();
+        setType();
+    }
+}
+
+function setDirRght()
+{
+    if(isCtrl() === true)
+    {
+        obj.dir = 2;
+        fixDir();
+        setType();
+    }
+}
+
+function setDirUp()
+{
+    if(isCtrl() === true)
+    {
+        obj.dir = 3;
+        fixDir();
+        setType();
+    }
+}
+
+function setDirDown()
+{
+    if(isCtrl() === true)
+    {
+        obj.dir = 4;
+        fixDir();
+        setType();
+    }
+}
+
+function setDirZero()
+{
+    if(isCtrl() === true)
+    {
+        obj.dir = 0;
+        fixDir();
+        setType();
+    }
+}
+
+function setMagLow()
+{
+    if(isCtrl() === true)
+    {
+        obj.mag = 1;
+        fixMag();
+        setType();
+    }
+}
+
+function setMagMed()
+{
+    if(isCtrl() === true)
+    {
+        obj.mag = 2;
+        fixMag();
+        setType();
+    }
+}
+
+function setMagHigh()
+{
+    if(isCtrl() === true)
+    {
+        obj.mag = 3;
+        fixMag();
+        setType();
     }
 }
 

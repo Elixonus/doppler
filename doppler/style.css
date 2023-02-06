@@ -79,6 +79,7 @@ body
 .canvas
 {
     width: 550px;
+    max-width: 80%;
     margin: 20px;
     background-color: #000000;
     outline: 6px solid #000000;
