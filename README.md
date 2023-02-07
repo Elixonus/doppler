@@ -2,7 +2,7 @@
 
 ## About
 
-Simulation of the doppler effect, particularized in the context of sound waves and discovered in scenarios where a wave emitting source and wave detecting observer move with a user controllable velocity or acceleration.
+Simulation of the doppler effect, particularized in the context of sound waves and explored through scenarios where a wave emitting source and wave detecting observer move with a user controllable velocity or acceleration.
 
 ## Source
 
