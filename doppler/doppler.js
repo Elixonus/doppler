@@ -560,6 +560,7 @@ function setSndOn()
 {
     if(snd === false)
     {
+        snd = true;
         contextAudio = new window.AudioContext();
         oscillator = contextAudio.createOscillator();
         oscillator.type = "sawtooth";
@@ -568,7 +569,6 @@ function setSndOn()
         volume.connect(contextAudio.destination);
         setSnd();
         oscillator.start();
-        snd = true;
         fixSnd();
     }
 }
@@ -593,7 +593,7 @@ function setSnd()
             volume.gain.value = 0.2 * obs.amp;
         }
 
-        else if(run === false)
+        else
         {
             oscillator.frequency.value = 0;
             volume.gain.value = 0;
