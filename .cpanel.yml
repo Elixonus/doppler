@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=$HOME/public_html/
-    - /bin/cp -R doppler $DEPLOYPATH
