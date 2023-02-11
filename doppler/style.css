@@ -85,3 +85,25 @@ body
     outline: 6px solid #000000;
     outline-offset: 4px;
 }
+
+#button-owv-on
+{
+    color: #000000;
+    background-color: #ffff00;
+}
+
+#button-owv-off
+{
+    color: #000000;
+    background-color: #ffff00;
+}
+
+#button-ctrl-src
+{
+    background-color: #ff0000;
+}
+
+#button-ctrl-obs
+{
+    background-color: #00ff00;
+}
