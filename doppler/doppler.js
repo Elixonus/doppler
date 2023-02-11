@@ -1,26 +1,26 @@
-const buttonTimeStrt = document.getElementById("button-time-strt");
+const buttonTimeStrt = document.getElementById("button-time-start");
 const buttonTimeStop = document.getElementById("button-time-stop");
-const buttonBufrSave = document.getElementById("button-bufr-save");
-const buttonBufrRstr = document.getElementById("button-bufr-rstr");
-const buttonSndOn = document.getElementById("button-snd-on");
-const buttonSndOff = document.getElementById("button-snd-off");
-const buttonOwvOn = document.getElementById("button-owv-on");
-const buttonOwvOff = document.getElementById("button-owv-off");
-const buttonCtrlSrc = document.getElementById("button-ctrl-src");
-const buttonCtrlObs = document.getElementById("button-ctrl-obs");
-const buttonTypeVel = document.getElementById("button-type-vel");
-const buttonTypeAcc = document.getElementById("button-type-acc");
-const buttonDirLeft = document.getElementById("button-dir-left");
-const buttonDirRght = document.getElementById("button-dir-rght");
-const buttonDirUp = document.getElementById("button-dir-up");
-const buttonDirDown = document.getElementById("button-dir-down");
-const buttonDirZero = document.getElementById("button-dir-zero");
-const buttonMagLow = document.getElementById("button-mag-low");
-const buttonMagMed = document.getElementById("button-mag-med");
-const buttonMagHigh = document.getElementById("button-mag-high");
-const canvasPos = document.getElementById("canvas-pos");
-const canvasFreq = document.getElementById("canvas-freq");
-const canvasAmp = document.getElementById("canvas-amp");
+const buttonBufrSave = document.getElementById("button-buffer-save");
+const buttonBufrRstr = document.getElementById("button-buffer-restore");
+const buttonSndOn = document.getElementById("button-sound-on");
+const buttonSndOff = document.getElementById("button-sound-off");
+const buttonOwvOn = document.getElementById("button-owave-on");
+const buttonOwvOff = document.getElementById("button-owave-off");
+const buttonCtrlSrc = document.getElementById("button-control-source");
+const buttonCtrlObs = document.getElementById("button-control-observer");
+const buttonTypeVel = document.getElementById("button-type-velocity");
+const buttonTypeAcc = document.getElementById("button-type-acceleration");
+const buttonDirLeft = document.getElementById("button-direction-left");
+const buttonDirRght = document.getElementById("button-direction-right");
+const buttonDirUp = document.getElementById("button-direction-up");
+const buttonDirDown = document.getElementById("button-direction-down");
+const buttonDirZero = document.getElementById("button-direction-zero");
+const buttonMagLow = document.getElementById("button-magnitude-low");
+const buttonMagMed = document.getElementById("button-magnitude-medium");
+const buttonMagHigh = document.getElementById("button-magnitude-high");
+const canvasPos = document.getElementById("canvas-position");
+const canvasFreq = document.getElementById("canvas-frequency");
+const canvasAmp = document.getElementById("canvas-amplitude");
 const contextPos = canvasPos.getContext("2d");
 const contextFreq = canvasFreq.getContext("2d");
 const contextAmp = canvasAmp.getContext("2d");
@@ -243,33 +243,31 @@ function doFrame()
 
     contextPos.restore();
 
-    let wav = obs.wav;
-
-    if(owv === true && wav !== null && time - wav.time < 500)
+    if(isOwv())
     {
         contextPos.beginPath();
-        contextPos.arc(wav.pos.x, wav.pos.y, 0.01 * (time - wav.time), 0, 2 * Math.PI);
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ffff00";
         contextPos.stroke();
 
         contextPos.beginPath();
-        contextPos.arc(wav.pos.x, wav.pos.y, 0.1, 0, 2 * Math.PI);
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.1, 0, 2 * Math.PI);
         contextPos.fillStyle = "#ffff00";
         contextPos.fill();
 
-        if(Math.hypot(wav.vel.x, wav.vel.y) > 0.001)
+        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
         {
             contextPos.save();
-            contextPos.translate(wav.pos.x, wav.pos.y);
+            contextPos.translate(obs.wav.pos.x, obs.wav.pos.y);
             contextPos.beginPath();
             contextPos.lineTo(0, 0);
-            contextPos.translate(50 * wav.vel.x, 50 * wav.vel.y);
+            contextPos.translate(50 * obs.wav.vel.x, 50 * obs.wav.vel.y);
             contextPos.lineTo(0, 0);
             contextPos.lineWidth = 0.05;
             contextPos.strokeStyle = "#ffff00";
             contextPos.stroke();
-            contextPos.rotate(Math.atan2(wav.vel.y, wav.vel.x));
+            contextPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
             contextPos.beginPath();
             contextPos.lineTo(0, 0.1);
             contextPos.lineTo(0, -0.1);
@@ -289,21 +287,32 @@ function doFrame()
         contextFreq.fillRect(0, 0, 800, 200);
     
         contextFreq.save();
-        contextFreq.translate(0, 200);
-        contextFreq.scale(800, -200);
+        contextFreq.scale(800, 200);
+        contextFreq.translate(0.5, 0.5);
+        contextFreq.scale(-1, -1);
+        contextFreq.translate(-0.5, -0.5);
 
         contextFreq.fillStyle = "#ff0000";
-        contextFreq.fillRect(Math.max(1 - time / 1000, 0), 0, Math.min(time / 1000, 1), 0.25);
+        contextFreq.fillRect(0, 0, Math.min(time / 1000, 1), 0.25);
 
         for(let f = 0; f < 1000; f += 10)
         {
-            let freq = freqs[(f + time) % 1000];
+            let freq = freqs[(time - f - 1) % 1000];
 
             if(freq !== undefined)
             {
                 contextFreq.fillStyle = "#00ff00";
-                contextFreq.fillRect(f / (1000 - 1), 0, 0.009, Math.min(0.25 * Math.abs(freq), 1));
+                contextFreq.fillRect(f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+                contextFreq.strokeStyle = "#000000";
+                contextFreq.lineWidth = 0.002;
+                contextFreq.strokeRect(f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
             }
+        }
+
+        if(isOwv())
+        {
+            contextFreq.fillStyle = "#ffff00";
+            contextFreq.fillRect(0, 0, 0.008, Math.min(0.25 * Math.abs(obs.wav.freq), 1));
         }
 
         contextFreq.restore();
@@ -312,21 +321,29 @@ function doFrame()
         contextAmp.fillRect(0, 0, 800, 200);
     
         contextAmp.save();
-        contextAmp.translate(0, 200);
-        contextAmp.scale(800, -200);
+        contextAmp.scale(800, 200);
+        contextAmp.translate(0.5, 0.5);
+        contextAmp.scale(-1, -1);
+        contextAmp.translate(-0.5, -0.5);
     
         contextAmp.fillStyle = "#ff0000";
-        contextAmp.fillRect(Math.max(1 - time / 1000, 0), 0, Math.min(time / 1000, 1), 0.8);
+        contextAmp.fillRect(0, 0, Math.min(time / 1000, 1), 0.8);
 
         for(let a = 0; a < 1000; a += 10)
         {
-            let amp = amps[(a + time) % 1000];
+            let amp = amps[(time - a - 1) % 1000];
 
             if(amp !== undefined)
             {
                 contextAmp.fillStyle = "#00ff00";
-                contextAmp.fillRect(a / (1000 - 1), 0, 0.009, 0.8 * amp);
+                contextAmp.fillRect(a / 1000, 0, 0.008, 0.8 * amp);
             }
+        }
+
+        if(isOwv())
+        {
+            contextAmp.fillStyle = "#ffff00";
+            contextAmp.fillRect(0, 0, 0.008, 0.8 * obs.wav.amp);
         }
 
         contextAmp.restore();
@@ -611,6 +628,11 @@ function setOwvOff()
 {
     owv = false;
     fixOwv();
+}
+
+function isOwv()
+{
+    return (owv === true && obs.wav !== null && time - obs.wav.time < 500);
 }
 
 function setCtrlSrc()

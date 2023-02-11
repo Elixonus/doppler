@@ -47,14 +47,6 @@ body
     margin: 10px;
 }
 
-.title
-{
-    margin: 20px;
-    padding: 15px;
-    background-color: #ffffff;
-    outline: 5px solid #000000;
-}
-
 .button
 {
     background-color: #888888;
@@ -78,32 +70,34 @@ body
 
 .canvas
 {
-    width: 550px;
-    max-width: 80%;
+    width: 450px;
     margin: 20px;
     background-color: #000000;
     outline: 6px solid #000000;
     outline-offset: 4px;
 }
 
-#button-owv-on
+#heading
+{
+    margin: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    outline: 5px solid #000000;
+}
+
+#button-owave-on, #button-owave-off
 {
     color: #000000;
     background-color: #ffff00;
 }
 
-#button-owv-off
-{
-    color: #000000;
-    background-color: #ffff00;
-}
-
-#button-ctrl-src
+#button-control-source
 {
     background-color: #ff0000;
 }
 
-#button-ctrl-obs
+#button-control-observer
 {
+    color: #000000;
     background-color: #00ff00;
 }
