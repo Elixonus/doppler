@@ -181,11 +181,11 @@ function doFrame()
         contextPos.beginPath();
         contextPos.lineTo(0, 0);
         contextPos.translate(50 * obs.vel.x, 50 * obs.vel.y);
-        contextPos.lineTo(0, 0);
+        contextPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
+        contextPos.lineTo(0.05, 0);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#00ff00";
         contextPos.stroke();
-        contextPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         contextPos.beginPath();
         contextPos.lineTo(0, 0.1);
         contextPos.lineTo(0, -0.1);
@@ -208,11 +208,11 @@ function doFrame()
         contextPos.beginPath();
         contextPos.lineTo(0, 0);
         contextPos.translate(50 * src.vel.x, 50 * src.vel.y);
-        contextPos.lineTo(0, 0);
+        contextPos.rotate(Math.atan2(src.vel.y, src.vel.x));
+        contextPos.lineTo(0.05, 0);
         contextPos.lineWidth = 0.05;
         contextPos.strokeStyle = "#ff0000";
         contextPos.stroke();
-        contextPos.rotate(Math.atan2(src.vel.y, src.vel.x));
         contextPos.beginPath();
         contextPos.lineTo(0, 0.1);
         contextPos.lineTo(0, -0.1);
@@ -252,7 +252,7 @@ function doFrame()
         contextPos.stroke();
 
         contextPos.beginPath();
-        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.1, 0, 2 * Math.PI);
+        contextPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
         contextPos.fillStyle = "#ffff00";
         contextPos.fill();
 
@@ -263,11 +263,11 @@ function doFrame()
             contextPos.beginPath();
             contextPos.lineTo(0, 0);
             contextPos.translate(50 * obs.wav.vel.x, 50 * obs.wav.vel.y);
-            contextPos.lineTo(0, 0);
+            contextPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
+            contextPos.lineTo(0.05, 0);
             contextPos.lineWidth = 0.05;
             contextPos.strokeStyle = "#ffff00";
             contextPos.stroke();
-            contextPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
             contextPos.beginPath();
             contextPos.lineTo(0, 0.1);
             contextPos.lineTo(0, -0.1);
