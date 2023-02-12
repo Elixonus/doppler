@@ -1,45 +1,19 @@
 body
 {
-    display: flex;
-    justify-content: center;
     text-align: center;
     background-color: #fffdd0;
 }
 
-.container-1
-{
-    width: 700px;
-    margin: 30px;
-    padding: 10px;
-    background-color: #888888;
-    box-shadow: 0 5px 30px #000000;
-    outline: 5px solid #000000;
-}
-
-.container-2
+.container
 {
     margin: 20px;
-    padding: 20px;
-    background-color: #ffffff;
-    outline: 5px solid #000000;
+    padding: 5px;
+    background-color: #000000;
 }
 
-.container-3
+.heading
 {
-    margin: 30px;
-    padding: 10px;
-    background-color: #f8f8f8;
-    outline: 6px dashed #dddddd;
-    border-radius: 10px;
-}
-
-.container-4
-{
-    margin: 30px;
-    padding: 20px;
-    background-color: #f0f0f0;
-    outline: 6px dashed #c8c8c8;
-    border-radius: 10px;
+    margin: 20px;
 }
 
 .label
@@ -70,19 +44,26 @@ body
 
 .canvas
 {
-    width: 450px;
-    margin: 20px;
+    width: 100%;
+    margin: 30px;
     background-color: #000000;
     outline: 6px solid #000000;
     outline-offset: 4px;
 }
 
-#heading
+#container-doppler
 {
-    margin: 20px;
-    padding: 15px;
+    width: 500px;
+}
+
+#heading-doppler
+{
+    color: #ffffff;
+}
+
+#container-general, #container-object, #container-view, #container-plot
+{
     background-color: #ffffff;
-    outline: 5px solid #000000;
 }
 
 #button-owave-on, #button-owave-off

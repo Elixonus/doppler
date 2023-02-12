@@ -351,7 +351,7 @@ function doFrame()
             contextAmp.fillRect(0, 0, 0.01, 0.8 * obs.amp);
         }
 
-        for(let b = 0; b < 3; b++)
+        for(let b = 0; b < 4; b++)
         {
             contextAmp.fillStyle = "#666666";
             contextAmp.fillRect(0, 0.8 * (b + 1) / 4, 1, 0.01);
