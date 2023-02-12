@@ -293,26 +293,31 @@ function doFrame()
         contextFreq.translate(-0.5, -0.5);
 
         contextFreq.fillStyle = "#ff0000";
-        contextFreq.fillRect(0, 0, Math.min(time / 1000, 1), 0.25);
+        contextFreq.fillRect(0, 0, Math.min(time / 1000, 4), 0.25);
 
-        for(let f = 0; f < 1000; f += 10)
+        contextFreq.beginPath();
+
+        for(let f = 0; f < 1000; f++)
         {
             let freq = freqs[(time - f - 1) % 1000];
 
             if(freq !== undefined)
             {
                 contextFreq.fillStyle = "#00ff00";
-                contextFreq.fillRect(f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
-                contextFreq.strokeStyle = "#000000";
-                contextFreq.lineWidth = 0.002;
-                contextFreq.strokeRect(f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+                contextFreq.fillRect(f / 1000, 0, 2 / 1000, Math.min(0.25 * Math.abs(freq), 1));
             }
         }
 
         if(isOwv())
         {
             contextFreq.fillStyle = "#ffff00";
-            contextFreq.fillRect(0, 0, 0.008, Math.min(0.25 * Math.abs(obs.wav.freq), 1));
+            contextFreq.fillRect(0, 0, 0.01, Math.min(0.25 * Math.abs(src.freq), 1));
+        }
+
+        for(let b = 0; b < 3; b++)
+        {
+            contextFreq.fillStyle = "#666666";
+            contextFreq.fillRect(0, (b + 1) / 4, 1, 0.01);
         }
 
         contextFreq.restore();
@@ -329,21 +334,27 @@ function doFrame()
         contextAmp.fillStyle = "#ff0000";
         contextAmp.fillRect(0, 0, Math.min(time / 1000, 1), 0.8);
 
-        for(let a = 0; a < 1000; a += 10)
+        for(let a = 0; a < 1000; a++)
         {
             let amp = amps[(time - a - 1) % 1000];
 
             if(amp !== undefined)
             {
                 contextAmp.fillStyle = "#00ff00";
-                contextAmp.fillRect(a / 1000, 0, 0.008, 0.8 * amp);
+                contextAmp.fillRect(a / 1000, 0, 2 / 1000, 0.8 * amp);
             }
         }
 
         if(isOwv())
         {
             contextAmp.fillStyle = "#ffff00";
-            contextAmp.fillRect(0, 0, 0.008, 0.8 * obs.wav.amp);
+            contextAmp.fillRect(0, 0, 0.01, 0.8 * obs.amp);
+        }
+
+        for(let b = 0; b < 3; b++)
+        {
+            contextAmp.fillStyle = "#666666";
+            contextAmp.fillRect(0, 0.8 * (b + 1) / 4, 1, 0.01);
         }
 
         contextAmp.restore();
