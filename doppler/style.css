@@ -1,6 +1,6 @@
 body
 {
-    padding: 50px;
+    padding: 0px;
     text-align: center;
     background-color: #ffffff;
     background-image: url("./background.svg");
@@ -59,11 +59,10 @@ body
 
 #container-doppler
 {
-    margin: auto;
+    margin: 0 auto;
     padding: 20px;
-    width: 80%;
-    min-width: 300px;
-    max-width: 600px;
+    width: 550px;
+    max-width: 100%;
     background-color: #cfb53b;
     border: 6px solid #000000;
 }
