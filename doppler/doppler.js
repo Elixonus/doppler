@@ -26,7 +26,7 @@ let ctxFreq = canvFreq.getContext("2d");
 let ctxAmp = canvAmp.getContext("2d");
 let ctxSnd;
 let oscl;
-let ampl;
+let gain;
 
 let time = 0;
 let run = true;
@@ -626,12 +626,12 @@ function setSndOn()
     if(snd === false)
     {
         snd = true;
-        ctxSnd = new window.Audioctx();
-        oscl = ctxSnd.createoscl();
+        ctxSnd = new window.AudioContext();
+        oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
-        ampl = ctxSnd.createGain();
-        oscl.connect(ampl);
-        ampl.connect(ctxSnd.destination);
+        gain = ctxSnd.createGain();
+        oscl.connect(gain);
+        gain.connect(ctxSnd.destination);
         setSnd();
         oscl.start();
         fixSnd();
@@ -655,13 +655,13 @@ function setSnd()
         if(run === true && obs.freq !== null && obs.amp !== null)
         {
             oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.freq), 1), 3000);
-            ampl.gain.value = 0.2 * obs.amp;
+            gain.gain.value = 0.2 * obs.amp;
         }
         
         else
         {
             oscl.frequency.value = 0;
-            ampl.gain.value = 0;
+            gain.gain.value = 0;
         }
     }
 }
