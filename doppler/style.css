@@ -8,7 +8,6 @@ body
 {
     margin: 20px;
     padding: 5px;
-    background-color: #000000;
 }
 
 .heading
@@ -42,10 +41,14 @@ body
     cursor: default;
 }
 
+.container-canvas
+{
+    padding: 10px;
+}
+
 .canvas
 {
     width: 100%;
-    margin: 30px;
     background-color: #000000;
     outline: 6px solid #000000;
     outline-offset: 4px;
@@ -53,7 +56,9 @@ body
 
 #container-doppler
 {
+    margin: auto;
     width: 500px;
+    background-color: #cccccc;
 }
 
 #heading-doppler
