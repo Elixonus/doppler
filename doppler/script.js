@@ -22,10 +22,12 @@ const btnMagHigh = document.getElementById("button-magnitude-high");
 const canvPos = document.getElementById("canvas-position");
 const canvFreq = document.getElementById("canvas-frequency");
 const canvAmp = document.getElementById("canvas-amplitude");
+const canvPrs = document.getElementById("canvas-pressure");
 
 let ctxPos;
 let ctxFreq;
 let ctxAmp;
+let ctxPrs;
 let ctxSnd;
 let oscl;
 let gain;
@@ -82,12 +84,14 @@ let obs = {
 let wavs = [];
 let freqs = [];
 let amps = [];
+let prs = [];
 
 for(let t = 0; t < 1000; t++)
 {
     wavs[t] = null;
     freqs[t] = null;
     amps[t] = null;
+    prs[t] = null;
 }
 
 fixTime();
@@ -99,9 +103,9 @@ fixType();
 fixDir();
 fixMag();
 
-window.requestAnimationFrame(doTime);
+window.requestAnimationFrame(doDspl);
 
-function dotime()
+function doTime()
 {
     src.vel.x += src.acc.x;
     src.vel.y += src.acc.y;
@@ -169,6 +173,7 @@ function dotime()
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
         freqs[ws] = obs.freq;
         amps[ws] = obs.amp;
+        prs[ws] = obs.amp * Math.sin(0.1 * obs.freq * dist - 0.1 * obs.freq * time);
     }
     
     else
@@ -178,12 +183,13 @@ function dotime()
         obs.amp = null;
         freqs[ws] = null;
         amps[ws] = null;
+        prs[ws] = null;
     }
 
     time += 1;
 }
 
-function doTime()
+function doDspl()
 {
     ctxPos = canvPos.getContext("2d");
 
@@ -387,6 +393,30 @@ function doTime()
         }
 
         ctxAmp.restore();
+
+        ctxPrs = canvPrs.getContext("2d");
+
+        ctxPrs.fillStyle = "#000000";
+        ctxPrs.fillRect(0, 0, 800, 200);
+
+        ctxPrs.save();
+        ctxPrs.scale(200, 200);
+        ctxPrs.translate(2, 0.5);
+        ctxPrs.scale(-1, -1);
+        ctxPrs.translate(-2, -0.5);
+
+        for(let p = 0; p < 1000; p++)
+        {
+            let pr = prs[(time - p - 1) % 1000];
+
+            if(pr !== null)
+            {
+                ctxPrs.fillStyle = "#00ff00";
+                ctxPrs.fillRect(4 * p / 1000, 0, 8 / 1000, 0.5 + 0.4 * pr);
+            }
+        }
+
+        ctxPrs.restore();
     }
 
     if(snd === true)
@@ -396,10 +426,10 @@ function doTime()
 
     if(run === true)
     {
-        dotime();
+        doTime();
     }
 
-    window.requestAnimationFrame(doTime);
+    window.requestAnimationFrame(doDspl);
 }
 
 btnTimeStrt.onclick = settimeStrt;
