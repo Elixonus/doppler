@@ -314,13 +314,13 @@ function doTime()
         ctxFreq.fillRect(0, 0, 800, 200);
     
         ctxFreq.save();
-        ctxFreq.scale(800, 200);
-        ctxFreq.translate(0.5, 0.5);
+        ctxFreq.scale(200, 200);
+        ctxFreq.translate(2, 0.5);
         ctxFreq.scale(-1, -1);
-        ctxFreq.translate(-0.5, -0.5);
+        ctxFreq.translate(-2, -0.5);
 
         ctxFreq.fillStyle = "#ff0000";
-        ctxFreq.fillRect(0, 0, Math.min(time / 1000, 4), 0.25);
+        ctxFreq.fillRect(0, 0, Math.min(4 * time / 1000, 4), 0.25);
 
         ctxFreq.beginPath();
 
@@ -331,20 +331,20 @@ function doTime()
             if(freq !== null)
             {
                 ctxFreq.fillStyle = "#00ff00";
-                ctxFreq.fillRect(f / 1000, 0, 2 / 1000, Math.min(0.25 * Math.abs(freq), 1));
+                ctxFreq.fillRect(4 * f / 1000, 0, 8 / 1000, Math.min(0.25 * Math.abs(freq), 1));
             }
         }
 
         if(isOwv())
         {
             ctxFreq.fillStyle = "#ffff00";
-            ctxFreq.fillRect(0, 0, 0.01, Math.min(0.25 * Math.abs(src.freq), 1));
+            ctxFreq.fillRect(0, 0, 0.04, Math.min(0.25 * Math.abs(src.freq), 1));
         }
 
         for(let b = 0; b < 3; b++)
         {
             ctxFreq.fillStyle = "#666666";
-            ctxFreq.fillRect(0, (b + 1) / 4, 1, 0.01);
+            ctxFreq.fillRect(0, (b + 1) / 4, 4, 0.01);
         }
 
         ctxFreq.restore();
@@ -355,13 +355,13 @@ function doTime()
         ctxAmp.fillRect(0, 0, 800, 200);
     
         ctxAmp.save();
-        ctxAmp.scale(800, 200);
-        ctxAmp.translate(0.5, 0.5);
+        ctxAmp.scale(200, 200);
+        ctxAmp.translate(2, 0.5);
         ctxAmp.scale(-1, -1);
-        ctxAmp.translate(-0.5, -0.5);
+        ctxAmp.translate(-2, -0.5);
     
         ctxAmp.fillStyle = "#ff0000";
-        ctxAmp.fillRect(0, 0, Math.min(time / 1000, 1), 0.8);
+        ctxAmp.fillRect(0, 0, Math.min(4 * time / 1000, 4), 0.8);
 
         for(let a = 0; a < 1000; a++)
         {
@@ -370,20 +370,20 @@ function doTime()
             if(amp !== null)
             {
                 ctxAmp.fillStyle = "#00ff00";
-                ctxAmp.fillRect(a / 1000, 0, 2 / 1000, 0.8 * amp);
+                ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
             }
         }
 
         if(isOwv())
         {
             ctxAmp.fillStyle = "#ffff00";
-            ctxAmp.fillRect(0, 0, 0.01, 0.8 * obs.amp);
+            ctxAmp.fillRect(0, 0, 0.04, 0.8 * obs.amp);
         }
 
         for(let b = 0; b < 4; b++)
         {
             ctxAmp.fillStyle = "#666666";
-            ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 1, 0.01);
+            ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 4, 0.01);
         }
 
         ctxAmp.restore();
@@ -639,10 +639,10 @@ function setSndOn()
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
         oscl.start();
-        setSnd();
     }
 
     snd = true;
+    setSnd();
     fixSnd();
 }
 
