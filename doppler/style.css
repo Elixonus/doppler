@@ -1,15 +1,59 @@
 body
 {
-    padding: 0px;
     text-align: center;
-    background-color: #ffffff;
-    background-image: url("./background.svg");
 }
 
-.container
+#container
 {
-    margin: 10px;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #777777;
+    border: 6px solid #000000;
+}
+
+.section-content
+{
+    margin: 5px;
+    padding: 5px;
+    background-color: #ff0000;
+    border: 3px solid #ffffff;
+}
+
+.group-content
+{
+    margin: 5px;
+    padding: 5px;
+    background-color: #0000ff;
+}
+
+.section-button
+{
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+.group-button
+{
+    margin: 5px;
     padding: 10px;
+    background-color: #dddddd;
+}
+
+.section-canvas
+{
+    margin: 5px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.wrap-canvas
+{
+    margin: 0;
+    padding: 10px;
+    background-color: #dddddd;
 }
 
 .heading
@@ -43,13 +87,6 @@ body
     cursor: default;
 }
 
-.container-canvas
-{
-    margin: 0px;
-    padding: 10px;
-    background-color: #aaaaaa;
-}
-
 .canvas
 {
     width: 100%;
@@ -57,40 +94,6 @@ body
     background-color: #000000;
 }
 
-#container-doppler
-{
-    margin: 0 auto;
-    padding: 20px;
-    width: 550px;
-    max-width: 100%;
-    background-color: #cfb53b;
-    border: 6px solid #000000;
-}
-
-#heading-doppler
-{
-    color: #000000;
-}
-
-#container-general, #container-object, #container-view, #container-plot
-{
-    background-color: #fffdd0;
-}
-
-#container-motion
-{
-    border: 5px dashed #000000;
-}
-
-#container-vector
-{
-    border: 5px solid #000000;
-}
-
-#container-vector
-{
-    background-color: #ffffff;
-}
 
 #button-owave-on, #button-owave-off
 {

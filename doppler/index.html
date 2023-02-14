@@ -12,64 +12,116 @@
     </head>
     
     <body>
-        <div id="container-doppler" class="container">
-            <h1 id="heading-doppler" class="heading">Doppler Effect Simulation</h1>
-            <div id="container-general" class="container">
-                <h2 id="heading-general" class="heading">General</h2>
-                <h3 id="label-time" class="label">TIME (P)</h3>
-                <button type="button" id="button-time-start" class="button">START</button>
-                <button type="button" id="button-time-stop" class="button">STOP</button>
-                <h3 id="label-buffer" class="label">BUFFER (S/R)</h3>
-                <button type="button" id="button-buffer-save" class="button">SAVE</button>
-                <button type="button" id="button-buffer-restore" class="button">RESTORE</button>
-                <h3 id="label-sound" class="label">SOUND (M)</h3>
-                <button type="button" id="button-sound-on" class="button">ON</button>
-                <button type="button" id="button-sound-off" class="button">OFF</button>
-                <h3 id="label-owave" class="label">OWAVE (O)</h3>
-                <button type="button" id="button-owave-on" class="button">ON</button>
-                <button type="button" id="button-owave-off" class="button">OFF</button>
-            </div>
-            <div id="container-object" class="container">
-                <h2 id="heading-object" class="heading">Object</h2>
-                <h3 id="label-control" class="label">CONTROL (C)</h3>
-                <button type="button" id="button-control-source" class="button">SOURCE</button>
-                <button type="button" id="button-control-observer" class="button">OBSERVER</button>                
-                <div id="container-motion" class="container">
-                    <h2 id="heading-motion" class="heading">Motion</h2>
-                    <h3 id="label-type" class="label">TYPE (T)</h3>
-                    <button type="button" id="button-type-velocity" class="button">VELOCITY</button>
-                    <button type="button" id="button-type-acceleration" class="button">ACCELERATION</button>
-                    <div id="container-vector" class="container">
-                        <h2 id="heading-vector" class="heading">Vector</h2>
-                        <h3 id="label-direction" class="label">DIRECTION (ARROW)</h3>
-                        <button type="button" id="button-direction-left" class="button">LEFT</button>
-                        <button type="button" id="button-direction-right" class="button">RIGHT</button>
-                        <button type="button" id="button-direction-up" class="button">UP</button>
-                        <button type="button" id="button-direction-down" class="button">DOWN</button>
-                        <button type="button" id="button-direction-zero" class="button">ZERO</button>
-                        <h3 id="label-magnitude" class="label">MAGNITUDE (*0/1/2/3)</h3>
-                        <button type="button" id="button-magnitude-low" class="button">LOW</button>
-                        <button type="button" id="button-magnitude-medium" class="button">MEDIUM</button>
-                        <button type="button" id="button-magnitude-high" class="button">HIGH</button>
+        <div id="container">
+            <h1 id="title">Doppler Effect Simulation</h1>
+            <div class="group group-content">
+                <div class="section section-content">
+                    <h2 class="label label-content">General</h2>
+                    <div class="group group-content">
+                        <div class="section section-button">
+                            <h3 class="label label-button">TIME (P)</h3>
+                            <div class="group group-button">
+                                <button type="button" id="button-time-start" class="button">START</button>
+                                <button type="button" id="button-time-stop" class="button">STOP</button>
+                            </div>
+                        </div>
+                        <div class="section section-button">
+                            <h3 class="label label-button">BUFFER (S/R)</h3>
+                            <div class="group group-button">
+                                <button type="button" id="button-buffer-save" class="button">SAVE</button>
+                                <button type="button" id="button-buffer-restore" class="button">RESTORE</button>
+                            </div>
+                        </div>
+                        <div class="section section-button">
+                            <h3 class="label">SOUND (M)</h3>
+                            <div class="group group-button">
+                                <button type="button" id="button-sound-on" class="button">ON</button>
+                                <button type="button" id="button-sound-off" class="button">OFF</button>
+                            </div>
+                        </div>
+                        <div class="section section-button">
+                            <h3 class="label label-button">OWAVE (O)</h3>
+                            <div class="group group-button">
+                                <button type="button" id="button-owave-on" class="button">ON</button>
+                                <button type="button" id="button-owave-off" class="button">OFF</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="container-view" class="container">
-                <h2 id="heading-view" class="heading">View</h2>
-                <h3 id="label-position" class="label">POSITION vs TIME</h3>
-                <div id="container-canvas-position" class="container container-canvas">
-                    <canvas id="canvas-position" class="canvas" width="800" height="600"></canvas>
+                <div class="section section-content">
+                    <h2 class="label label-content">Object</h2>
+                    <div class="group group-content">
+                        <div class="section section-button">
+                            <h3 class="label label-button">CONTROL (C)</h3>
+                            <div class="group group-button">
+                                <button type="button" id="button-control-source" class="button">SOURCE</button>
+                                <button type="button" id="button-control-observer" class="button">OBSERVER</button>
+                            </div>
+                        </div>
+                        <div class="section section-content">
+                            <h2 class="label label-content">Motion</h2>
+                            <div class="group group-content">
+                                <div class="section section-button">
+                                    <h3 class="label label-button">TYPE (T)</h3>
+                                    <div class="group group-button">
+                                        <button type="button" id="button-type-velocity" class="button">VELOCITY</button>
+                                        <button type="button" id="button-type-acceleration" class="button">ACCELERATION</button>
+                                    </div>
+                                </div>
+                                <div class="section section-content">
+                                    <h2 class="label label-content">Vector</h2>
+                                    <div class="group group-content">
+                                        <div class="section section-button">
+                                            <h3 class="label label-button">DIRECTION (ARROW)</h3>
+                                            <div class="group group-button">
+                                                <button type="button" id="button-direction-left" class="button">LEFT</button>
+                                                <button type="button" id="button-direction-right" class="button">RIGHT</button>
+                                                <button type="button" id="button-direction-up" class="button">UP</button>
+                                                <button type="button" id="button-direction-down" class="button">DOWN</button>
+                                                <button type="button" id="button-direction-zero" class="button">ZERO</button>
+                                            </div>
+                                        </div>
+                                        <div class="section section-button">
+                                            <h3 class="label label-button">MAGNITUDE (*0/1/2/3)</h3>
+                                            <div class="group group-button">
+                                                <button type="button" id="button-magnitude-low" class="button">LOW</button>
+                                                <button type="button" id="button-magnitude-medium" class="button">MEDIUM</button>
+                                                <button type="button" id="button-magnitude-high" class="button">HIGH</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="container-plot" class="container">
-                <h2 id="heading-plot" class="heading">Plot</h2>
-                <h3 id="label-frequency" class="label">FREQUENCY vs TIME</h3>
-                <div id="container-canvas-frequency" class="container container-canvas">
-                    <canvas id="canvas-frequency" class="canvas" width="800" height="200"></canvas>
+                <div class="section section-content">
+                    <h2 class="label label-content">View</h2>
+                    <div class="group group-content">
+                        <div class="section section-canvas">
+                            <h3 class="label label-canvas">POSITION vs TIME</h3>
+                            <div class="wrap wrap-canvas">
+                                <canvas id="canvas-position" class="canvas" width="800" height="600"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 id="label-amplitude" class="label">AMPLITUDE vs TIME</h3>
-                <div id="container-canvas-amplitude" class="container container-canvas">
-                    <canvas id="canvas-amplitude" class="canvas" width="800" height="200"></canvas>
+                <div class="section section-content">
+                    <h2 class="label label-content">Plot</h2>
+                    <div class="group group-content">
+                        <div class="section section-canvas">
+                            <h3 class="label label-canvas">FREQUENCY vs TIME</h3>
+                            <div class="wrap wrap-canvas">
+                                <canvas id="canvas-frequency" class="canvas" width="800" height="200"></canvas>
+                            </div>
+                        </div>
+                        <div class="section section-canvas">
+                            <h3 class="label label-canvas">AMPLITUDE vs TIME</h3>
+                            <div class="wrap wrap-canvas">
+                                <canvas id="canvas-amplitude" class="canvas" width="800" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
