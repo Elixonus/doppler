@@ -22,16 +22,16 @@ const btnMagHigh = document.getElementById("button-magnitude-high");
 const canvPos = document.getElementById("canvas-position");
 const canvFreq = document.getElementById("canvas-frequency");
 const canvAmp = document.getElementById("canvas-amplitude");
-let ctxPos = canvPos.getContext("2d");
-let ctxFreq = canvFreq.getContext("2d");
-let ctxAmp = canvAmp.getContext("2d");
+
+let ctxPos;
+let ctxFreq;
+let ctxAmp;
 let ctxSnd;
 let oscl;
 let gain;
 
 let time = 0;
 let run = true;
-let step = 0;
 let bufr = null;
 let snd = false;
 let owv = false;
@@ -101,7 +101,7 @@ fixMag();
 
 window.requestAnimationFrame(doTime);
 
-function doStep()
+function dotime()
 {
     src.vel.x += src.acc.x;
     src.vel.y += src.acc.y;
@@ -113,10 +113,10 @@ function doStep()
     obs.pos.x += obs.vel.x;
     obs.pos.y += obs.vel.y;
 
-    let ws = step % 1000;
+    let ws = time % 1000;
 
     wavs[ws] = {
-        step: step,
+        time: time,
         freq: src.freq,
         amp: src.amp,
         pos: {
@@ -137,7 +137,7 @@ function doStep()
     {
         if(wavs[w] !== null)
         {
-            diffs[w] = 0.01 * (step - wavs[w].step) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
+            diffs[w] = 0.01 * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
         }
 
         else
@@ -166,7 +166,7 @@ function doStep()
         let vels = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
         let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
         obs.freq = obs.wav.freq * (0.01 - velo) / (0.01 + vels);
-        obs.amp = obs.wav.amp * Math.pow(0.995, step - obs.wav.step);
+        obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
         freqs[ws] = obs.freq;
         amps[ws] = obs.amp;
     }
@@ -180,11 +180,13 @@ function doStep()
         amps[ws] = null;
     }
 
-    step += 1;
+    time += 1;
 }
 
 function doTime()
 {
+    ctxPos = canvPos.getContext("2d");
+
     ctxPos.fillStyle = "#000000";
     ctxPos.fillRect(0, 0, 800, 600);
 
@@ -252,11 +254,11 @@ function doTime()
     {
         if(wavs[w] !== null)
         {
-            if(step - wavs[w].step < 500)
+            if(time - wavs[w].time < 500)
             {
                 ctxPos.beginPath();
-                ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (step - wavs[w].step), 0, 2 * Math.PI);
-                ctxPos.globalAlpha = Math.min(Math.max(1 - (step - wavs[w].step) / 500, 0), 1);
+                ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
+                ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 500, 0), 1);
                 ctxPos.lineWidth = 0.03;
                 ctxPos.strokeStyle = "#ffffff";
                 ctxPos.stroke();
@@ -269,7 +271,7 @@ function doTime()
     if(isOwv())
     {
         ctxPos.beginPath();
-        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (step - obs.wav.step), 0, 2 * Math.PI);
+        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
         ctxPos.lineWidth = 0.05;
         ctxPos.strokeStyle = "#ffff00";
         ctxPos.stroke();
@@ -304,8 +306,10 @@ function doTime()
 
     ctxPos.restore();
 
-    if(step % 10 === 0)
+    if(time % 10 === 0)
     {
+        ctxFreq = canvFreq.getContext("2d");
+
         ctxFreq.fillStyle = "#000000";
         ctxFreq.fillRect(0, 0, 800, 200);
     
@@ -316,13 +320,13 @@ function doTime()
         ctxFreq.translate(-0.5, -0.5);
 
         ctxFreq.fillStyle = "#ff0000";
-        ctxFreq.fillRect(0, 0, Math.min(step / 1000, 4), 0.25);
+        ctxFreq.fillRect(0, 0, Math.min(time / 1000, 4), 0.25);
 
         ctxFreq.beginPath();
 
         for(let f = 0; f < 1000; f++)
         {
-            let freq = freqs[(step - f - 1) % 1000];
+            let freq = freqs[(time - f - 1) % 1000];
 
             if(freq !== null)
             {
@@ -345,6 +349,8 @@ function doTime()
 
         ctxFreq.restore();
     
+        ctxAmp = canvAmp.getContext("2d");
+
         ctxAmp.fillStyle = "#000000";
         ctxAmp.fillRect(0, 0, 800, 200);
     
@@ -355,11 +361,11 @@ function doTime()
         ctxAmp.translate(-0.5, -0.5);
     
         ctxAmp.fillStyle = "#ff0000";
-        ctxAmp.fillRect(0, 0, Math.min(step / 1000, 1), 0.8);
+        ctxAmp.fillRect(0, 0, Math.min(time / 1000, 1), 0.8);
 
         for(let a = 0; a < 1000; a++)
         {
-            let amp = amps[(step - a - 1) % 1000];
+            let amp = amps[(time - a - 1) % 1000];
 
             if(amp !== null)
             {
@@ -390,14 +396,14 @@ function doTime()
 
     if(run === true)
     {
-        doStep();
+        dotime();
     }
 
     window.requestAnimationFrame(doTime);
 }
 
-btnTimeStrt.onclick = setStepStrt;
-btnTimeStop.onclick = setStepStop;
+btnTimeStrt.onclick = settimeStrt;
+btnTimeStop.onclick = settimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
 btnSndOn.onclick = setSndOn;
@@ -417,15 +423,14 @@ btnDirZero.onclick = setDirZero;
 btnMagLow.onclick = setMagLow;
 btnMagMed.onclick = setMagMed;
 btnMagHigh.onclick = setMagHigh;
-document.onkeydown = doKeyDown;
 
-function setStepStrt()
+function settimeStrt()
 {
     run = true;
     fixTime();
 }
 
-function setStepStop()
+function settimeStop()
 {
     run = false;
     fixTime();
@@ -435,7 +440,7 @@ function doBufrSave()
 {
     bufr = {};
     bufr.run = false;
-    bufr.step = step;
+    bufr.time = time;
     bufr.obj = null;
 
     bufr.src = {
@@ -485,7 +490,7 @@ function doBufrSave()
         if(wavs[w] !== null)
         {
             bufr.wavs[w] = {
-                step: wavs[w].step,
+                time: wavs[w].time,
                 freq: wavs[w].freq,
                 amp: wavs[w].amp,
                 pos: {
@@ -543,7 +548,7 @@ function doBufrRstr()
     if(bufr !== null)
     {
         run = bufr.run;
-        step = bufr.step;
+        time = bufr.time;
         obj = bufr.obj;
 
         src.freq = bufr.src.freq;
@@ -574,7 +579,7 @@ function doBufrRstr()
         {
             if(bufr.wavs[w] !== null)
             {
-                wavs[w].step = bufr.wavs[w].step;
+                wavs[w].time = bufr.wavs[w].time;
                 wavs[w].freq = bufr.wavs[w].freq;
                 wavs[w].amp = bufr.wavs[w].amp;
                 wavs[w].pos.x = bufr.wavs[w].pos.x;
@@ -627,27 +632,29 @@ function setSndOn()
 {
     if(snd === false)
     {
-        snd = true;
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
         gain = ctxSnd.createGain();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
-        setSnd();
         oscl.start();
-        fixSnd();
+        setSnd();
     }
+
+    snd = true;
+    fixSnd();
 }
 
 function setSndOff()
 {
     if(snd === true)
     {
-        snd = false;
-        fixSnd();
         oscl.stop();
     }
+
+    snd = false;
+    fixSnd();
 }
 
 function setSnd()
@@ -682,7 +689,7 @@ function setOwvOff()
 
 function isOwv()
 {
-    return (owv === true && obs.wav !== null && step - obs.wav.step < 500);
+    return (owv === true && obs.wav !== null && time - obs.wav.time < 500);
 }
 
 function setCtrlSrc()
@@ -809,7 +816,7 @@ function setCtrlObs()
 
 function isCtrl()
 {
-    return (obj === src || obj === obs);
+    return (isCtrlSrc() || isCtrlObs());
 }
 
 function isCtrlSrc()
@@ -1111,12 +1118,12 @@ function fixCtrl()
     btnCtrlSrc.disabled = false;
     btnCtrlObs.disabled = false;
 
-    if(obj === src)
+    if(isCtrlSrc())
     {
         btnCtrlSrc.disabled = true;
     }
 
-    else if(obj === obs)
+    else if(isCtrlObs())
     {
         btnCtrlObs.disabled = true;
     }
@@ -1232,6 +1239,8 @@ function fixMag()
     }
 }
 
+window.onkeydown = doKeyDown;
+
 function doKeyDown(event)
 {
     if(event.repeat)
@@ -1243,12 +1252,12 @@ function doKeyDown(event)
     {
         if(run === true)
         {
-            setStepStop();
+            settimeStop();
         }
 
         else if(run === false)
         {
-            setStepStrt();
+            settimeStrt();
         }
     }
 
@@ -1290,12 +1299,12 @@ function doKeyDown(event)
 
     else if(event.key.toUpperCase() === "C")
     {
-        if(obj === src)
+        if(isCtrlSrc())
         {
             setCtrlObs();
         }
 
-        else if(obj === obs)
+        else if(isCtrlObs())
         {
             setCtrlSrc();
         }
@@ -1315,7 +1324,7 @@ function doKeyDown(event)
                 setTypeVel();
             }
 
-            if(obj.type === 1)
+            else if(obj.type === 1)
             {
                 setTypeAcc();
             }
