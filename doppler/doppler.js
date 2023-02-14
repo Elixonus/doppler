@@ -8,6 +8,7 @@ const btnOwvOn = document.getElementById("button-owave-on");
 const btnOwvOff = document.getElementById("button-owave-off");
 const btnCtrlSrc = document.getElementById("button-control-source");
 const btnCtrlObs = document.getElementById("button-control-observer");
+const btnTypePos = document.getElementById("button-type-position");
 const btnTypeVel = document.getElementById("button-type-velocity");
 const btnTypeAcc = document.getElementById("button-type-acceleration");
 const btnDirLeft = document.getElementById("button-direction-left");
@@ -405,6 +406,7 @@ btnOwvOn.onclick = setOwvOn;
 btnOwvOff.onclick = setOwvOff;
 btnCtrlSrc.onclick = setCtrlSrc;
 btnCtrlObs.onclick = setCtrlObs;
+btnTypePos.onclick = setTypePos;
 btnTypeVel.onclick = setTypeVel;
 btnTypeAcc.onclick = setTypeAcc;
 btnDirLeft.onclick = setDirLeft;
@@ -688,7 +690,12 @@ function setCtrlSrc()
     obj = src;
     fixCtrl();
 
-    if(src.type === 1)
+    if(src.type === 0)
+    {
+        setTypePos();
+    }
+
+    else if(src.type === 1)
     {
         setTypeVel();
     }
@@ -744,7 +751,12 @@ function setCtrlObs()
     obj = obs;
     fixCtrl();
 
-    if(obs.type === 1)
+    if(obs.type === 0)
+    {
+        setTypePos();
+    }
+
+    else if(obs.type === 1)
     {
         setTypeVel();
     }
@@ -810,6 +822,16 @@ function isCtrlObs()
     return (obj === obs);
 }
 
+function setTypePos()
+{
+    if(isCtrl() === true)
+    {
+        obj.type = 0;
+        fixType();
+        setType();
+    }
+}
+
 function setTypeVel()
 {
     if(isCtrl() === true)
@@ -836,7 +858,45 @@ function setType()
     {
         if(obj.dir !== null)
         {
-            if(obj.type === 1)
+            if(obj.type === 0)
+            {
+                if(obj.dir === 0)
+                {
+                    obj.pos.x = 0;
+                    obj.pos.y = 0;
+                }
+
+                else if(obj.dir === 1)
+                {
+                    obj.pos.x = -obj.mag;
+                    obj.pos.y = 0;
+                }
+
+                else if(obj.dir === 2)
+                {
+                    obj.pos.x = obj.mag;
+                    obj.pos.y = 0;
+                }
+
+                else if(obj.dir === 3)
+                {
+                    obj.pos.x = 0;
+                    obj.pos.y = obj.mag;
+                }
+
+                else if(obj.dir === 4)
+                {
+                    obj.pos.x = 0;
+                    obj.pos.y = -obj.mag;
+                }
+
+                obj.vel.x = 0;
+                obj.vel.y = 0;
+                obj.acc.x = 0;
+                obj.acc.y = 0;
+            }
+
+            else if(obj.type === 1)
             {
                 if(obj.dir === 0)
                 {
@@ -1066,10 +1126,16 @@ function fixType()
 {
     if(isCtrl())
     {
+        btnTypePos.disabled = false;
         btnTypeVel.disabled = false;
         btnTypeAcc.disabled = false;
-    
-        if(obj.type === 1)
+
+        if(obj.type === 0)
+        {
+            btnTypePos.disabled = true;
+        }
+
+        else if(obj.type === 1)
         {
             btnTypeVel.disabled = true;
         }
@@ -1082,6 +1148,7 @@ function fixType()
 
     else
     {
+        btnTypePos.disabled = true;
         btnTypeVel.disabled = true;
         btnTypeAcc.disabled = true;
     }
@@ -1243,6 +1310,11 @@ function doKeyDown(event)
     {
         if(isCtrl())
         {
+            if(obj.type === 0)
+            {
+                setTypeVel();
+            }
+
             if(obj.type === 1)
             {
                 setTypeAcc();
@@ -1250,7 +1322,7 @@ function doKeyDown(event)
 
             else if(obj.type === 2)
             {
-                setTypeVel();
+                setTypePos();
             }
         }
     }

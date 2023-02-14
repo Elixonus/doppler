@@ -12,7 +12,7 @@
     </head>
     
     <body>
-        <div id="container">
+        <div id="main">
             <h1 id="title">Doppler Effect Simulation</h1>
             <div class="group">
                 <div class="section">
@@ -64,6 +64,7 @@
                                 <div class="panel">
                                     <h3 class="label">TYPE (T)</h3>
                                     <div class="content">
+                                        <button type="button" id="button-type-position" class="button">POSITION</button>
                                         <button type="button" id="button-type-velocity" class="button">VELOCITY</button>
                                         <button type="button" id="button-type-acceleration" class="button">ACCELERATION</button>
                                     </div>
@@ -98,9 +99,9 @@
                 <div class="section">
                     <h2 class="heading">View</h2>
                     <div class="group">
-                        <div class="section section-canvas">
-                            <h3 class="label label-canvas">POSITION vs TIME</h3>
-                            <div class="wrap wrap-canvas">
+                        <div class="panel">
+                            <h3 class="label">POSITION vs TIME</h3>
+                            <div class="content">
                                 <canvas id="canvas-position" class="canvas" width="800" height="600"></canvas>
                             </div>
                         </div>
@@ -109,15 +110,15 @@
                 <div class="section">
                     <h2 class="heading">Plot</h2>
                     <div class="group">
-                        <div class="section section-canvas">
-                            <h3 class="label label-canvas">FREQUENCY vs TIME</h3>
-                            <div class="wrap wrap-canvas">
+                        <div class="panel">
+                            <h3 class="label">FREQUENCY vs TIME</h3>
+                            <div class="content">
                                 <canvas id="canvas-frequency" class="canvas" width="800" height="200"></canvas>
                             </div>
                         </div>
-                        <div class="section section-canvas">
-                            <h3 class="label label-canvas">AMPLITUDE vs TIME</h3>
-                            <div class="wrap wrap-canvas">
+                        <div class="panel">
+                            <h3 class="label">AMPLITUDE vs TIME</h3>
+                            <div class="content">
                                 <canvas id="canvas-amplitude" class="canvas" width="800" height="200"></canvas>
                             </div>
                         </div>
