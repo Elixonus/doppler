@@ -1,5 +1,8 @@
 body
 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
     text-align: center;
 }
 
@@ -7,27 +10,26 @@ body
 {
     max-width: 600px;
     margin: auto;
-    padding: 20px;
+    padding: min(20px, 2%);
     background-color: #777777;
     border: 6px solid #000000;
 }
 
-.section-content
+.section
 {
     margin: 5px;
     padding: 5px;
-    background-color: #ff0000;
-    border: 3px solid #ffffff;
+    background-color: #ff00ff;
 }
 
-.group-content
+.group
 {
     margin: 5px;
     padding: 5px;
     background-color: #0000ff;
 }
 
-.section-button
+.panel
 {
     display: inline-block;
     margin: 5px;
@@ -35,7 +37,7 @@ body
     background-color: #ffffff;
 }
 
-.group-button
+.content
 {
     margin: 5px;
     padding: 10px;
