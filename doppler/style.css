@@ -1,6 +1,7 @@
 body
 {
     display: flex;
+    justify-content: center;
     margin: 0;
     padding: 30px 0;
     background-color: #fff060;
@@ -75,7 +76,7 @@ body
 #container
 {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 0;
     padding: 10px;
     text-align: center;
     background-color: #ffffff;
@@ -86,6 +87,8 @@ body
 {
     margin: 5px;
     padding: 20px;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 #button-owave-on, #button-owave-off

@@ -22,12 +22,12 @@ const btnMagHigh = document.getElementById("button-magnitude-high");
 const canvPos = document.getElementById("canvas-position");
 const canvFreq = document.getElementById("canvas-frequency");
 const canvAmp = document.getElementById("canvas-amplitude");
-const canvPrs = document.getElementById("canvas-pressure");
+const canvPrsr = document.getElementById("canvas-pressure");
 
 let ctxPos;
 let ctxFreq;
 let ctxAmp;
-let ctxPrs;
+let ctxPrsr;
 let ctxSnd;
 let oscl;
 let gain;
@@ -84,14 +84,14 @@ let obs = {
 let wavs = [];
 let freqs = [];
 let amps = [];
-let prs = [];
+let prsrs = [];
 
 for(let t = 0; t < 1000; t++)
 {
     wavs[t] = null;
     freqs[t] = null;
     amps[t] = null;
-    prs[t] = null;
+    prsrs[t] = null;
 }
 
 fixTime();
@@ -173,7 +173,7 @@ function doTime()
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
         freqs[ws] = obs.freq;
         amps[ws] = obs.amp;
-        prs[ws] = obs.amp * Math.sin(0.1 * obs.freq * dist - 0.1 * obs.freq * time);
+        prsrs[ws] = obs.amp * Math.sin(0.5 * obs.freq * dist - 0.1 * obs.freq * time);
     }
     
     else
@@ -183,7 +183,7 @@ function doTime()
         obs.amp = null;
         freqs[ws] = null;
         amps[ws] = null;
-        prs[ws] = null;
+        prsrs[ws] = null;
     }
 
     time += 1;
@@ -394,29 +394,29 @@ function doDspl()
 
         ctxAmp.restore();
 
-        ctxPrs = canvPrs.getContext("2d");
+        ctxPrsr = canvPrsr.getContext("2d");
 
-        ctxPrs.fillStyle = "#000000";
-        ctxPrs.fillRect(0, 0, 800, 200);
+        ctxPrsr.fillStyle = "#000000";
+        ctxPrsr.fillRect(0, 0, 800, 200);
 
-        ctxPrs.save();
-        ctxPrs.scale(200, 200);
-        ctxPrs.translate(2, 0.5);
-        ctxPrs.scale(-1, -1);
-        ctxPrs.translate(-2, -0.5);
+        ctxPrsr.save();
+        ctxPrsr.scale(200, 200);
+        ctxPrsr.translate(2, 0.5);
+        ctxPrsr.scale(-1, -1);
+        ctxPrsr.translate(-2, -0.5);
 
         for(let p = 0; p < 1000; p++)
         {
-            let pr = prs[(time - p - 1) % 1000];
+            let prsr = prsrs[(time - p - 1) % 1000];
 
-            if(pr !== null)
+            if(prsr !== null)
             {
-                ctxPrs.fillStyle = "#00ff00";
-                ctxPrs.fillRect(4 * p / 1000, 0, 8 / 1000, 0.5 + 0.4 * pr);
+                ctxPrsr.fillStyle = "#00ff00";
+                ctxPrsr.fillRect(4 * p / 1000, 0.5, 8 / 1000, 0.4 * prsr);
             }
         }
 
-        ctxPrs.restore();
+        ctxPrsr.restore();
     }
 
     if(snd === true)
