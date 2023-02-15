@@ -24,13 +24,13 @@ const canvFreq = document.getElementById("canvas-frequency");
 const canvAmp = document.getElementById("canvas-amplitude");
 const canvPrsr = document.getElementById("canvas-pressure");
 
-let ctxPos;
-let ctxFreq;
-let ctxAmp;
-let ctxPrsr;
-let ctxSnd;
-let oscl;
-let gain;
+let ctxPos = null;
+let ctxFreq = null;
+let ctxAmp = null;
+let ctxPrsr = null;
+let ctxSnd = null;
+let oscl = null;
+let gain = null;
 
 let time = 0;
 let run = true;
@@ -82,16 +82,16 @@ let obs = {
 };
 
 let wavs = [];
-let freqs = [];
-let amps = [];
-let prsrs = [];
+let hfreq = {src: [], obs: []};
+let hamp = {src: [], obs: []};
 
 for(let t = 0; t < 1000; t++)
 {
     wavs[t] = null;
-    freqs[t] = null;
-    amps[t] = null;
-    prsrs[t] = null;
+    hfreq.src[t] = null;
+    hfreq.obs[t] = null;
+    hamp.src[t] = null;
+    hamp.obs[t] = null;
 }
 
 fixTime();
@@ -135,6 +135,9 @@ function doTime()
 
     src.wav = wavs[ws];
 
+    hfreq.src[ws] = src.freq;
+    hamp.src[ws] = src.amp;
+
     let diffs = [];
 
     for(let w = 0; w < 1000; w++)
@@ -167,13 +170,11 @@ function doTime()
     {
         obs.wav = wavs[wo];
         let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
-        let vels = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
-        let velo = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
-        obs.freq = obs.wav.freq * (0.01 - velo) / (0.01 + vels);
+        let svel = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
+        let ovel = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
+        obs.freq = obs.wav.freq * (0.01 - ovel) / (0.01 + svel);
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
-        freqs[ws] = obs.freq;
-        amps[ws] = obs.amp;
-        prsrs[ws] = obs.amp * Math.sin(0.5 * obs.freq * dist - 0.1 * obs.freq * time);
+        // oprsrs[ws] = obs.amp * Math.sin(0.5 * obs.freq * dist - 0.1 * obs.freq * time);
     }
     
     else
@@ -181,10 +182,10 @@ function doTime()
         obs.wav = null;
         obs.freq = null;
         obs.amp = null;
-        freqs[ws] = null;
-        amps[ws] = null;
-        prsrs[ws] = null;
     }
+
+    hfreq.obs[ws] = obs.freq;
+    hamp.obs[ws] = obs.amp;
 
     time += 1;
 }
@@ -325,26 +326,32 @@ function doDspl()
         ctxFreq.scale(-1, -1);
         ctxFreq.translate(-2, -0.5);
 
-        ctxFreq.fillStyle = "#ff0000";
-        ctxFreq.fillRect(0, 0, Math.min(4 * time / 1000, 4), 0.25);
+        for(let f = 0; f < 1000; f++)
+        {
+            let freq = hfreq.src[(time - f - 1) % 1000];
 
-        ctxFreq.beginPath();
+            if(freq !== null)
+            {
+                ctxFreq.fillStyle = "#ff0000";
+                ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+            }
+        }
 
         for(let f = 0; f < 1000; f++)
         {
-            let freq = freqs[(time - f - 1) % 1000];
+            let freq = hfreq.obs[(time - f - 1) % 1000];
 
             if(freq !== null)
             {
                 ctxFreq.fillStyle = "#00ff00";
-                ctxFreq.fillRect(4 * f / 1000, 0, 8 / 1000, Math.min(0.25 * Math.abs(freq), 1));
+                ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
             }
         }
 
         if(isOwv())
         {
             ctxFreq.fillStyle = "#ffff00";
-            ctxFreq.fillRect(0, 0, 0.04, Math.min(0.25 * Math.abs(src.freq), 1));
+            ctxFreq.fillRect(0, 0, 0.04, Math.min(0.25 * Math.abs(obs.freq), 1));
         }
 
         for(let b = 0; b < 3; b++)
@@ -366,12 +373,20 @@ function doDspl()
         ctxAmp.scale(-1, -1);
         ctxAmp.translate(-2, -0.5);
     
-        ctxAmp.fillStyle = "#ff0000";
-        ctxAmp.fillRect(0, 0, Math.min(4 * time / 1000, 4), 0.8);
+        for(let a = 0; a < 1000; a++)
+        {
+            let amp = hamp.src[(time - a - 1) % 1000];
+
+            if(amp !== null)
+            {
+                ctxAmp.fillStyle = "#ff0000";
+                ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
+            }
+        }
 
         for(let a = 0; a < 1000; a++)
         {
-            let amp = amps[(time - a - 1) % 1000];
+            let amp = hamp.obs[(time - a - 1) % 1000];
 
             if(amp !== null)
             {
@@ -404,7 +419,7 @@ function doDspl()
         ctxPrsr.translate(2, 0.5);
         ctxPrsr.scale(-1, -1);
         ctxPrsr.translate(-2, -0.5);
-
+/*
         for(let p = 0; p < 1000; p++)
         {
             let prsr = prsrs[(time - p - 1) % 1000];
@@ -414,7 +429,7 @@ function doDspl()
                 ctxPrsr.fillStyle = "#00ff00";
                 ctxPrsr.fillRect(4 * p / 1000, 0.5, 8 / 1000, 0.4 * prsr);
             }
-        }
+        }*/
 
         ctxPrsr.restore();
     }
@@ -665,31 +680,36 @@ function doBufrRstr()
 
 function setSndOn()
 {
-    if(snd === false)
+    let temp = snd;
+    snd = true;
+    fixSnd();
+
+    if(temp === false)
     {
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
         gain = ctxSnd.createGain();
+        setSnd();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
         oscl.start();
     }
-
-    snd = true;
-    setSnd();
-    fixSnd();
 }
 
 function setSndOff()
 {
-    if(snd === true)
-    {
-        oscl.stop();
-    }
-
+    let temp = snd;
     snd = false;
     fixSnd();
+
+    if(temp === true)
+    {
+        oscl.stop();
+        oscl.disconnect();
+        gain.disconnect();
+        ctxSnd.close();
+    }
 }
 
 function setSnd()
@@ -1278,11 +1298,6 @@ window.onkeydown = doKeyDown;
 
 function doKeyDown(event)
 {
-    if(event.repeat)
-    {
-        return;
-    }
-
     if(event.key.toUpperCase() === "P")
     {
         if(run === true)
