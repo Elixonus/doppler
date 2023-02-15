@@ -2,6 +2,10 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
+const btnFmodFlat = document.getElementById("button-fmod-flat");
+const btnFmodDual = document.getElementById("button-fmod-dual");
+const btnFmodSweep = document.getElementById("button-fmod-sweep");
+const btnFmodSine = document.getElementById("button-fmod-sine");
 const btnSndOn = document.getElementById("button-sound-on");
 const btnSndOff = document.getElementById("button-sound-off");
 const btnOwvOn = document.getElementById("button-owave-on");
@@ -35,7 +39,7 @@ let gain = null;
 let time = 0;
 let run = true;
 let bufr = null;
-let fmod = 0;
+let fmod = 1;
 let snd = false;
 let owv = false;
 let obj = null;
@@ -97,6 +101,7 @@ for(let t = 0; t < 1000; t++)
 
 fixTime();
 fixBufr();
+fixFmod();
 fixSnd();
 fixOwv();
 fixCtrl();
@@ -459,6 +464,34 @@ function doDspl()
         setSnd();
     }
 
+    if(fmod === 0)
+    {
+        src.freq = 1;
+    }
+
+    else if(fmod === 1)
+    {
+        if(time % 40 < 20)
+        {
+            src.freq = 0.5;
+        }
+
+        else
+        {
+            src.freq = 1.5;
+        }
+    }
+
+    else if(fmod === 2)
+    {
+        src.freq = 0.5 + (time % 20) / 20;
+    }
+
+    else if(fmod === 3)
+    {
+        src.freq = 1 + 0.5 * Math.sin(0.1 * time);
+    }
+    
     if(run === true)
     {
         doTime();
@@ -471,6 +504,10 @@ btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
+btnFmodFlat.onclick = setFmodFlat;
+btnFmodDual.onclick = setFmodDual;
+btnFmodSweep.onclick = setFmodSweep;
+btnFmodSine.onclick = setFmodSine;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
 btnOwvOn.onclick = setOwvOn;
@@ -507,6 +544,7 @@ function doBufrSave()
     bufr = {};
     bufr.run = false;
     bufr.time = time;
+    bufr.fmod = fmod;
     bufr.obj = null;
 
     bufr.src = {
@@ -635,6 +673,7 @@ function doBufrRstr()
     {
         run = bufr.run;
         time = bufr.time;
+        fmod = bufr.fmod;
         obj = bufr.obj;
 
         src.freq = bufr.src.freq;
@@ -727,11 +766,36 @@ function doBufrRstr()
         }
 
         fixTime();
+        fixFmod();
         fixCtrl();
         fixType();
         fixDir();
         fixMag();
     }
+}
+
+function setFmodFlat()
+{
+    fmod = 0;
+    fixFmod();
+}
+
+function setFmodDual()
+{
+    fmod = 1;
+    fixFmod();
+}
+
+function setFmodSweep()
+{
+    fmod = 2;
+    fixFmod();
+}
+
+function setFmodSine()
+{
+    fmod = 3;
+    fixFmod();
 }
 
 function setSndOn()
@@ -1192,6 +1256,34 @@ function fixBufr()
     }
 }
 
+function fixFmod()
+{
+    btnFmodFlat.disabled = false;
+    btnFmodDual.disabled = false;
+    btnFmodSweep.disabled = false;
+    btnFmodSine.disabled = false;
+
+    if(fmod === 0)
+    {
+        btnFmodFlat.disabled = true;
+    }
+
+    else if(fmod === 1)
+    {
+        btnFmodDual.disabled = true;
+    }
+
+    else if(fmod === 2)
+    {
+        btnFmodSweep.disabled = true;
+    }
+
+    else if(fmod === 3)
+    {
+        btnFmodSine.disabled = true;
+    }
+}
+
 function fixSnd()
 {
     btnSndOn.disabled = false;
@@ -1486,3 +1578,11 @@ function doKeyDown(event)
         setMagHigh();
     }
 }
+
+document.onvisibilitychange = function()
+{
+    if(snd === true)
+    {
+        setSndOff();
+    }
+};
