@@ -2,8 +2,8 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
-const btnSndOn = document.getElementById("button-sound-on");
-const btnSndOff = document.getElementById("button-sound-off");
+const btnOsndOn = document.getElementById("button-osound-on");
+const btnOsndOff = document.getElementById("button-osound-off");
 const btnOwvOn = document.getElementById("button-owave-on");
 const btnOwvOff = document.getElementById("button-owave-off");
 const btnCtrlSrc = document.getElementById("button-control-source");
@@ -35,7 +35,7 @@ let gain = null;
 let time = 0;
 let run = true;
 let bufr = null;
-let snd = false;
+let osnd = false;
 let owv = false;
 let obj = null;
 
@@ -96,7 +96,7 @@ for(let t = 0; t < 1000; t++)
 
 fixTime();
 fixBufr();
-fixSnd();
+fixOsnd();
 fixOwv();
 fixCtrl();
 fixType();
@@ -171,9 +171,28 @@ function doTime()
         obs.wav = wavs[wo];
         let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
         let svel = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
+
+        if(isNaN(svel))
+        {
+            svel = 0;
+        }
+
         let ovel = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
+
+        if(isNaN(ovel))
+        {
+            ovel = 0;
+        }
+
         obs.freq = obs.wav.freq * (0.01 - ovel) / (0.01 + svel);
+
+        if(isNaN(obs.freq))
+        {
+            obs.freq = obs.wav.freq;
+        }
+
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
+        
         // oprsrs[ws] = obs.amp * Math.sin(0.5 * obs.freq * dist - 0.1 * obs.freq * time);
     }
     
@@ -313,7 +332,7 @@ function doDspl()
 
     ctxPos.restore();
 
-    if(time % 10 === 0)
+    if(time % 25 === 0)
     {
         ctxFreq = canvFreq.getContext("2d");
 
@@ -434,14 +453,9 @@ function doDspl()
         ctxPrsr.restore();
     }
 
-    if(time % 25 === 0)
+    if(osnd === true)
     {
-        src.freq = 0.8 / src.freq;
-    }
-
-    if(snd === true)
-    {
-        setSnd();
+        setOsnd();
     }
 
     if(run === true)
@@ -456,8 +470,8 @@ btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
-btnSndOn.onclick = setSndOn;
-btnSndOff.onclick = setSndOff;
+btnOsndOn.onclick = setOsndOn;
+btnOsndOff.onclick = setOsndOff;
 btnOwvOn.onclick = setOwvOn;
 btnOwvOff.onclick = setOwvOff;
 btnCtrlSrc.onclick = setCtrlSrc;
@@ -484,6 +498,7 @@ function setTimeStop()
 {
     run = false;
     fixTime();
+    setOsnd();
 }
 
 function doBufrSave()
@@ -560,33 +575,53 @@ function doBufrSave()
         }
     }
 
-    bufr.freqs = [];
+    bufr.hfreq = {src: [], obs: []};
 
     for(let f = 0; f < 1000; f++)
     {
-        if(freqs[f] !== null)
+        if(hfreq.src[f] !== null)
         {
-            bufr.freqs[f] = freqs[f];
+            bufr.hfreq.src[f] = hfreq.src[f];
         }
 
         else
         {
-            bufr.freqs[f] = null;
+            bufr.hfreq.src[f] = null;
+        }
+
+        if(hfreq.obs[f] !== null)
+        {
+            bufr.hfreq.obs[f] = hfreq.obs[f];
+        }
+
+        else
+        {
+            bufr.hfreq.obs[f] = null;
         }
     }
 
-    bufr.amps = [];
+    bufr.hamp = {src: [], obs: []};
 
     for(let a = 0; a < 1000; a++)
     {
-        if(amps[a] !== null)
+        if(hamp.src[a] !== null)
         {
-            bufr.amps[a] = amps[a];
+            bufr.hamp.src[a] = hamp.src[a];
         }
 
         else
         {
-            bufr.amps[a] = null;
+            bufr.hamp.src[a] = null;
+        }
+
+        if(hamp.obs[a] !== null)
+        {
+            bufr.hamp.obs[a] = hamp.obs[a];
+        }
+
+        else
+        {
+            bufr.hamp.obs[a] = null;
         }
     }
 
@@ -646,27 +681,47 @@ function doBufrRstr()
     
         for(let f = 0; f < 1000; f++)
         {
-            if(bufr.freqs[f] !== null)
+            if(bufr.hfreq.src[f] !== null)
             {
-                freqs[f] = bufr.freqs[f];
+                hfreq.src[f] = bufr.hfreq.src[f];
             }
 
             else
             {
-                freqs[f] = null;
+                hfreq.src[f] = null;
+            }
+
+            if(bufr.hfreq.obs[f] !== null)
+            {
+                hfreq.obs[f] = bufr.hfreq.obs[f];
+            }
+
+            else
+            {
+                hfreq.obs[f] = null;
             }
         }
     
         for(let a = 0; a < 1000; a++)
         {
-            if(bufr.amps[a] !== null)
+            if(bufr.hamp.src[a] !== null)
             {
-                amps[a] = bufr.amps[a];
+                hamp.src[a] = bufr.hamp.src[a];
             }
 
             else
             {
-                amps[a] = null;
+                hamp.src[a] = null;
+            }
+
+            if(bufr.hamp.obs[a] !== null)
+            {
+                hamp.obs[a] = bufr.hamp.obs[a];
+            }
+
+            else
+            {
+                hamp.obs[a] = null;
             }
         }
 
@@ -678,11 +733,11 @@ function doBufrRstr()
     }
 }
 
-function setSndOn()
+function setOsndOn()
 {
-    let temp = snd;
-    snd = true;
-    fixSnd();
+    let temp = osnd;
+    osnd = true;
+    fixOsnd();
 
     if(temp === false)
     {
@@ -690,18 +745,18 @@ function setSndOn()
         oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
         gain = ctxSnd.createGain();
-        setSnd();
+        setOsnd();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
         oscl.start();
     }
 }
 
-function setSndOff()
+function setOsndOff()
 {
-    let temp = snd;
-    snd = false;
-    fixSnd();
+    let temp = osnd;
+    osnd = false;
+    fixOsnd();
 
     if(temp === true)
     {
@@ -712,13 +767,13 @@ function setSndOff()
     }
 }
 
-function setSnd()
+function setOsnd()
 {
-    if(snd === true)
+    if(osnd === true)
     {
         if(run === true && obs.freq !== null && obs.amp !== null)
         {
-            oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.freq), 1), 3000);
+            oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.freq), 50), 3000);
             gain.gain.value = 0.2 * obs.amp;
         }
         
@@ -1136,19 +1191,19 @@ function fixBufr()
     }
 }
 
-function fixSnd()
+function fixOsnd()
 {
-    btnSndOn.disabled = false;
-    btnSndOff.disabled = false;
+    btnOsndOn.disabled = false;
+    btnOsndOff.disabled = false;
 
-    if(snd === true)
+    if(osnd === true)
     {
-        btnSndOn.disabled = true;
+        btnOsndOn.disabled = true;
     }
 
-    else if(snd === false)
+    else if(osnd === false)
     {
-        btnSndOff.disabled = true;
+        btnOsndOff.disabled = true;
     }
 }
 
@@ -1323,18 +1378,18 @@ function doKeyDown(event)
 
     else if(event.key.toUpperCase() === "M")
     {
-        if(snd === true)
+        if(osnd === true)
         {
-            setSndOff();
+            setOsndOff();
         }
 
-        else if(snd === false)
+        else if(osnd === false)
         {
-            setSndOn();
+            setOsndOn();
         }
     }
 
-    else if(event.key.toUpperCase() === "O")
+    else if(event.key.toUpperCase() === "W")
     {
         if(owv === true)
         {
