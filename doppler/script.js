@@ -2,8 +2,8 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
-const btnOsndOn = document.getElementById("button-osound-on");
-const btnOsndOff = document.getElementById("button-osound-off");
+const btnSndOn = document.getElementById("button-sound-on");
+const btnSndOff = document.getElementById("button-sound-off");
 const btnOwvOn = document.getElementById("button-owave-on");
 const btnOwvOff = document.getElementById("button-owave-off");
 const btnCtrlSrc = document.getElementById("button-control-source");
@@ -35,7 +35,8 @@ let gain = null;
 let time = 0;
 let run = true;
 let bufr = null;
-let osnd = false;
+let fmod = 0;
+let snd = false;
 let owv = false;
 let obj = null;
 
@@ -96,7 +97,7 @@ for(let t = 0; t < 1000; t++)
 
 fixTime();
 fixBufr();
-fixOsnd();
+fixSnd();
 fixOwv();
 fixCtrl();
 fixType();
@@ -453,9 +454,9 @@ function doDspl()
         ctxPrsr.restore();
     }
 
-    if(osnd === true)
+    if(snd === true)
     {
-        setOsnd();
+        setSnd();
     }
 
     if(run === true)
@@ -470,8 +471,8 @@ btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
-btnOsndOn.onclick = setOsndOn;
-btnOsndOff.onclick = setOsndOff;
+btnSndOn.onclick = setSndOn;
+btnSndOff.onclick = setSndOff;
 btnOwvOn.onclick = setOwvOn;
 btnOwvOff.onclick = setOwvOff;
 btnCtrlSrc.onclick = setCtrlSrc;
@@ -498,7 +499,7 @@ function setTimeStop()
 {
     run = false;
     fixTime();
-    setOsnd();
+    setSnd();
 }
 
 function doBufrSave()
@@ -733,11 +734,11 @@ function doBufrRstr()
     }
 }
 
-function setOsndOn()
+function setSndOn()
 {
-    let temp = osnd;
-    osnd = true;
-    fixOsnd();
+    let temp = snd;
+    snd = true;
+    fixSnd();
 
     if(temp === false)
     {
@@ -745,18 +746,18 @@ function setOsndOn()
         oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
         gain = ctxSnd.createGain();
-        setOsnd();
+        setSnd();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
         oscl.start();
     }
 }
 
-function setOsndOff()
+function setSndOff()
 {
-    let temp = osnd;
-    osnd = false;
-    fixOsnd();
+    let temp = snd;
+    snd = false;
+    fixSnd();
 
     if(temp === true)
     {
@@ -767,9 +768,9 @@ function setOsndOff()
     }
 }
 
-function setOsnd()
+function setSnd()
 {
-    if(osnd === true)
+    if(snd === true)
     {
         if(run === true && obs.freq !== null && obs.amp !== null)
         {
@@ -1191,19 +1192,19 @@ function fixBufr()
     }
 }
 
-function fixOsnd()
+function fixSnd()
 {
-    btnOsndOn.disabled = false;
-    btnOsndOff.disabled = false;
+    btnSndOn.disabled = false;
+    btnSndOff.disabled = false;
 
-    if(osnd === true)
+    if(snd === true)
     {
-        btnOsndOn.disabled = true;
+        btnSndOn.disabled = true;
     }
 
-    else if(osnd === false)
+    else if(snd === false)
     {
-        btnOsndOff.disabled = true;
+        btnSndOff.disabled = true;
     }
 }
 
@@ -1378,14 +1379,14 @@ function doKeyDown(event)
 
     else if(event.key.toUpperCase() === "M")
     {
-        if(osnd === true)
+        if(snd === true)
         {
-            setOsndOff();
+            setSndOff();
         }
 
-        else if(osnd === false)
+        else if(snd === false)
         {
-            setOsndOn();
+            setSndOn();
         }
     }
 

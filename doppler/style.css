@@ -92,13 +92,11 @@ body
 {
     color: #000000;
     background-color: #ffff00;
-    border-color: #000000;
 }
 
 #button-control-source, #button-control-observer
 {
     padding: 4px 10px;
-    border-color: #000000;
 }
 
 #button-control-source
