@@ -66,9 +66,9 @@ body
 
 .canvas
 {
+    width: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
     vertical-align: middle;
     background-color: #000000;
 }
@@ -87,8 +87,6 @@ body
 {
     margin: 5px;
     padding: 20px;
-    background-color: #000000;
-    color: #ffffff;
 }
 
 #button-owave-on, #button-owave-off

@@ -419,6 +419,11 @@ function doDspl()
         ctxPrsr.restore();
     }
 
+    if(time % 25 === 0)
+    {
+        src.freq = 0.8 / src.freq;
+    }
+
     if(snd === true)
     {
         setSnd();
@@ -432,8 +437,8 @@ function doDspl()
     window.requestAnimationFrame(doDspl);
 }
 
-btnTimeStrt.onclick = settimeStrt;
-btnTimeStop.onclick = settimeStop;
+btnTimeStrt.onclick = setTimeStrt;
+btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
 btnSndOn.onclick = setSndOn;
@@ -454,13 +459,13 @@ btnMagLow.onclick = setMagLow;
 btnMagMed.onclick = setMagMed;
 btnMagHigh.onclick = setMagHigh;
 
-function settimeStrt()
+function setTimeStrt()
 {
     run = true;
     fixTime();
 }
 
-function settimeStop()
+function setTimeStop()
 {
     run = false;
     fixTime();
@@ -1282,12 +1287,12 @@ function doKeyDown(event)
     {
         if(run === true)
         {
-            settimeStop();
+            setTimeStop();
         }
 
         else if(run === false)
         {
-            settimeStrt();
+            setTimeStrt();
         }
     }
 
