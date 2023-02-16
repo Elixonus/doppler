@@ -5,6 +5,7 @@ const btnBufrRstr = document.getElementById("button-buffer-restore");
 const btnFmodFlat = document.getElementById("button-fmod-flat");
 const btnFmodSquare = document.getElementById("button-fmod-square");
 const btnFmodSweep = document.getElementById("button-fmod-sweep");
+const btnFmodTriangle = document.getElementById("button-fmod-triangle");
 const btnFmodSine = document.getElementById("button-fmod-sine");
 const btnSndOn = document.getElementById("button-sound-on");
 const btnSndOff = document.getElementById("button-sound-off");
@@ -89,7 +90,7 @@ let wavs = [];
 let freqh = {src: [], obs: []};
 let amph = {src: [], obs: []};
 
-for(let t = 0; t < 1000; t++)
+for(let t = 0; t < 150; t++)
 {
     wavs[t] = null;
     freqh.src[t] = null;
@@ -109,19 +110,21 @@ fixDir();
 fixMag();
 
 window.requestAnimationFrame(doView);
-window.requestAnimationFrame(doPlot);
+
+window.setInterval(function()
+{
+    if(run === true)
+    {
+        setFmod();
+        doTime();
+    }
+}, 1000 / 20);
 
 window.setInterval(function()
 {
     if(snd === true)
     {
         setSnd();
-    }
-
-    if(run === true)
-    {
-        setFmod();
-        doTime();
     }
 }, 1000 / 100);
 
@@ -137,7 +140,7 @@ function doTime()
     obs.pos.x += obs.vel.x;
     obs.pos.y += obs.vel.y;
 
-    let ws = time % 1000;
+    let ws = time % 150;
 
     wavs[ws] = {
         time: time,
@@ -160,11 +163,11 @@ function doTime()
 
     let diffs = [];
 
-    for(let w = 0; w < 1000; w++)
+    for(let w = 0; w < 150; w++)
     {
         if(wavs[w] !== null)
         {
-            diffs[w] = 0.01 * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
+            diffs[w] = 0.03 * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
         }
 
         else
@@ -175,7 +178,7 @@ function doTime()
 
     let wo = null;
 
-    for(let w = 0; w < 1000; w++)
+    for(let w = 0; w < 150; w++)
     {
         if(diffs[w] !== null)
         {
@@ -204,7 +207,7 @@ function doTime()
             ovel = 0;
         }
 
-        obs.freq = obs.wav.freq * (0.01 - ovel) / (0.01 + svel);
+        obs.freq = obs.wav.freq * (0.03 - ovel) / (0.03 + svel);
 
         if(isNaN(obs.freq))
         {
@@ -294,15 +297,15 @@ function doView()
 
     ctxPos.save();
 
-    for(let w = 0; w < 1000; w += 20)
+    for(let w = 0; w < 150; w += 10)
     {
         if(wavs[w] !== null)
         {
-            if(time - wavs[w].time < 500)
+            if(time - wavs[w].time < 150)
             {
                 ctxPos.beginPath();
-                ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.01 * (time - wavs[w].time), 0, 2 * Math.PI);
-                ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 500, 0), 1);
+                ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, 0.03 * (time - wavs[w].time), 0, 2 * Math.PI);
+                ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / 150, 0), 1);
                 ctxPos.lineWidth = 0.03;
                 ctxPos.strokeStyle = "#ffffff";
                 ctxPos.stroke();
@@ -315,7 +318,7 @@ function doView()
     if(isTwav())
     {
         ctxPos.beginPath();
-        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
+        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.03 * (time - obs.wav.time), 0, 2 * Math.PI);
         ctxPos.lineWidth = 0.05;
         ctxPos.strokeStyle = "#ffff00";
         ctxPos.stroke();
@@ -373,25 +376,25 @@ function doPlot()
     ctxFreq.scale(-1, -1);
     ctxFreq.translate(-2, -0.5);
 
-    for(let f = 0; f < 1000; f++)
+    for(let f = 0; f < 150; f++)
     {
-        let freq = freqh.src[(time - f - 1) % 1000];
+        let freq = freqh.src[(time - f - 1) % 150];
 
         if(freq !== null)
         {
             ctxFreq.fillStyle = "#ff0000";
-            ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+            ctxFreq.fillRect(4 * f / 150, 0, 2 * 4 / 150, Math.min(0.25 * Math.abs(freq), 1));
         }
     }
 
-    for(let f = 0; f < 1000; f++)
+    for(let f = 0; f < 150; f++)
     {
-        let freq = freqh.obs[(time - f - 1) % 1000];
+        let freq = freqh.obs[(time - f - 1) % 150];
 
         if(freq !== null)
         {
             ctxFreq.fillStyle = "#00ff00";
-            ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+            ctxFreq.fillRect(4 * f / 150, 0, 2 * 4 / 150, Math.min(0.25 * Math.abs(freq), 1));
         }
     }
 
@@ -414,25 +417,25 @@ function doPlot()
     ctxAmp.scale(-1, -1);
     ctxAmp.translate(-2, -0.5);
 
-    for(let a = 0; a < 1000; a++)
+    for(let a = 0; a < 150; a++)
     {
-        let amp = amph.src[(time - a - 1) % 1000];
+        let amp = amph.src[(time - a - 1) % 150];
 
         if(amp !== null)
         {
             ctxAmp.fillStyle = "#ff0000";
-            ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
+            ctxAmp.fillRect(4 * a / 150, 0, 8 / 150, 0.8 * amp);
         }
     }
 
-    for(let a = 0; a < 1000; a++)
+    for(let a = 0; a < 150; a++)
     {
-        let amp = amph.obs[(time - a - 1) % 1000];
+        let amp = amph.obs[(time - a - 1) % 150];
 
         if(amp !== null)
         {
             ctxAmp.fillStyle = "#00ff00";
-            ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
+            ctxAmp.fillRect(4 * a / 150, 0, 8 / 150, 0.8 * amp);
         }
     }
 
@@ -452,6 +455,7 @@ btnBufrRstr.onclick = doBufrRstr;
 btnFmodFlat.onclick = setFmodFlat;
 btnFmodSquare.onclick = setFmodSquare;
 btnFmodSweep.onclick = setFmodSweep;
+btnFmodTriangle.onclick = setFmodTriangle;
 btnFmodSine.onclick = setFmodSine;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
@@ -536,7 +540,7 @@ function doBufrSave()
     
     bufr.wavs = [];
 
-    for(let w = 0; w < 1000; w++)
+    for(let w = 0; w < 150; w++)
     {
         if(wavs[w] !== null)
         {
@@ -563,7 +567,7 @@ function doBufrSave()
 
     bufr.freqh = {src: [], obs: []};
 
-    for(let f = 0; f < 1000; f++)
+    for(let f = 0; f < 150; f++)
     {
         if(freqh.src[f] !== null)
         {
@@ -588,7 +592,7 @@ function doBufrSave()
 
     bufr.amph = {src: [], obs: []};
 
-    for(let a = 0; a < 1000; a++)
+    for(let a = 0; a < 150; a++)
     {
         if(amph.src[a] !== null)
         {
@@ -647,7 +651,7 @@ function doBufrRstr()
         obs.acc.x = bufr.obs.acc.x;
         obs.acc.y = bufr.obs.acc.y;
     
-        for(let w = 0; w < 1000; w++)
+        for(let w = 0; w < 150; w++)
         {
             if(bufr.wavs[w] !== null)
             {
@@ -686,7 +690,7 @@ function doBufrRstr()
             obs.wav = null;
         }
 
-        for(let f = 0; f < 1000; f++)
+        for(let f = 0; f < 150; f++)
         {
             if(bufr.freqh.src[f] !== null)
             {
@@ -709,7 +713,7 @@ function doBufrRstr()
             }
         }
     
-        for(let a = 0; a < 1000; a++)
+        for(let a = 0; a < 150; a++)
         {
             if(bufr.amph.src[a] !== null)
             {
@@ -759,15 +763,22 @@ function setFmodSweep()
     fixFmod();
 }
 
-function setFmodSine()
+function setFmodTriangle()
 {
     fmod = 3;
     fixFmod();
 }
 
+function setFmodSine()
+{
+    fmod = 4;
+    fixFmod();
+}
+
 function setFmod()
 {
-    let phs = (time % 100) / 100;
+    let prd = 50;
+    let phs = time % prd;
 
     if(fmod === 0)
     {
@@ -776,7 +787,7 @@ function setFmod()
 
     else if(fmod === 1)
     {
-        if(phs < 0.5)
+        if(phs / prd < 0.5)
         {
             src.freq = 0.5;
         }
@@ -789,12 +800,17 @@ function setFmod()
 
     else if(fmod === 2)
     {
-        src.freq = 0.5 + phs;
+        src.freq = 0.5 + phs / prd;
     }
 
     else if(fmod === 3)
     {
-        src.freq = 1 + 0.5 * Math.sin(2 * Math.PI * time / 100);
+        src.freq = 0.5 + Math.abs(2 * phs / prd - 1);
+    }
+
+    else if(fmod === 4)
+    {
+        src.freq = 1 + 0.5 * Math.sin(2 * Math.PI * phs / prd);
     }
 }
 
@@ -1088,26 +1104,26 @@ function setType()
 
                 else if(obj.dir === 1)
                 {
-                    obj.vel.x = -0.004 * obj.mag;
+                    obj.vel.x = -0.008 * obj.mag;
                     obj.vel.y = 0;
                 }
 
                 else if(obj.dir === 2)
                 {
-                    obj.vel.x = 0.004 * obj.mag;
+                    obj.vel.x = 0.008 * obj.mag;
                     obj.vel.y = 0;
                 }
 
                 else if(obj.dir === 3)
                 {
                     obj.vel.x = 0;
-                    obj.vel.y = 0.004 * obj.mag;
+                    obj.vel.y = 0.008 * obj.mag;
                 }
 
                 else if(obj.dir === 4)
                 {
                     obj.vel.x = 0;
-                    obj.vel.y = -0.004 * obj.mag;
+                    obj.vel.y = -0.008 * obj.mag;
                 }
 
                 obj.acc.x = 0;
@@ -1261,6 +1277,7 @@ function fixFmod()
     btnFmodFlat.disabled = false;
     btnFmodSquare.disabled = false;
     btnFmodSweep.disabled = false;
+    btnFmodTriangle.disabled = false;
     btnFmodSine.disabled = false;
 
     if(fmod === 0)
@@ -1279,6 +1296,11 @@ function fixFmod()
     }
 
     else if(fmod === 3)
+    {
+        btnFmodTriangle.disabled = true;
+    }
+
+    else if(fmod === 4)
     {
         btnFmodSine.disabled = true;
     }
