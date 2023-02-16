@@ -1523,6 +1523,34 @@ function doKeyDown(event)
         }
     }
 
+    else if(event.key.toUpperCase() === "F")
+    {
+        if(fmod === 0)
+        {
+            setFmodSquare();
+        }
+
+        else if(fmod === 1)
+        {
+            setFmodSweep();
+        }
+
+        else if(fmod === 2)
+        {
+            setFmodTriangle();
+        }
+
+        else if(fmod === 3)
+        {
+            setFmodSine();
+        }
+
+        else if(fmod === 4)
+        {
+            setFmodFlat();
+        }
+    }
+
     else if(event.key.toUpperCase() === "C")
     {
         if(isCtrlSrc())
