@@ -214,7 +214,7 @@ function doTime()
             obs.freq = obs.wav.freq;
         }
 
-        obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
+        obs.amp = obs.wav.amp * Math.pow(0.99, time - obs.wav.time);
     }
     
     else
@@ -246,13 +246,13 @@ function doView()
     ctxPos.fillStyle = "#00ff00";
     ctxPos.fill();
 
-    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
+    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.01)
     {
         ctxPos.save();
         ctxPos.translate(obs.pos.x, obs.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
-        ctxPos.translate(50 * obs.vel.x, 50 * obs.vel.y);
+        ctxPos.translate(30 * obs.vel.x, 30 * obs.vel.y);
         ctxPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
@@ -273,13 +273,13 @@ function doView()
     ctxPos.fillStyle = "#ff0000";
     ctxPos.fill();
 
-    if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
+    if(Math.hypot(src.vel.x, src.vel.y) > 0.01)
     {
         ctxPos.save();
         ctxPos.translate(src.pos.x, src.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
-        ctxPos.translate(50 * src.vel.x, 50 * src.vel.y);
+        ctxPos.translate(30 * src.vel.x, 30 * src.vel.y);
         ctxPos.rotate(Math.atan2(src.vel.y, src.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
@@ -328,13 +328,13 @@ function doView()
         ctxPos.fillStyle = "#ffff00";
         ctxPos.fill();
 
-        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
+        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.01)
         {
             ctxPos.save();
             ctxPos.translate(obs.wav.pos.x, obs.wav.pos.y);
             ctxPos.beginPath();
             ctxPos.lineTo(0, 0);
-            ctxPos.translate(50 * obs.wav.vel.x, 50 * obs.wav.vel.y);
+            ctxPos.translate(30 * obs.wav.vel.x, 30 * obs.wav.vel.y);
             ctxPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
             ctxPos.lineTo(0.05, 0);
             ctxPos.lineWidth = 0.05;
