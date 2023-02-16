@@ -353,7 +353,7 @@ function doView()
 
     ctxPos.restore();
 
-    if(frm % 50 === 0)
+    if(frm % 10 === 0)
     {
         window.requestAnimationFrame(doPlot);
     }
@@ -376,27 +376,51 @@ function doPlot()
     ctxFreq.scale(-1, -1);
     ctxFreq.translate(-2, -0.5);
 
-    for(let f = 0; f < 150; f++)
-    {
-        let freq = freqh.src[(time - f - 1) % 150];
-
-        if(freq !== null)
-        {
-            ctxFreq.fillStyle = "#ff0000";
-            ctxFreq.fillRect(4 * f / 150, 0, 2 * 4 / 150, Math.min(0.25 * Math.abs(freq), 1));
-        }
-    }
+    ctxFreq.beginPath();
 
     for(let f = 0; f < 150; f++)
     {
-        let freq = freqh.obs[(time - f - 1) % 150];
+        let freq = freqh.src[((time - f - 1) + 150) % 150];
 
-        if(freq !== null)
+        if(freq === null)
         {
-            ctxFreq.fillStyle = "#00ff00";
-            ctxFreq.fillRect(4 * f / 150, 0, 2 * 4 / 150, Math.min(0.25 * Math.abs(freq), 1));
+            freq = 0;
         }
+
+        ctxFreq.lineTo(4 * f / (150 - 1), Math.min(0.25 * Math.abs(freq), 1));
     }
+
+    ctxFreq.lineTo(4, 0);
+    ctxFreq.lineTo(0, 0);
+    ctxFreq.closePath();
+    ctxFreq.fillStyle = "#ff0000";
+    ctxFreq.fill();
+
+    ctxFreq.save();
+    ctxFreq.globalCompositeOperation = "difference";
+
+    ctxFreq.beginPath();
+
+    for(let f = 0; f < 150; f++)
+    {
+        let freq = freqh.obs[((time - f - 1) + 150) % 150];
+
+        if(freq === null)
+        {
+            freq = 0;
+        }
+
+        ctxFreq.lineTo(4 * f / (150 - 1), Math.min(0.25 * Math.abs(freq), 1));
+    }
+
+    ctxFreq.lineTo(4, 0);
+    ctxFreq.lineTo(0, 0);
+    ctxFreq.closePath();
+
+    ctxFreq.fillStyle = "#00ff00";
+    ctxFreq.fill();
+
+    ctxFreq.restore();
 
     for(let b = 0; b < 3; b++)
     {
@@ -417,27 +441,52 @@ function doPlot()
     ctxAmp.scale(-1, -1);
     ctxAmp.translate(-2, -0.5);
 
+    ctxAmp.beginPath();
+
     for(let a = 0; a < 150; a++)
     {
-        let amp = amph.src[(time - a - 1) % 150];
+        let amp = amph.src[((time - a - 1) + 150) % 150];
 
-        if(amp !== null)
+        if(amp === null)
         {
-            ctxAmp.fillStyle = "#ff0000";
-            ctxAmp.fillRect(4 * a / 150, 0, 8 / 150, 0.8 * amp);
+            amp = 0;
         }
+
+        ctxAmp.lineTo(4 * a / (150 - 1), 0.8 * amp);
     }
+
+    ctxAmp.lineTo(4, 0);
+    ctxAmp.lineTo(0, 0);
+    ctxAmp.closePath();
+
+    ctxAmp.fillStyle = "#ff0000";
+    ctxAmp.fill();
+
+    ctxAmp.save();
+    ctxAmp.globalCompositeOperation = "difference";
+
+    ctxAmp.beginPath();
 
     for(let a = 0; a < 150; a++)
     {
         let amp = amph.obs[(time - a - 1) % 150];
 
-        if(amp !== null)
+        if(amp === null)
         {
-            ctxAmp.fillStyle = "#00ff00";
-            ctxAmp.fillRect(4 * a / 150, 0, 8 / 150, 0.8 * amp);
+            amp = 0;
         }
+
+        ctxAmp.lineTo(4 * a / 150, 0.8 * amp);
     }
+
+    ctxAmp.lineTo(4, 0);
+    ctxAmp.lineTo(0, 0);
+    ctxAmp.closePath();
+
+    ctxAmp.fillStyle = "#00ff00";
+    ctxAmp.fill();
+
+    ctxAmp.restore();
 
     for(let b = 0; b < 4; b++)
     {
