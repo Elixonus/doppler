@@ -3,7 +3,7 @@ body
     display: flex;
     margin: 0;
     padding: 50px 0;
-    background-color: #fff060;
+    background-color: #00ffff;
 }
 
 .section
@@ -78,7 +78,7 @@ body
     margin: 0 auto;
     padding: 10px;
     text-align: center;
-    background-color: #ffffff;
+    background-color: #ffff00;
     border: 10px solid #000000;
 }
 
@@ -88,7 +88,7 @@ body
     padding: 20px;
 }
 
-#button-owave-on, #button-owave-off
+#button-twave-on, #button-twave-off
 {
     color: #000000;
     background-color: #ffff00;

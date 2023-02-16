@@ -2,14 +2,15 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
+const btnPlotUpdt = document.getElementById("button-plot-update");
 const btnFmodFlat = document.getElementById("button-fmod-flat");
-const btnFmodDual = document.getElementById("button-fmod-dual");
+const btnFmodSquare = document.getElementById("button-fmod-square");
 const btnFmodSweep = document.getElementById("button-fmod-sweep");
 const btnFmodSine = document.getElementById("button-fmod-sine");
 const btnSndOn = document.getElementById("button-sound-on");
 const btnSndOff = document.getElementById("button-sound-off");
-const btnOwvOn = document.getElementById("button-owave-on");
-const btnOwvOff = document.getElementById("button-owave-off");
+const btnTwavOn = document.getElementById("button-twave-on");
+const btnTwavOff = document.getElementById("button-twave-off");
 const btnCtrlSrc = document.getElementById("button-control-source");
 const btnCtrlObs = document.getElementById("button-control-observer");
 const btnTypePos = document.getElementById("button-type-position");
@@ -26,12 +27,10 @@ const btnMagHigh = document.getElementById("button-magnitude-high");
 const canvPos = document.getElementById("canvas-position");
 const canvFreq = document.getElementById("canvas-frequency");
 const canvAmp = document.getElementById("canvas-amplitude");
-const canvPrsr = document.getElementById("canvas-pressure");
 
 let ctxPos = null;
 let ctxFreq = null;
 let ctxAmp = null;
-let ctxPrsr = null;
 let ctxSnd = null;
 let oscl = null;
 let gain = null;
@@ -39,9 +38,9 @@ let gain = null;
 let time = 0;
 let run = true;
 let bufr = null;
-let fmod = 1;
+let fmod = 0;
 let snd = false;
-let owv = false;
+let twav = false;
 let obj = null;
 
 let src = {
@@ -87,29 +86,30 @@ let obs = {
 };
 
 let wavs = [];
-let hfreq = {src: [], obs: []};
-let hamp = {src: [], obs: []};
+let freqh = {src: [], obs: []};
+let amph = {src: [], obs: []};
 
 for(let t = 0; t < 1000; t++)
 {
     wavs[t] = null;
-    hfreq.src[t] = null;
-    hfreq.obs[t] = null;
-    hamp.src[t] = null;
-    hamp.obs[t] = null;
+    freqh.src[t] = null;
+    freqh.obs[t] = null;
+    amph.src[t] = null;
+    amph.obs[t] = null;
 }
 
 fixTime();
 fixBufr();
 fixFmod();
 fixSnd();
-fixOwv();
+fixTwav();
 fixCtrl();
 fixType();
 fixDir();
 fixMag();
 
-window.requestAnimationFrame(doDspl);
+window.requestAnimationFrame(doPlot);
+window.requestAnimationFrame(doView);
 
 function doTime()
 {
@@ -141,8 +141,8 @@ function doTime()
 
     src.wav = wavs[ws];
 
-    hfreq.src[ws] = src.freq;
-    hamp.src[ws] = src.amp;
+    freqh.src[ws] = src.freq;
+    amph.src[ws] = src.amp;
 
     let diffs = [];
 
@@ -198,8 +198,6 @@ function doTime()
         }
 
         obs.amp = obs.wav.amp * Math.pow(0.995, time - obs.wav.time);
-        
-        // oprsrs[ws] = obs.amp * Math.sin(0.5 * obs.freq * dist - 0.1 * obs.freq * time);
     }
     
     else
@@ -209,13 +207,13 @@ function doTime()
         obs.amp = null;
     }
 
-    hfreq.obs[ws] = obs.freq;
-    hamp.obs[ws] = obs.amp;
+    freqh.obs[ws] = obs.freq;
+    amph.obs[ws] = obs.amp;
 
     time += 1;
 }
 
-function doDspl()
+function doView()
 {
     ctxPos = canvPos.getContext("2d");
 
@@ -300,7 +298,7 @@ function doDspl()
 
     ctxPos.restore();
 
-    if(isOwv())
+    if(isTwav())
     {
         ctxPos.beginPath();
         ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.01 * (time - obs.wav.time), 0, 2 * Math.PI);
@@ -338,180 +336,119 @@ function doDspl()
 
     ctxPos.restore();
 
-    if(time % 25 === 0)
-    {
-        ctxFreq = canvFreq.getContext("2d");
-
-        ctxFreq.fillStyle = "#000000";
-        ctxFreq.fillRect(0, 0, 800, 200);
-    
-        ctxFreq.save();
-        ctxFreq.scale(200, 200);
-        ctxFreq.translate(2, 0.5);
-        ctxFreq.scale(-1, -1);
-        ctxFreq.translate(-2, -0.5);
-
-        for(let f = 0; f < 1000; f++)
-        {
-            let freq = hfreq.src[(time - f - 1) % 1000];
-
-            if(freq !== null)
-            {
-                ctxFreq.fillStyle = "#ff0000";
-                ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
-            }
-        }
-
-        for(let f = 0; f < 1000; f++)
-        {
-            let freq = hfreq.obs[(time - f - 1) % 1000];
-
-            if(freq !== null)
-            {
-                ctxFreq.fillStyle = "#00ff00";
-                ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
-            }
-        }
-
-        if(isOwv())
-        {
-            ctxFreq.fillStyle = "#ffff00";
-            ctxFreq.fillRect(0, 0, 0.04, Math.min(0.25 * Math.abs(obs.freq), 1));
-        }
-
-        for(let b = 0; b < 3; b++)
-        {
-            ctxFreq.fillStyle = "#666666";
-            ctxFreq.fillRect(0, (b + 1) / 4, 4, 0.01);
-        }
-
-        ctxFreq.restore();
-    
-        ctxAmp = canvAmp.getContext("2d");
-
-        ctxAmp.fillStyle = "#000000";
-        ctxAmp.fillRect(0, 0, 800, 200);
-    
-        ctxAmp.save();
-        ctxAmp.scale(200, 200);
-        ctxAmp.translate(2, 0.5);
-        ctxAmp.scale(-1, -1);
-        ctxAmp.translate(-2, -0.5);
-    
-        for(let a = 0; a < 1000; a++)
-        {
-            let amp = hamp.src[(time - a - 1) % 1000];
-
-            if(amp !== null)
-            {
-                ctxAmp.fillStyle = "#ff0000";
-                ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
-            }
-        }
-
-        for(let a = 0; a < 1000; a++)
-        {
-            let amp = hamp.obs[(time - a - 1) % 1000];
-
-            if(amp !== null)
-            {
-                ctxAmp.fillStyle = "#00ff00";
-                ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
-            }
-        }
-
-        if(isOwv())
-        {
-            ctxAmp.fillStyle = "#ffff00";
-            ctxAmp.fillRect(0, 0, 0.04, 0.8 * obs.amp);
-        }
-
-        for(let b = 0; b < 4; b++)
-        {
-            ctxAmp.fillStyle = "#666666";
-            ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 4, 0.01);
-        }
-
-        ctxAmp.restore();
-
-        ctxPrsr = canvPrsr.getContext("2d");
-
-        ctxPrsr.fillStyle = "#000000";
-        ctxPrsr.fillRect(0, 0, 800, 200);
-
-        ctxPrsr.save();
-        ctxPrsr.scale(200, 200);
-        ctxPrsr.translate(2, 0.5);
-        ctxPrsr.scale(-1, -1);
-        ctxPrsr.translate(-2, -0.5);
-/*
-        for(let p = 0; p < 1000; p++)
-        {
-            let prsr = prsrs[(time - p - 1) % 1000];
-
-            if(prsr !== null)
-            {
-                ctxPrsr.fillStyle = "#00ff00";
-                ctxPrsr.fillRect(4 * p / 1000, 0.5, 8 / 1000, 0.4 * prsr);
-            }
-        }*/
-
-        ctxPrsr.restore();
-    }
-
     if(snd === true)
     {
         setSnd();
     }
 
-    if(fmod === 0)
-    {
-        src.freq = 1;
-    }
-
-    else if(fmod === 1)
-    {
-        if(time % 40 < 20)
-        {
-            src.freq = 0.5;
-        }
-
-        else
-        {
-            src.freq = 1.5;
-        }
-    }
-
-    else if(fmod === 2)
-    {
-        src.freq = 0.5 + (time % 20) / 20;
-    }
-
-    else if(fmod === 3)
-    {
-        src.freq = 1 + 0.5 * Math.sin(0.1 * time);
-    }
+    setFmod();
     
     if(run === true)
     {
         doTime();
     }
 
-    window.requestAnimationFrame(doDspl);
+    window.requestAnimationFrame(doView);
+}
+
+function doPlot()
+{
+    ctxFreq = canvFreq.getContext("2d");
+
+    ctxFreq.fillStyle = "#000000";
+    ctxFreq.fillRect(0, 0, 800, 200);
+
+    ctxFreq.save();
+    ctxFreq.scale(200, 200);
+    ctxFreq.translate(2, 0.5);
+    ctxFreq.scale(-1, -1);
+    ctxFreq.translate(-2, -0.5);
+
+    for(let f = 0; f < 1000; f++)
+    {
+        let freq = freqh.src[(time - f - 1) % 1000];
+
+        if(freq !== null)
+        {
+            ctxFreq.fillStyle = "#ff0000";
+            ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+        }
+    }
+
+    for(let f = 0; f < 1000; f++)
+    {
+        let freq = freqh.obs[(time - f - 1) % 1000];
+
+        if(freq !== null)
+        {
+            ctxFreq.fillStyle = "#00ff00";
+            ctxFreq.fillRect(4 * f / 1000, 0, 0.008, Math.min(0.25 * Math.abs(freq), 1));
+        }
+    }
+
+    for(let b = 0; b < 3; b++)
+    {
+        ctxFreq.fillStyle = "#666666";
+        ctxFreq.fillRect(0, (b + 1) / 4, 4, 0.01);
+    }
+
+    ctxFreq.restore();
+
+    ctxAmp = canvAmp.getContext("2d");
+
+    ctxAmp.fillStyle = "#000000";
+    ctxAmp.fillRect(0, 0, 800, 200);
+
+    ctxAmp.save();
+    ctxAmp.scale(200, 200);
+    ctxAmp.translate(2, 0.5);
+    ctxAmp.scale(-1, -1);
+    ctxAmp.translate(-2, -0.5);
+
+    for(let a = 0; a < 1000; a++)
+    {
+        let amp = amph.src[(time - a - 1) % 1000];
+
+        if(amp !== null)
+        {
+            ctxAmp.fillStyle = "#ff0000";
+            ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
+        }
+    }
+
+    for(let a = 0; a < 1000; a++)
+    {
+        let amp = amph.obs[(time - a - 1) % 1000];
+
+        if(amp !== null)
+        {
+            ctxAmp.fillStyle = "#00ff00";
+            ctxAmp.fillRect(4 * a / 1000, 0, 8 / 1000, 0.8 * amp);
+        }
+    }
+
+    for(let b = 0; b < 4; b++)
+    {
+        ctxAmp.fillStyle = "#666666";
+        ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 4, 0.01);
+    }
+
+    ctxAmp.restore();
 }
 
 btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
+btnPlotUpdt.onclick = doPlotUpdt;
 btnFmodFlat.onclick = setFmodFlat;
-btnFmodDual.onclick = setFmodDual;
+btnFmodSquare.onclick = setFmodSquare;
 btnFmodSweep.onclick = setFmodSweep;
 btnFmodSine.onclick = setFmodSine;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
-btnOwvOn.onclick = setOwvOn;
-btnOwvOff.onclick = setOwvOff;
+btnTwavOn.onclick = setTwavOn;
+btnTwavOff.onclick = setTwavOff;
 btnCtrlSrc.onclick = setCtrlSrc;
 btnCtrlObs.onclick = setCtrlObs;
 btnTypePos.onclick = setTypePos;
@@ -548,6 +485,7 @@ function doBufrSave()
     bufr.obj = null;
 
     bufr.src = {
+        w: wavs.indexOf(src.wav),
         freq: src.freq,
         amp: src.amp,
         type: src.type,
@@ -568,6 +506,7 @@ function doBufrSave()
     };
 
     bufr.obs = {
+        w: wavs.indexOf(obs.wav),
         freq: obs.freq,
         amp: obs.amp,
         type: obs.type,
@@ -614,53 +553,53 @@ function doBufrSave()
         }
     }
 
-    bufr.hfreq = {src: [], obs: []};
+    bufr.freqh = {src: [], obs: []};
 
     for(let f = 0; f < 1000; f++)
     {
-        if(hfreq.src[f] !== null)
+        if(freqh.src[f] !== null)
         {
-            bufr.hfreq.src[f] = hfreq.src[f];
+            bufr.freqh.src[f] = freqh.src[f];
         }
 
         else
         {
-            bufr.hfreq.src[f] = null;
+            bufr.freqh.src[f] = null;
         }
 
-        if(hfreq.obs[f] !== null)
+        if(freqh.obs[f] !== null)
         {
-            bufr.hfreq.obs[f] = hfreq.obs[f];
+            bufr.freqh.obs[f] = freqh.obs[f];
         }
 
         else
         {
-            bufr.hfreq.obs[f] = null;
+            bufr.freqh.obs[f] = null;
         }
     }
 
-    bufr.hamp = {src: [], obs: []};
+    bufr.amph = {src: [], obs: []};
 
     for(let a = 0; a < 1000; a++)
     {
-        if(hamp.src[a] !== null)
+        if(amph.src[a] !== null)
         {
-            bufr.hamp.src[a] = hamp.src[a];
+            bufr.amph.src[a] = amph.src[a];
         }
 
         else
         {
-            bufr.hamp.src[a] = null;
+            bufr.amph.src[a] = null;
         }
 
-        if(hamp.obs[a] !== null)
+        if(amph.obs[a] !== null)
         {
-            bufr.hamp.obs[a] = hamp.obs[a];
+            bufr.amph.obs[a] = amph.obs[a];
         }
 
         else
         {
-            bufr.hamp.obs[a] = null;
+            bufr.amph.obs[a] = null;
         }
     }
 
@@ -699,7 +638,7 @@ function doBufrRstr()
         obs.vel.y = bufr.obs.vel.y;
         obs.acc.x = bufr.obs.acc.x;
         obs.acc.y = bufr.obs.acc.y;
-
+    
         for(let w = 0; w < 1000; w++)
         {
             if(bufr.wavs[w] !== null)
@@ -718,50 +657,70 @@ function doBufrRstr()
                 wavs[w] = null;
             }
         }
-    
+
+        if(bufr.src.w >= 0)
+        {
+            src.wav = wavs[bufr.src.w];
+        }
+
+        else
+        {
+            src.wav = null;
+        }
+
+        if(bufr.obs.w >= 0)
+        {
+            obs.wav = wavs[bufr.obs.w];
+        }
+
+        else
+        {
+            obs.wav = null;
+        }
+
         for(let f = 0; f < 1000; f++)
         {
-            if(bufr.hfreq.src[f] !== null)
+            if(bufr.freqh.src[f] !== null)
             {
-                hfreq.src[f] = bufr.hfreq.src[f];
+                freqh.src[f] = bufr.freqh.src[f];
             }
 
             else
             {
-                hfreq.src[f] = null;
+                freqh.src[f] = null;
             }
 
-            if(bufr.hfreq.obs[f] !== null)
+            if(bufr.freqh.obs[f] !== null)
             {
-                hfreq.obs[f] = bufr.hfreq.obs[f];
+                freqh.obs[f] = bufr.freqh.obs[f];
             }
 
             else
             {
-                hfreq.obs[f] = null;
+                freqh.obs[f] = null;
             }
         }
     
         for(let a = 0; a < 1000; a++)
         {
-            if(bufr.hamp.src[a] !== null)
+            if(bufr.amph.src[a] !== null)
             {
-                hamp.src[a] = bufr.hamp.src[a];
+                amph.src[a] = bufr.amph.src[a];
             }
 
             else
             {
-                hamp.src[a] = null;
+                amph.src[a] = null;
             }
 
-            if(bufr.hamp.obs[a] !== null)
+            if(bufr.amph.obs[a] !== null)
             {
-                hamp.obs[a] = bufr.hamp.obs[a];
+                amph.obs[a] = bufr.amph.obs[a];
             }
 
             else
             {
-                hamp.obs[a] = null;
+                amph.obs[a] = null;
             }
         }
 
@@ -774,13 +733,18 @@ function doBufrRstr()
     }
 }
 
+function doPlotUpdt()
+{
+    window.requestAnimationFrame(doPlot);
+}
+
 function setFmodFlat()
 {
     fmod = 0;
     fixFmod();
 }
 
-function setFmodDual()
+function setFmodSquare()
 {
     fmod = 1;
     fixFmod();
@@ -796,6 +760,39 @@ function setFmodSine()
 {
     fmod = 3;
     fixFmod();
+}
+
+function setFmod()
+{
+    let phs = (time % 100) / 100;
+
+    if(fmod === 0)
+    {
+        src.freq = 1;
+    }
+
+    else if(fmod === 1)
+    {
+        if(phs < 0.5)
+        {
+            src.freq = 0.5;
+        }
+
+        else
+        {
+            src.freq = 1.5;
+        }
+    }
+
+    else if(fmod === 2)
+    {
+        src.freq = 0.5 + phs;
+    }
+
+    else if(fmod === 3)
+    {
+        src.freq = 1 + 0.5 * Math.sin(2 * Math.PI * time / 100);
+    }
 }
 
 function setSndOn()
@@ -850,21 +847,21 @@ function setSnd()
     }
 }
 
-function setOwvOn()
+function setTwavOn()
 {
-    owv = true;
-    fixOwv();
+    twav = true;
+    fixTwav();
 }
 
-function setOwvOff()
+function setTwavOff()
 {
-    owv = false;
-    fixOwv();
+    twav = false;
+    fixTwav();
 }
 
-function isOwv()
+function isTwav()
 {
-    return (owv === true && obs.wav !== null && time - obs.wav.time < 500);
+    return (twav === true && obs.wav !== null && time - obs.wav.time < 500);
 }
 
 function setCtrlSrc()
@@ -1259,7 +1256,7 @@ function fixBufr()
 function fixFmod()
 {
     btnFmodFlat.disabled = false;
-    btnFmodDual.disabled = false;
+    btnFmodSquare.disabled = false;
     btnFmodSweep.disabled = false;
     btnFmodSine.disabled = false;
 
@@ -1270,7 +1267,7 @@ function fixFmod()
 
     else if(fmod === 1)
     {
-        btnFmodDual.disabled = true;
+        btnFmodSquare.disabled = true;
     }
 
     else if(fmod === 2)
@@ -1300,19 +1297,19 @@ function fixSnd()
     }
 }
 
-function fixOwv()
+function fixTwav()
 {
-    btnOwvOn.disabled = false;
-    btnOwvOff.disabled = false;
+    btnTwavOn.disabled = false;
+    btnTwavOff.disabled = false;
 
-    if(owv === true)
+    if(twav === true)
     {
-        btnOwvOn.disabled = true;
+        btnTwavOn.disabled = true;
     }
 
-    else if(owv === false)
+    else if(twav === false)
     {
-        btnOwvOff.disabled = true;
+        btnTwavOff.disabled = true;
     }
 }
 
@@ -1446,6 +1443,12 @@ window.onkeydown = doKeyDown;
 
 function doKeyDown(event)
 {
+    if(event.repeat)
+    {
+        event.preventDefault();
+        return;
+    }
+
     if(event.key.toUpperCase() === "P")
     {
         if(run === true)
@@ -1469,6 +1472,11 @@ function doKeyDown(event)
         doBufrRstr();
     }
 
+    else if(event.key.toUpperCase() === "G")
+    {
+        doPlotUpdt();
+    }
+
     else if(event.key.toUpperCase() === "M")
     {
         if(snd === true)
@@ -1484,14 +1492,14 @@ function doKeyDown(event)
 
     else if(event.key.toUpperCase() === "W")
     {
-        if(owv === true)
+        if(twav === true)
         {
-            setOwvOff();
+            setTwavOff();
         }
 
-        else if(owv === false)
+        else if(twav === false)
         {
-            setOwvOn();
+            setTwavOn();
         }
     }
 
@@ -1578,11 +1586,3 @@ function doKeyDown(event)
         setMagHigh();
     }
 }
-
-document.onvisibilitychange = function()
-{
-    if(snd === true)
-    {
-        setSndOff();
-    }
-};

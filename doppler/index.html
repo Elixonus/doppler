@@ -33,12 +33,9 @@
                             </div>
                         </div>
                         <div class="panel">
-                            <h3 class="label">FMOD (F)</h3>
+                            <h3 class="label">PLOT (G)</h3>
                             <div class="content">
-                                <button type="button" id="button-fmod-flat" class="button">FLAT</button>
-                                <button type="button" id="button-fmod-dual" class="button">DUAL</button>
-                                <button type="button" id="button-fmod-sweep" class="button">SWEEP</button>
-                                <button type="button" id="button-fmod-sine" class="button">SINE</button>
+                                <button type="button" id="button-plot-update" class="button">UPDATE</button>
                             </div>
                         </div>
                         <div class="panel">
@@ -49,10 +46,24 @@
                             </div>
                         </div>
                         <div class="panel">
-                            <h3 class="label">OWAVE (W)</h3>
+                            <h3 class="label">TWAVE (W)</h3>
                             <div class="content">
-                                <button type="button" id="button-owave-on" class="button">ON</button>
-                                <button type="button" id="button-owave-off" class="button">OFF</button>
+                                <button type="button" id="button-twave-on" class="button">ON</button>
+                                <button type="button" id="button-twave-off" class="button">OFF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h2 class="heading">Signal</h2>
+                    <div class="group">
+                        <div class="panel">
+                            <h3 class="label">FMOD (F)</h3>
+                            <div class="content">
+                                <button type="button" id="button-fmod-flat" class="button">FLAT</button>
+                                <button type="button" id="button-fmod-square" class="button">SQUARE</button>
+                                <button type="button" id="button-fmod-sweep" class="button">SWEEP</button>
+                                <button type="button" id="button-fmod-sine" class="button">SINE</button>
                             </div>
                         </div>
                     </div>
@@ -129,12 +140,6 @@
                             <h3 class="label">AMPLITUDE vs TIME</h3>
                             <div class="content">
                                 <canvas id="canvas-amplitude" class="canvas" width="800" height="200"></canvas>
-                            </div>
-                        </div>
-                        <div class="panel">
-                            <h3 class="label">PRESSURE vs *POSITION</h3>
-                            <div class="content">
-                                <canvas id="canvas-pressure" class="canvas" width="800" height="200"></canvas>
                             </div>
                         </div>
                     </div>
