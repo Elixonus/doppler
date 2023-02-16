@@ -396,9 +396,6 @@ function doPlot()
     ctxFreq.fillStyle = "#ff0000";
     ctxFreq.fill();
 
-    ctxFreq.save();
-    ctxFreq.globalCompositeOperation = "difference";
-
     ctxFreq.beginPath();
 
     for(let f = 0; f < 150; f++)
@@ -419,8 +416,6 @@ function doPlot()
 
     ctxFreq.fillStyle = "#00ff00";
     ctxFreq.fill();
-
-    ctxFreq.restore();
 
     for(let b = 0; b < 3; b++)
     {
@@ -462,9 +457,6 @@ function doPlot()
     ctxAmp.fillStyle = "#ff0000";
     ctxAmp.fill();
 
-    ctxAmp.save();
-    ctxAmp.globalCompositeOperation = "difference";
-
     ctxAmp.beginPath();
 
     for(let a = 0; a < 150; a++)
@@ -485,8 +477,6 @@ function doPlot()
 
     ctxAmp.fillStyle = "#00ff00";
     ctxAmp.fill();
-
-    ctxAmp.restore();
 
     for(let b = 0; b < 4; b++)
     {
