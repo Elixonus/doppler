@@ -246,7 +246,7 @@ function doView()
     ctxPos.fillStyle = "#00ff00";
     ctxPos.fill();
 
-    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.01)
+    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
     {
         ctxPos.save();
         ctxPos.translate(obs.pos.x, obs.pos.y);
@@ -273,7 +273,7 @@ function doView()
     ctxPos.fillStyle = "#ff0000";
     ctxPos.fill();
 
-    if(Math.hypot(src.vel.x, src.vel.y) > 0.01)
+    if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
     {
         ctxPos.save();
         ctxPos.translate(src.pos.x, src.pos.y);
@@ -328,7 +328,7 @@ function doView()
         ctxPos.fillStyle = "#ffff00";
         ctxPos.fill();
 
-        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.01)
+        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
         {
             ctxPos.save();
             ctxPos.translate(obs.wav.pos.x, obs.wav.pos.y);
