@@ -4,13 +4,13 @@
 
 ## About
 
-Simulation of the doppler effect, particularized in the context of sound waves and explored through scenarios where a wave emitting source and wave detecting observer move with a user controllable velocity or acceleration.
+Simulation of the doppler effect, particularized in the context of sound waves and explored through scenarios where a wave emitting source and wave detecting observer move with a user controllable position, velocity or acceleration.
 
 ## Source
 
-Source is controllable in velocity and acceleration and is always in one of three states: stationary, constant velocity or constant acceleration.
+Source is controllable in position, velocity and acceleration and is always in one of three states: stationary, constant velocity or constant acceleration.
 
-Source emits waves with a constant frequency and amplitude.
+Source emits waves with a constant or variable frequency and constant amplitude.
 
 ## Waves
 
@@ -22,7 +22,7 @@ Currently when multiple waves collide, interference is not accounted for.
 
 ## Observer
 
-Observer, similarly, is controllable in velocity and acceleration and is always in one of three states: stationary, constant velocity or constant acceleration.
+Observer, similarly, is controllable in position, velocity and acceleration and is always in one of three states: stationary, constant velocity or constant acceleration.
 
 Observer detects a wave at a time and records its perceived frequency and amplitude.
 
@@ -44,7 +44,7 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `SOUND` button group can be accessed with key `M` to interpret the observed signal as a sound wave.
 
-`OWAVE` button group can be accessed with key `O` to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
+`TWAVE` button group can be accessed with key `T` to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
 
 `CONTROL` button group can be accessed with key `C` to toggle between modifying the properties of the source and observer.
 
