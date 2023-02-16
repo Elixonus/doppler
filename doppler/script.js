@@ -2,7 +2,6 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
-const btnPlotUpdt = document.getElementById("button-plot-update");
 const btnFmodFlat = document.getElementById("button-fmod-flat");
 const btnFmodSquare = document.getElementById("button-fmod-square");
 const btnFmodSweep = document.getElementById("button-fmod-sweep");
@@ -35,6 +34,7 @@ let ctxSnd = null;
 let oscl = null;
 let gain = null;
 
+let frm = 0;
 let time = 0;
 let run = true;
 let bufr = null;
@@ -108,8 +108,22 @@ fixType();
 fixDir();
 fixMag();
 
-window.requestAnimationFrame(doPlot);
 window.requestAnimationFrame(doView);
+window.requestAnimationFrame(doPlot);
+
+window.setInterval(function()
+{
+    if(snd === true)
+    {
+        setSnd();
+    }
+
+    if(run === true)
+    {
+        setFmod();
+        doTime();
+    }
+}, 1000 / 100);
 
 function doTime()
 {
@@ -210,7 +224,7 @@ function doTime()
     freqh.obs[ws] = obs.freq;
     amph.obs[ws] = obs.amp;
 
-    time += 1;
+    time++;
 }
 
 function doView()
@@ -336,18 +350,13 @@ function doView()
 
     ctxPos.restore();
 
-    if(snd === true)
+    if(frm % 50 === 0)
     {
-        setSnd();
+        window.requestAnimationFrame(doPlot);
     }
 
-    setFmod();
+    frm++;
     
-    if(run === true)
-    {
-        doTime();
-    }
-
     window.requestAnimationFrame(doView);
 }
 
@@ -440,7 +449,6 @@ btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
-btnPlotUpdt.onclick = doPlotUpdt;
 btnFmodFlat.onclick = setFmodFlat;
 btnFmodSquare.onclick = setFmodSquare;
 btnFmodSweep.onclick = setFmodSweep;
@@ -731,11 +739,6 @@ function doBufrRstr()
         fixDir();
         fixMag();
     }
-}
-
-function doPlotUpdt()
-{
-    window.requestAnimationFrame(doPlot);
 }
 
 function setFmodFlat()
@@ -1470,11 +1473,6 @@ function doKeyDown(event)
     else if(event.key.toUpperCase() === "R")
     {
         doBufrRstr();
-    }
-
-    else if(event.key.toUpperCase() === "G")
-    {
-        doPlotUpdt();
     }
 
     else if(event.key.toUpperCase() === "M")
