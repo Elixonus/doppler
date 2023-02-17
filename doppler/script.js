@@ -40,6 +40,7 @@ const s = 0.04;
 
 let time = 0;
 let view = 0;
+let plot = 0;
 let run = true;
 let bufr = null;
 let fmod = 0;
@@ -90,31 +91,25 @@ let obs = {
 };
 
 let wavs = [];
+
 let freqh = {src: [], obs: []};
 let amph = {src: [], obs: []};
 
 for(let t = 0; t < n; t++)
 {
     wavs[t] = null;
+    
     freqh.src[t] = null;
     freqh.obs[t] = null;
     amph.src[t] = null;
     amph.obs[t] = null;
 }
 
-fixTime();
-fixBufr();
-fixFmod();
-fixSnd();
-fixTwav();
-fixCtrl();
-fixType();
-fixDir();
-fixMag();
+window.setInterval(doCalc, 50);
 
-window.requestAnimationFrame(doView);
+window.requestAnimationFrame(doAnim);
 
-window.setInterval(function()
+function doCalc()
 {
     if(run === true)
     {
@@ -126,7 +121,19 @@ window.setInterval(function()
             setSnd();
         }
     }
-}, 1000 / 20);
+}
+
+function doAnim()
+{
+    doView();
+
+    if(view % 10 === 1)
+    {
+        doPlot();
+    }
+
+    window.requestAnimationFrame(doAnim);
+}
 
 function doTime()
 {
@@ -361,14 +368,7 @@ function doView()
 
     ctxPos.restore();
 
-    if(view % 10 === 0)
-    {
-        window.requestAnimationFrame(doPlot);
-    }
-
     view++;
-    
-    window.requestAnimationFrame(doView);
 }
 
 function doPlot()
@@ -493,6 +493,8 @@ function doPlot()
     }
 
     ctxAmp.restore();
+
+    plot++;
 }
 
 btnTimeStrt.onclick = setTimeStrt;
@@ -1292,6 +1294,16 @@ function setMagHigh()
         setType();
     }
 }
+
+fixTime();
+fixBufr();
+fixFmod();
+fixSnd();
+fixTwav();
+fixCtrl();
+fixType();
+fixDir();
+fixMag();
 
 function fixTime()
 {
