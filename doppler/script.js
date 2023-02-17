@@ -252,7 +252,7 @@ function doView()
         ctxPos.translate(obs.pos.x, obs.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
-        ctxPos.translate(30 * obs.vel.x, 30 * obs.vel.y);
+        ctxPos.translate(20 * obs.vel.x, 20 * obs.vel.y);
         ctxPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
@@ -461,14 +461,14 @@ function doPlot()
 
     for(let a = 0; a < 150; a++)
     {
-        let amp = amph.obs[(time - a - 1) % 150];
+        let amp = amph.obs[((time - a - 1) + 150) % 150];
 
         if(amp === null)
         {
             amp = 0;
         }
 
-        ctxAmp.lineTo(4 * a / 150, 0.8 * amp);
+        ctxAmp.lineTo(4 * a / (150 - 1), 0.8 * amp);
     }
 
     ctxAmp.lineTo(4, 0);
@@ -1143,26 +1143,26 @@ function setType()
 
                 else if(obj.dir === 1)
                 {
-                    obj.vel.x = -0.008 * obj.mag;
+                    obj.vel.x = -0.01 * obj.mag;
                     obj.vel.y = 0;
                 }
 
                 else if(obj.dir === 2)
                 {
-                    obj.vel.x = 0.008 * obj.mag;
+                    obj.vel.x = 0.01 * obj.mag;
                     obj.vel.y = 0;
                 }
 
                 else if(obj.dir === 3)
                 {
                     obj.vel.x = 0;
-                    obj.vel.y = 0.008 * obj.mag;
+                    obj.vel.y = 0.01 * obj.mag;
                 }
 
                 else if(obj.dir === 4)
                 {
                     obj.vel.x = 0;
-                    obj.vel.y = -0.008 * obj.mag;
+                    obj.vel.y = -0.01 * obj.mag;
                 }
 
                 obj.acc.x = 0;
@@ -1179,26 +1179,26 @@ function setType()
 
                 else if(obj.dir === 1)
                 {
-                    obj.acc.x = -0.0001 * obj.mag;
+                    obj.acc.x = -0.0005 * obj.mag;
                     obj.acc.y = 0;
                 }
 
                 else if(obj.dir === 2)
                 {
-                    obj.acc.x = 0.0001 * obj.mag;
+                    obj.acc.x = 0.0005 * obj.mag;
                     obj.acc.y = 0;
                 }
 
                 else if(obj.dir === 3)
                 {
                     obj.acc.x = 0;
-                    obj.acc.y = 0.0001 * obj.mag;
+                    obj.acc.y = 0.0005 * obj.mag;
                 }
 
                 else if(obj.dir === 4)
                 {
                     obj.acc.x = 0;
-                    obj.acc.y = -0.0001 * obj.mag;
+                    obj.acc.y = -0.0005 * obj.mag;
                 }
             }
         }
@@ -1507,12 +1507,6 @@ window.onkeydown = doKeyDown;
 
 function doKeyDown(event)
 {
-    if(event.repeat)
-    {
-        event.preventDefault();
-        return;
-    }
-
     if(event.key.toUpperCase() === "P")
     {
         if(run === true)
