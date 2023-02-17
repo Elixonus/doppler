@@ -9,8 +9,8 @@ const btnFmodTriangle = document.getElementById("button-fmod-triangle");
 const btnFmodSine = document.getElementById("button-fmod-sine");
 const btnSndOn = document.getElementById("button-sound-on");
 const btnSndOff = document.getElementById("button-sound-off");
-const btnTwavOn = document.getElementById("button-twave-on");
-const btnTwavOff = document.getElementById("button-twave-off");
+const btnTwavShow = document.getElementById("button-twave-show");
+const btnTwavHide = document.getElementById("button-twave-hide");
 const btnCtrlSrc = document.getElementById("button-control-source");
 const btnCtrlObs = document.getElementById("button-control-observer");
 const btnTypePos = document.getElementById("button-type-position");
@@ -375,8 +375,7 @@ function doPlot()
 {
     ctxFreq = canvFreq.getContext("2d");
 
-    ctxFreq.fillStyle = "#000000";
-    ctxFreq.fillRect(0, 0, 800, 200);
+    ctxFreq.clearRect(0, 0, 800, 200);
 
     ctxFreq.save();
     ctxFreq.scale(200, 200);
@@ -404,6 +403,13 @@ function doPlot()
     ctxFreq.fillStyle = "#ff0000";
     ctxFreq.fill();
 
+    ctxFreq.save();
+
+    if(plot % 10 < 5)
+    {
+        ctxFreq.globalCompositeOperation = "destination-over";
+    }
+
     ctxFreq.beginPath();
 
     for(let f = 0; f < n; f++)
@@ -421,13 +427,14 @@ function doPlot()
     ctxFreq.lineTo(4, 0);
     ctxFreq.lineTo(0, 0);
     ctxFreq.closePath();
-
     ctxFreq.fillStyle = "#00ff00";
     ctxFreq.fill();
 
+    ctxFreq.restore();
+
     for(let b = 0; b < 3; b++)
     {
-        ctxFreq.fillStyle = "#666666";
+        ctxFreq.fillStyle = "#ffffff";
         ctxFreq.fillRect(0, (b + 1) / 4, 4, 0.01);
     }
 
@@ -461,9 +468,15 @@ function doPlot()
     ctxAmp.lineTo(4, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
-
     ctxAmp.fillStyle = "#ff0000";
     ctxAmp.fill();
+
+    ctxAmp.save();
+
+    if(plot % 10 < 5)
+    {
+        ctxAmp.globalCompositeOperation = "destination-over";
+    }
 
     ctxAmp.beginPath();
 
@@ -482,13 +495,14 @@ function doPlot()
     ctxAmp.lineTo(4, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
-
     ctxAmp.fillStyle = "#00ff00";
     ctxAmp.fill();
 
+    ctxAmp.restore();
+
     for(let b = 0; b < 4; b++)
     {
-        ctxAmp.fillStyle = "#666666";
+        ctxAmp.fillStyle = "#ffffff";
         ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 4, 0.01);
     }
 
@@ -508,8 +522,8 @@ btnFmodTriangle.onclick = setFmodTriangle;
 btnFmodSine.onclick = setFmodSine;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
-btnTwavOn.onclick = setTwavOn;
-btnTwavOff.onclick = setTwavOff;
+btnTwavShow.onclick = setTwavShow;
+btnTwavHide.onclick = setTwavHide;
 btnCtrlSrc.onclick = setCtrlSrc;
 btnCtrlObs.onclick = setCtrlObs;
 btnTypePos.onclick = setTypePos;
@@ -915,13 +929,13 @@ function setSnd()
     }
 }
 
-function setTwavOn()
+function setTwavShow()
 {
     twav = true;
     fixTwav();
 }
 
-function setTwavOff()
+function setTwavHide()
 {
     twav = false;
     fixTwav();
@@ -1383,17 +1397,17 @@ function fixSnd()
 
 function fixTwav()
 {
-    btnTwavOn.disabled = false;
-    btnTwavOff.disabled = false;
+    btnTwavShow.disabled = false;
+    btnTwavHide.disabled = false;
 
     if(twav === true)
     {
-        btnTwavOn.disabled = true;
+        btnTwavShow.disabled = true;
     }
 
     else if(twav === false)
     {
-        btnTwavOff.disabled = true;
+        btnTwavHide.disabled = true;
     }
 }
 
@@ -1567,12 +1581,12 @@ function doKeyDown(event)
     {
         if(twav === true)
         {
-            setTwavOff();
+            setTwavHide();
         }
 
         else if(twav === false)
         {
-            setTwavOn();
+            setTwavShow();
         }
     }
 

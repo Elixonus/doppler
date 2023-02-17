@@ -86,7 +86,7 @@ body
     padding: 20px;
 }
 
-#button-twave-on, #button-twave-off
+#button-twave-show, #button-twave-hide
 {
     background-color: #ffff00;
     color: #000000;
