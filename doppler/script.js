@@ -36,7 +36,7 @@ let oscl = null;
 let gain = null;
 
 const n = 100;
-const s = 0.04;
+const s = 0.05;
 
 let time = 0;
 let view = 0;
@@ -230,7 +230,7 @@ function doTime()
             obs.freq = obs.wav.freq;
         }
     
-        obs.amp = obs.wav.amp * Math.pow(0.99, time - obs.wav.time);
+        obs.amp = obs.wav.amp * Math.pow(1 - 0.01, time - obs.wav.time);
     }
 
     else
@@ -247,10 +247,9 @@ function doTime()
 
 function doView()
 {
-    ctxPos = canvPos.getContext("2d");
+    ctxPos = canvPos.getContext("2d", { alpha: false });
 
-    ctxPos.fillStyle = "#000000";
-    ctxPos.fillRect(0, 0, 800, 600);
+    ctxPos.clearRect(0, 0, 800, 600);
 
     ctxPos.save();
     ctxPos.translate(400, 300);
@@ -264,10 +263,11 @@ function doView()
     if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
     {
         ctxPos.save();
+
         ctxPos.translate(obs.pos.x, obs.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
-        ctxPos.translate(20 * obs.vel.x, 20 * obs.vel.y);
+        ctxPos.translate(15 * obs.vel.x, 15 * obs.vel.y);
         ctxPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
@@ -280,6 +280,7 @@ function doView()
         ctxPos.closePath();
         ctxPos.fillStyle = "#00ff00";
         ctxPos.fill();
+
         ctxPos.restore();
     }
 
@@ -291,10 +292,11 @@ function doView()
     if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
     {
         ctxPos.save();
+
         ctxPos.translate(src.pos.x, src.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
-        ctxPos.translate(30 * src.vel.x, 30 * src.vel.y);
+        ctxPos.translate(15 * src.vel.x, 15 * src.vel.y);
         ctxPos.rotate(Math.atan2(src.vel.y, src.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
@@ -307,6 +309,7 @@ function doView()
         ctxPos.closePath();
         ctxPos.fillStyle = "#ff0000";
         ctxPos.fill();
+
         ctxPos.restore();
     }
 
@@ -346,10 +349,11 @@ function doView()
         if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
         {
             ctxPos.save();
+
             ctxPos.translate(obs.wav.pos.x, obs.wav.pos.y);
             ctxPos.beginPath();
             ctxPos.lineTo(0, 0);
-            ctxPos.translate(30 * obs.wav.vel.x, 30 * obs.wav.vel.y);
+            ctxPos.translate(15 * obs.wav.vel.x, 15 * obs.wav.vel.y);
             ctxPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
             ctxPos.lineTo(0.05, 0);
             ctxPos.lineWidth = 0.05;
@@ -362,6 +366,7 @@ function doView()
             ctxPos.closePath();
             ctxPos.fillStyle = "#ffff00";
             ctxPos.fill();
+
             ctxPos.restore();
         }
     }
@@ -373,15 +378,15 @@ function doView()
 
 function doPlot()
 {
-    ctxFreq = canvFreq.getContext("2d");
+    ctxFreq = canvFreq.getContext("2d", { alpha: false });
 
     ctxFreq.clearRect(0, 0, 800, 200);
 
     ctxFreq.save();
-    ctxFreq.scale(200, 200);
-    ctxFreq.translate(2, 0.5);
+    ctxFreq.scale(800, 200);
+    ctxFreq.translate(0.5, 0.5);
     ctxFreq.scale(-1, -1);
-    ctxFreq.translate(-2, -0.5);
+    ctxFreq.translate(-0.5, -0.5);
 
     ctxFreq.beginPath();
 
@@ -394,21 +399,14 @@ function doPlot()
             freq = 0;
         }
 
-        ctxFreq.lineTo(4 * f / (n - 1), Math.min(0.25 * Math.abs(freq), 1));
+        ctxFreq.lineTo(f / (n - 1), Math.min(0.25 * Math.abs(freq), 1));
     }
 
-    ctxFreq.lineTo(4, 0);
+    ctxFreq.lineTo(1, 0);
     ctxFreq.lineTo(0, 0);
     ctxFreq.closePath();
     ctxFreq.fillStyle = "#ff0000";
     ctxFreq.fill();
-
-    ctxFreq.save();
-
-    if(plot % 10 < 5)
-    {
-        ctxFreq.globalCompositeOperation = "destination-over";
-    }
 
     ctxFreq.beginPath();
 
@@ -421,35 +419,32 @@ function doPlot()
             freq = 0;
         }
 
-        ctxFreq.lineTo(4 * f / (n - 1), Math.min(0.25 * Math.abs(freq), 1));
+        ctxFreq.lineTo(f / (n - 1), Math.min(0.25 * Math.abs(freq), 1));
     }
 
-    ctxFreq.lineTo(4, 0);
+    ctxFreq.lineTo(1, 0);
     ctxFreq.lineTo(0, 0);
     ctxFreq.closePath();
     ctxFreq.fillStyle = "#00ff00";
     ctxFreq.fill();
 
-    ctxFreq.restore();
-
-    for(let b = 0; b < 3; b++)
+    for(let b = 1; b < 4; b++)
     {
-        ctxFreq.fillStyle = "#ffffff";
-        ctxFreq.fillRect(0, (b + 1) / 4, 4, 0.01);
+        ctxFreq.fillStyle = "#dddddd";
+        ctxFreq.fillRect(0, b / 4, 1, 0.01);
     }
 
     ctxFreq.restore();
 
-    ctxAmp = canvAmp.getContext("2d");
+    ctxAmp = canvAmp.getContext("2d", { alpha: false });
 
-    ctxAmp.fillStyle = "#000000";
-    ctxAmp.fillRect(0, 0, 800, 200);
+    ctxAmp.clearRect(0, 0, 800, 200);
 
     ctxAmp.save();
-    ctxAmp.scale(200, 200);
-    ctxAmp.translate(2, 0.5);
+    ctxAmp.scale(800, 200);
+    ctxAmp.translate(0.5, 0.5);
     ctxAmp.scale(-1, -1);
-    ctxAmp.translate(-2, -0.5);
+    ctxAmp.translate(-0.5, -0.5);
 
     ctxAmp.beginPath();
 
@@ -462,21 +457,14 @@ function doPlot()
             amp = 0;
         }
 
-        ctxAmp.lineTo(4 * a / (n - 1), 0.8 * amp);
+        ctxAmp.lineTo(a / (n - 1), 0.8 * amp);
     }
 
-    ctxAmp.lineTo(4, 0);
+    ctxAmp.lineTo(1, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
     ctxAmp.fillStyle = "#ff0000";
     ctxAmp.fill();
-
-    ctxAmp.save();
-
-    if(plot % 10 < 5)
-    {
-        ctxAmp.globalCompositeOperation = "destination-over";
-    }
 
     ctxAmp.beginPath();
 
@@ -489,21 +477,19 @@ function doPlot()
             amp = 0;
         }
 
-        ctxAmp.lineTo(4 * a / (n - 1), 0.8 * amp);
+        ctxAmp.lineTo(a / (n - 1), 0.8 * amp);
     }
 
-    ctxAmp.lineTo(4, 0);
+    ctxAmp.lineTo(1, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
     ctxAmp.fillStyle = "#00ff00";
     ctxAmp.fill();
 
-    ctxAmp.restore();
-
-    for(let b = 0; b < 4; b++)
+    for(let b = 1; b < 5; b++)
     {
-        ctxAmp.fillStyle = "#ffffff";
-        ctxAmp.fillRect(0, 0.8 * (b + 1) / 4, 4, 0.01);
+        ctxAmp.fillStyle = "#dddddd";
+        ctxAmp.fillRect(0, 0.8 * b / 4, 1, 0.01);
     }
 
     ctxAmp.restore();
@@ -557,7 +543,7 @@ function doBufrSave()
     bufr.run = false;
     bufr.time = time;
     bufr.fmod = fmod;
-    bufr.obj = null;
+    bufr.obj = obj;
 
     bufr.src = {
         w: wavs.indexOf(src.wav),
@@ -845,7 +831,62 @@ function setFmod()
 
     if(fmod === 0)
     {
-        src.freq = 1;
+        // src.freq = 1;
+
+        if(phs < 2)
+        {
+            src.freq = 1;
+        }
+
+        else if(phs < 6)
+        {
+            src.freq = 1.125;
+        }
+
+        else if(phs < 10)
+        {
+            src.freq = 1;
+        }
+
+        else if(phs < 14)
+        {
+            src.freq = 1.3333;
+        }
+
+        else if(phs < 22)
+        {
+            src.freq = 1.250;
+        }
+
+        else if(phs < 24)
+        {
+            src.freq = 1;
+        }
+
+        else if(phs < 28)
+        {
+            src.freq = 1.125;
+        }
+
+        else if(phs < 32)
+        {
+            src.freq = 1;
+        }
+
+        else if(phs < 36)
+        {
+            src.freq = 1.5;
+        }
+
+        else if(phs < 44)
+        {
+            src.freq = 1.333;
+        }
+
+        else
+        {
+            src.freq = 0.5;
+        }
     }
 
     else if(fmod === 1)
