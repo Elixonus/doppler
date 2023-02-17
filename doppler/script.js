@@ -1,40 +1,3 @@
-const btnTimeStrt = document.getElementById("button-time-start");
-const btnTimeStop = document.getElementById("button-time-stop");
-const btnBufrSave = document.getElementById("button-buffer-save");
-const btnBufrRstr = document.getElementById("button-buffer-restore");
-const btnFmodFlat = document.getElementById("button-fmod-flat");
-const btnFmodSquare = document.getElementById("button-fmod-square");
-const btnFmodSweep = document.getElementById("button-fmod-sweep");
-const btnFmodTriangle = document.getElementById("button-fmod-triangle");
-const btnFmodSine = document.getElementById("button-fmod-sine");
-const btnSndOn = document.getElementById("button-sound-on");
-const btnSndOff = document.getElementById("button-sound-off");
-const btnTwavShow = document.getElementById("button-twave-show");
-const btnTwavHide = document.getElementById("button-twave-hide");
-const btnCtrlSrc = document.getElementById("button-control-source");
-const btnCtrlObs = document.getElementById("button-control-observer");
-const btnTypePos = document.getElementById("button-type-position");
-const btnTypeVel = document.getElementById("button-type-velocity");
-const btnTypeAcc = document.getElementById("button-type-acceleration");
-const btnDirLeft = document.getElementById("button-direction-left");
-const btnDirRght = document.getElementById("button-direction-right");
-const btnDirUp = document.getElementById("button-direction-up");
-const btnDirDown = document.getElementById("button-direction-down");
-const btnDirZero = document.getElementById("button-direction-zero");
-const btnMagLow = document.getElementById("button-magnitude-low");
-const btnMagMed = document.getElementById("button-magnitude-medium");
-const btnMagHigh = document.getElementById("button-magnitude-high");
-const canvPos = document.getElementById("canvas-position");
-const canvFreq = document.getElementById("canvas-frequency");
-const canvAmp = document.getElementById("canvas-amplitude");
-
-let ctxPos = null;
-let ctxFreq = null;
-let ctxAmp = null;
-let ctxSnd = null;
-let oscl = null;
-let gain = null;
-
 const n = 100;
 const s = 0.05;
 
@@ -105,11 +68,18 @@ for(let t = 0; t < n; t++)
     amph.obs[t] = null;
 }
 
-window.setInterval(doCalc, 50);
+let ctxPos = null;
+let ctxFreq = null;
+let ctxAmp = null;
+let ctxSnd = null;
+let oscl = null;
+let gain = null;
+
+window.setInterval(doPhys, 50);
 
 window.requestAnimationFrame(doAnim);
 
-function doCalc()
+function doPhys()
 {
     if(run === true)
     {
@@ -497,15 +467,45 @@ function doPlot()
     plot++;
 }
 
+const btnTimeStrt = document.getElementById("button-time-start");
+const btnTimeStop = document.getElementById("button-time-stop");
+const btnBufrSave = document.getElementById("button-buffer-save");
+const btnBufrRstr = document.getElementById("button-buffer-restore");
+const btnFmodFlt = document.getElementById("button-fmod-flat");
+const btnFmodSqr = document.getElementById("button-fmod-square");
+const btnFmodSwp = document.getElementById("button-fmod-sweep");
+const btnFmodTrg = document.getElementById("button-fmod-triangle");
+const btnFmodSin = document.getElementById("button-fmod-sine");
+const btnSndOn = document.getElementById("button-sound-on");
+const btnSndOff = document.getElementById("button-sound-off");
+const btnTwavShow = document.getElementById("button-twave-show");
+const btnTwavHide = document.getElementById("button-twave-hide");
+const btnCtrlSrc = document.getElementById("button-control-source");
+const btnCtrlObs = document.getElementById("button-control-observer");
+const btnTypePos = document.getElementById("button-type-position");
+const btnTypeVel = document.getElementById("button-type-velocity");
+const btnTypeAcc = document.getElementById("button-type-acceleration");
+const btnDirLeft = document.getElementById("button-direction-left");
+const btnDirRght = document.getElementById("button-direction-right");
+const btnDirUp = document.getElementById("button-direction-up");
+const btnDirDown = document.getElementById("button-direction-down");
+const btnDirZero = document.getElementById("button-direction-zero");
+const btnMagLow = document.getElementById("button-magnitude-low");
+const btnMagMed = document.getElementById("button-magnitude-medium");
+const btnMagHigh = document.getElementById("button-magnitude-high");
+const canvPos = document.getElementById("canvas-position");
+const canvFreq = document.getElementById("canvas-frequency");
+const canvAmp = document.getElementById("canvas-amplitude");
+
 btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
 btnBufrSave.onclick = doBufrSave;
 btnBufrRstr.onclick = doBufrRstr;
-btnFmodFlat.onclick = setFmodFlat;
-btnFmodSquare.onclick = setFmodSquare;
-btnFmodSweep.onclick = setFmodSweep;
-btnFmodTriangle.onclick = setFmodTriangle;
-btnFmodSine.onclick = setFmodSine;
+btnFmodFlt.onclick = setFmodFlt;
+btnFmodSqr.onclick = setFmodSqr;
+btnFmodSwp.onclick = setFmodSwp;
+btnFmodTrg.onclick = setFmodTrg;
+btnFmodSin.onclick = setFmodSin;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
 btnTwavShow.onclick = setTwavShow;
@@ -794,31 +794,31 @@ function doBufrRstr()
     }
 }
 
-function setFmodFlat()
+function setFmodFlt()
 {
     fmod = 0;
     fixFmod();
 }
 
-function setFmodSquare()
+function setFmodSqr()
 {
     fmod = 1;
     fixFmod();
 }
 
-function setFmodSweep()
+function setFmodSwp()
 {
     fmod = 2;
     fixFmod();
 }
 
-function setFmodTriangle()
+function setFmodTrg()
 {
     fmod = 3;
     fixFmod();
 }
 
-function setFmodSine()
+function setFmodSin()
 {
     fmod = 4;
     fixFmod();
@@ -1388,35 +1388,35 @@ function fixBufr()
 
 function fixFmod()
 {
-    btnFmodFlat.disabled = false;
-    btnFmodSquare.disabled = false;
-    btnFmodSweep.disabled = false;
-    btnFmodTriangle.disabled = false;
-    btnFmodSine.disabled = false;
+    btnFmodFlt.disabled = false;
+    btnFmodSqr.disabled = false;
+    btnFmodSwp.disabled = false;
+    btnFmodTrg.disabled = false;
+    btnFmodSin.disabled = false;
 
     if(fmod === 0)
     {
-        btnFmodFlat.disabled = true;
+        btnFmodFlt.disabled = true;
     }
 
     else if(fmod === 1)
     {
-        btnFmodSquare.disabled = true;
+        btnFmodSqr.disabled = true;
     }
 
     else if(fmod === 2)
     {
-        btnFmodSweep.disabled = true;
+        btnFmodSwp.disabled = true;
     }
 
     else if(fmod === 3)
     {
-        btnFmodTriangle.disabled = true;
+        btnFmodTrg.disabled = true;
     }
 
     else if(fmod === 4)
     {
-        btnFmodSine.disabled = true;
+        btnFmodSin.disabled = true;
     }
 }
 
@@ -1635,27 +1635,27 @@ function doKeyDown(event)
     {
         if(fmod === 0)
         {
-            setFmodSquare();
+            setFmodSqr();
         }
 
         else if(fmod === 1)
         {
-            setFmodSweep();
+            setFmodSwp();
         }
 
         else if(fmod === 2)
         {
-            setFmodTriangle();
+            setFmodTrg();
         }
 
         else if(fmod === 3)
         {
-            setFmodSine();
+            setFmodSin();
         }
 
         else if(fmod === 4)
         {
-            setFmodFlat();
+            setFmodFlt();
         }
     }
 
