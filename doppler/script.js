@@ -826,67 +826,12 @@ function setFmodSin()
 
 function setFmod()
 {
-    let prd = 50;
+    let prd = 30;
     let phs = time % prd;
 
     if(fmod === 0)
     {
-        // src.freq = 1;
-
-        if(phs < 2)
-        {
-            src.freq = 1;
-        }
-
-        else if(phs < 6)
-        {
-            src.freq = 1.125;
-        }
-
-        else if(phs < 10)
-        {
-            src.freq = 1;
-        }
-
-        else if(phs < 14)
-        {
-            src.freq = 1.3333;
-        }
-
-        else if(phs < 22)
-        {
-            src.freq = 1.250;
-        }
-
-        else if(phs < 24)
-        {
-            src.freq = 1;
-        }
-
-        else if(phs < 28)
-        {
-            src.freq = 1.125;
-        }
-
-        else if(phs < 32)
-        {
-            src.freq = 1;
-        }
-
-        else if(phs < 36)
-        {
-            src.freq = 1.5;
-        }
-
-        else if(phs < 44)
-        {
-            src.freq = 1.333;
-        }
-
-        else
-        {
-            src.freq = 0.5;
-        }
+        src.freq = 1;
     }
 
     else if(fmod === 1)
