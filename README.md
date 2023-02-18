@@ -1,6 +1,8 @@
 # doppler 🔊
 
-![Project Icon](./doppler/favicon.ico)
+## Logo
+
+![Project Logo](./logo.png)
 
 ## About
 
