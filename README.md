@@ -1,6 +1,6 @@
 # doppler 🔊
 
-![Doppler Effect Icon](./doppler/favicon.ico)
+![Project Icon](./doppler/favicon.ico)
 
 ## About
 
@@ -61,3 +61,7 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 Does not implement the effects of wave interference.
 
 Observer can only detect one frequency and amplitude at a time.
+
+## Screenshot
+
+![Application Screenshot](./screenshot.png)
