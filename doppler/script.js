@@ -4,6 +4,7 @@ const s = 0.05;
 let time = 0;
 let view = 0;
 let plot = 0;
+
 let run = true;
 let bufr = null;
 let fmod = 0;
@@ -71,6 +72,7 @@ for(let t = 0; t < n; t++)
 let ctxPos = null;
 let ctxFreq = null;
 let ctxAmp = null;
+
 let ctxSnd = null;
 let oscl = null;
 let gain = null;
@@ -1523,9 +1525,9 @@ function fixMag()
     }
 }
 
-window.onkeydown = doKeyDown;
+window.onkeydown = doBtn;
 
-function doKeyDown(event)
+function doBtn(event)
 {
     if(event.key.toUpperCase() === "P")
     {
