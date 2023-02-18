@@ -87,11 +87,11 @@ function doPhys()
     {
         setFmod();
         doTime();
-
-        if(snd === true)
-        {
-            setSnd();
-        }
+    }
+    
+    if(snd === true)
+    {
+        setSnd();
     }
 }
 
