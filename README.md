@@ -18,7 +18,7 @@ Waves propagate in time with their amplitude attenuatuating exponentially.
 
 Only crests are illustrated in the rendering of waves.
 
-Currently when multiple waves collide, interference is not accounted for.
+When multiple waves collide, interference is not accounted for at the moment.
 
 ## Observer
 
@@ -34,7 +34,7 @@ When each wave is emitted, the current time, as well as the position and velocit
 
 To find which wave is currently being detected by the observer, the program goes through each wave to try to find the closest wave that has passed the observer, if any.
 
-If an observer wave is found, the perceived frequency and amplitude is calculated using the vector position and velocity of the observer as well as the vector position and velocity of the source from the time of wave emission using the source wave data structure mentioned earlier.
+If an observer wave is found, the perceived frequency and amplitude is calculated using the vector position and velocity of the observer as well as the vector position and velocity of the source from the time of wave emission (using the source wave data structure mentioned earlier) to find the components of the projected velocities of the source and observer in the relative direction of the observer and source, respectively.
 
 ## Functionality
 
@@ -42,9 +42,11 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `BUFFER` button group can be accessed with keys `S` and `R` to save the current simulation time and restore the saved time later on.
 
-`SOUND` button group can be accessed with key `M` to interpret the observed signal as a sound wave.
+`SOUND` button group can be accessed with key `M` to interpret the observer signal in time as a sound wave.
 
-`TWAVE` button group can be accessed with key `T` to highlight the properties of the wave that is observed at the current time. This includes the position and velocity of the source.
+`TWAVE` button group can be accessed with key `T` to highlight the properties of the wave that is observed at the current time. This includes but is not limited to, the position and velocity of the source.
+
+`FMOD` button group can be accessed with key `F` to modulate the frequency of the source signal in time.
 
 `CONTROL` button group can be accessed with key `C` to toggle between modifying the properties of the source and observer.
 
