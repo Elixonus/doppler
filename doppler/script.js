@@ -69,17 +69,11 @@ for(let t = 0; t < n; t++)
     amph.obs[t] = null;
 }
 
-let ctxPos = null;
-let ctxFreq = null;
-let ctxAmp = null;
-
 let ctxSnd = null;
 let oscl = null;
 let gain = null;
 
 window.setInterval(doPhys, 50);
-
-window.requestAnimationFrame(doAnim);
 
 function doPhys()
 {
@@ -93,18 +87,6 @@ function doPhys()
     {
         setSnd();
     }
-}
-
-function doAnim()
-{
-    doView();
-
-    if(view % 10 === 1)
-    {
-        doPlot();
-    }
-
-    window.requestAnimationFrame(doAnim);
 }
 
 function doTime()
@@ -217,6 +199,28 @@ function doTime()
     time++;
 }
 
+const canvPos = document.getElementById("canvas-position");
+const canvFreq = document.getElementById("canvas-frequency");
+const canvAmp = document.getElementById("canvas-amplitude");
+
+let ctxPos = null;
+let ctxFreq = null;
+let ctxAmp = null;
+
+window.requestAnimationFrame(doAnim);
+
+function doAnim()
+{
+    doView();
+
+    if(view % 10 === 1)
+    {
+        doPlot();
+    }
+
+    window.requestAnimationFrame(doAnim);
+}
+
 function doView()
 {
     ctxPos = canvPos.getContext("2d", { alpha: false });
@@ -224,8 +228,9 @@ function doView()
     ctxPos.clearRect(0, 0, 800, 600);
 
     ctxPos.save();
-    ctxPos.translate(400, 300);
-    ctxPos.scale(100, -100);
+    ctxPos.scale(100, 100);
+    ctxPos.translate(4, 3);
+    ctxPos.scale(1, -1);
 
     ctxPos.beginPath();
     ctxPos.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
@@ -305,7 +310,7 @@ function doView()
 
     ctxPos.restore();
 
-    if(isTwav())
+    if(twav === true && obs.wav !== null)
     {
         ctxPos.beginPath();
         ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, s * (time - obs.wav.time), 0, 2 * Math.PI);
@@ -495,9 +500,6 @@ const btnDirZero = document.getElementById("button-direction-zero");
 const btnMagLow = document.getElementById("button-magnitude-low");
 const btnMagMed = document.getElementById("button-magnitude-medium");
 const btnMagHigh = document.getElementById("button-magnitude-high");
-const canvPos = document.getElementById("canvas-position");
-const canvFreq = document.getElementById("canvas-frequency");
-const canvAmp = document.getElementById("canvas-amplitude");
 
 btnTimeStrt.onclick = setTimeStrt;
 btnTimeStop.onclick = setTimeStop;
@@ -536,7 +538,6 @@ function setTimeStop()
 {
     run = false;
     fixTime();
-    setSnd();
 }
 
 function doBufrSave()
@@ -929,11 +930,6 @@ function setTwavHide()
     fixTwav();
 }
 
-function isTwav()
-{
-    return (twav === true && obs.wav !== null && time - obs.wav.time < 500);
-}
-
 function setCtrlSrc()
 {
     obj = src;
@@ -1056,24 +1052,9 @@ function setCtrlObs()
     }
 }
 
-function isCtrl()
-{
-    return (isCtrlSrc() || isCtrlObs());
-}
-
-function isCtrlSrc()
-{
-    return (obj === src);
-}
-
-function isCtrlObs()
-{
-    return (obj === obs);
-}
-
 function setTypePos()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.type = 0;
         fixType();
@@ -1083,7 +1064,7 @@ function setTypePos()
 
 function setTypeVel()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.type = 1;
         fixType();
@@ -1093,7 +1074,7 @@ function setTypeVel()
 
 function setTypeAcc()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.type = 2;
         fixType();
@@ -1219,7 +1200,7 @@ function setType()
 
 function setDirLeft()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.dir = 1;
         fixDir();
@@ -1229,7 +1210,7 @@ function setDirLeft()
 
 function setDirRght()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.dir = 2;
         fixDir();
@@ -1239,7 +1220,7 @@ function setDirRght()
 
 function setDirUp()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.dir = 3;
         fixDir();
@@ -1249,7 +1230,7 @@ function setDirUp()
 
 function setDirDown()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.dir = 4;
         fixDir();
@@ -1259,7 +1240,7 @@ function setDirDown()
 
 function setDirZero()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.dir = 0;
         fixDir();
@@ -1269,7 +1250,7 @@ function setDirZero()
 
 function setMagLow()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.mag = 1;
         fixMag();
@@ -1279,7 +1260,7 @@ function setMagLow()
 
 function setMagMed()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.mag = 2;
         fixMag();
@@ -1289,7 +1270,7 @@ function setMagMed()
 
 function setMagHigh()
 {
-    if(isCtrl() === true)
+    if(obj !== null)
     {
         obj.mag = 3;
         fixMag();
@@ -1404,12 +1385,12 @@ function fixCtrl()
     btnCtrlSrc.disabled = false;
     btnCtrlObs.disabled = false;
 
-    if(isCtrlSrc())
+    if(obj === src)
     {
         btnCtrlSrc.disabled = true;
     }
 
-    else if(isCtrlObs())
+    else if(obj === obs)
     {
         btnCtrlObs.disabled = true;
     }
@@ -1417,7 +1398,7 @@ function fixCtrl()
 
 function fixType()
 {
-    if(isCtrl())
+    if(obj !== null)
     {
         btnTypePos.disabled = false;
         btnTypeVel.disabled = false;
@@ -1449,7 +1430,7 @@ function fixType()
 
 function fixDir()
 {
-    if(isCtrl())
+    if(obj !== null)
     {
         btnDirLeft.disabled = false;
         btnDirRght.disabled = false;
@@ -1495,7 +1476,7 @@ function fixDir()
 
 function fixMag()
 {
-    if(isCtrl())
+    if(obj !== null)
     {
         btnMagLow.disabled = false;
         btnMagMed.disabled = false;
@@ -1608,17 +1589,17 @@ function doBtn(event)
 
     else if(event.key.toUpperCase() === "C")
     {
-        if(isCtrlSrc())
+        if(obj === src)
         {
             setCtrlObs();
         }
 
-        else if(isCtrlObs())
+        else if(obj === obs)
         {
             setCtrlSrc();
         }
 
-        else
+        else if(obj === null)
         {
             setCtrlSrc();
         }
@@ -1626,7 +1607,7 @@ function doBtn(event)
 
     else if(event.key.toUpperCase() === "T")
     {
-        if(isCtrl())
+        if(obj !== null)
         {
             if(obj.type === 0)
             {
