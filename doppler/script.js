@@ -234,7 +234,7 @@ function doView()
 
     ctxPos.beginPath();
     ctxPos.arc(obs.pos.x, obs.pos.y, 0.2, 0, 2 * Math.PI);
-    ctxPos.fillStyle = "#00ff00";
+    ctxPos.fillStyle = "#0f0";
     ctxPos.fill();
 
     if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
@@ -248,14 +248,14 @@ function doView()
         ctxPos.rotate(Math.atan2(obs.vel.y, obs.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
-        ctxPos.strokeStyle = "#00ff00";
+        ctxPos.strokeStyle = "#0f0";
         ctxPos.stroke();
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0.1);
         ctxPos.lineTo(0, -0.1);
         ctxPos.lineTo(0.1, 0);
         ctxPos.closePath();
-        ctxPos.fillStyle = "#00ff00";
+        ctxPos.fillStyle = "#0f0";
         ctxPos.fill();
 
         ctxPos.restore();
@@ -263,7 +263,7 @@ function doView()
 
     ctxPos.beginPath();
     ctxPos.arc(src.pos.x, src.pos.y, 0.2, 0, 2 * Math.PI);
-    ctxPos.fillStyle = "#ff0000";
+    ctxPos.fillStyle = "#f00";
     ctxPos.fill();
 
     if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
@@ -277,14 +277,14 @@ function doView()
         ctxPos.rotate(Math.atan2(src.vel.y, src.vel.x));
         ctxPos.lineTo(0.05, 0);
         ctxPos.lineWidth = 0.05;
-        ctxPos.strokeStyle = "#ff0000";
+        ctxPos.strokeStyle = "#f00";
         ctxPos.stroke();
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0.1);
         ctxPos.lineTo(0, -0.1);
         ctxPos.lineTo(0.1, 0);
         ctxPos.closePath();
-        ctxPos.fillStyle = "#ff0000";
+        ctxPos.fillStyle = "#f00";
         ctxPos.fill();
 
         ctxPos.restore();
@@ -302,7 +302,7 @@ function doView()
                 ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, s * (time - wavs[w].time), 0, 2 * Math.PI);
                 ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / n, 0), 1);
                 ctxPos.lineWidth = 0.03;
-                ctxPos.strokeStyle = "#ffffff";
+                ctxPos.strokeStyle = "#fff";
                 ctxPos.stroke();
             }
         }
@@ -315,12 +315,12 @@ function doView()
         ctxPos.beginPath();
         ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, s * (time - obs.wav.time), 0, 2 * Math.PI);
         ctxPos.lineWidth = 0.05;
-        ctxPos.strokeStyle = "#ffff00";
+        ctxPos.strokeStyle = "#ff0";
         ctxPos.stroke();
 
         ctxPos.beginPath();
         ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
-        ctxPos.fillStyle = "#ffff00";
+        ctxPos.fillStyle = "#ff0";
         ctxPos.fill();
 
         if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
@@ -334,14 +334,14 @@ function doView()
             ctxPos.rotate(Math.atan2(obs.wav.vel.y, obs.wav.vel.x));
             ctxPos.lineTo(0.05, 0);
             ctxPos.lineWidth = 0.05;
-            ctxPos.strokeStyle = "#ffff00";
+            ctxPos.strokeStyle = "#ff0";
             ctxPos.stroke();
             ctxPos.beginPath();
             ctxPos.lineTo(0, 0.1);
             ctxPos.lineTo(0, -0.1);
             ctxPos.lineTo(0.1, 0);
             ctxPos.closePath();
-            ctxPos.fillStyle = "#ffff00";
+            ctxPos.fillStyle = "#ff0";
             ctxPos.fill();
 
             ctxPos.restore();
@@ -382,7 +382,7 @@ function doPlot()
     ctxFreq.lineTo(1, 0);
     ctxFreq.lineTo(0, 0);
     ctxFreq.closePath();
-    ctxFreq.fillStyle = "#ff0000";
+    ctxFreq.fillStyle = "#f00";
     ctxFreq.fill();
 
     ctxFreq.beginPath();
@@ -402,12 +402,12 @@ function doPlot()
     ctxFreq.lineTo(1, 0);
     ctxFreq.lineTo(0, 0);
     ctxFreq.closePath();
-    ctxFreq.fillStyle = "#00ff00";
+    ctxFreq.fillStyle = "#0f0";
     ctxFreq.fill();
 
     for(let b = 1; b < 4; b++)
     {
-        ctxFreq.fillStyle = "#dddddd";
+        ctxFreq.fillStyle = "#ddd";
         ctxFreq.fillRect(0, b / 4, 1, 0.01);
     }
 
@@ -440,7 +440,7 @@ function doPlot()
     ctxAmp.lineTo(1, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
-    ctxAmp.fillStyle = "#ff0000";
+    ctxAmp.fillStyle = "#f00";
     ctxAmp.fill();
 
     ctxAmp.beginPath();
@@ -460,12 +460,12 @@ function doPlot()
     ctxAmp.lineTo(1, 0);
     ctxAmp.lineTo(0, 0);
     ctxAmp.closePath();
-    ctxAmp.fillStyle = "#00ff00";
+    ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
 
     for(let b = 1; b < 5; b++)
     {
-        ctxAmp.fillStyle = "#dddddd";
+        ctxAmp.fillStyle = "#ddd";
         ctxAmp.fillRect(0, 0.8 * b / 4, 1, 0.01);
     }
 
