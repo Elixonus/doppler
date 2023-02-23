@@ -73,9 +73,9 @@ let ctxSnd = null;
 let oscl = null;
 let gain = null;
 
-window.setInterval(doPhys, 50);
+window.setInterval(doLgc, 50);
 
-function doPhys()
+function doLgc()
 {
     if(run === true)
     {

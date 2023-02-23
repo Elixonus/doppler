@@ -50,9 +50,9 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `FMOD` button group can be accessed with key `F` to modulate the frequency of the source signal in time.
 
-`CONTROL` button group can be accessed with key `C` to toggle between modifying the properties of the source and observer.
+`CONTROL` button group can be accessed with key `C` to switch between modifying the properties of the source and observer.
 
-`TYPE` button group can be accessed with key `T` to toggle between modifying the velocity and acceleration of the controlled object.
+`TYPE` button group can be accessed with key `T` to switch between modifying the position, velocity and acceleration of the controlled object.
 
 `DIRECTION` button group can be accessed with keys `ArrowLeft`, `ArrowRight`, `ArrowUp`, `ArrowDown` and `0` to set the direction of the vector (including origin) of the motion type of the controlled object.
 
