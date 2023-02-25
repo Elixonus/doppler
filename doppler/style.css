@@ -1,54 +1,46 @@
-body
-{
+body {
     display: flex;
     margin: 0;
     padding: 50px 0;
     background-color: #0ff;
 }
 
-.section
-{
+.section {
     margin: 5px;
     padding: 5px;
     background-color: #f0f;
 }
 
-.group
-{
+.group {
     margin: 5px;
     padding: 5px;
     background-color: #00f;
 }
 
-.panel
-{
+.panel {
     display: inline-block;
     margin: 5px;
     padding: 5px;
     background-color: #fff;
 }
 
-.content
-{
+.content {
     margin: 5px;
     padding: 10px;
     background-color: #ddd;
 }
 
-.heading
-{
+.heading {
     margin: 5px;
     padding: 5px;
 }
 
-.label
-{
+.label {
     margin: 5px;
     padding: 5px;
 }
 
-.button
-{
+.button {
     display: inline-block;
     padding: 2px 10px;
     background-color: #666;
@@ -57,14 +49,12 @@ body
     cursor: pointer;
 }
 
-.button:disabled
-{
+.button:disabled {
     opacity: 0.2;
     cursor: default;
 }
 
-.canvas
-{
+.canvas {
     width: 100%;
     margin: 0;
     padding: 0;
@@ -72,8 +62,7 @@ body
     background-color: #000;
 }
 
-#main
-{
+#main {
     max-width: 600px;
     margin: 0 auto;
     padding: 10px;
@@ -82,26 +71,22 @@ body
     border: 10px solid #000;
 }
 
-#title
-{
+#title {
     margin: 5px;
     padding: 5px;
 }
 
-#button-twave-show, #button-twave-hide
-{
+#button-twave-show, #button-twave-hide {
     background-color: #ff0;
     color: #000;
 }
 
-#button-control-source
-{
+#button-control-source {
     background-color: #f00;
     color: #000;
 }
 
-#button-control-observer
-{
+#button-control-observer {
     background-color: #0f0;
     color: #000;
 }

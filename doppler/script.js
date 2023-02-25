@@ -59,10 +59,9 @@ let wavs = [];
 let freqh = {src: [], obs: []};
 let amph = {src: [], obs: []};
 
-for(let t = 0; t < n; t++)
-{
+for (let t = 0; t < n; t++) {
     wavs[t] = null;
-    
+
     freqh.src[t] = null;
     freqh.obs[t] = null;
     amph.src[t] = null;
@@ -75,22 +74,18 @@ let gain = null;
 
 window.setInterval(doLgc, 50);
 
-function doLgc()
-{
-    if(run === true)
-    {
+function doLgc() {
+    if (run === true) {
         setFmod();
         doTime();
     }
-    
-    if(snd === true)
-    {
+
+    if (snd === true) {
         setSnd();
     }
 }
 
-function doTime()
-{
+function doTime() {
     src.vel.x += src.acc.x;
     src.vel.y += src.acc.y;
     src.pos.x += src.vel.x;
@@ -124,71 +119,52 @@ function doTime()
 
     let diffs = [];
 
-    for(let w = 0; w < n; w++)
-    {
-        if(wavs[w] !== null)
-        {
+    for (let w = 0; w < n; w++) {
+        if (wavs[w] !== null) {
             diffs[w] = s * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
-        }
-
-        else
-        {
+        } else {
             diffs[w] = null;
         }
     }
 
     let wo = null;
 
-    for(let w = 0; w < n; w++)
-    {
-        if(diffs[w] !== null)
-        {
-            if((wo === null || diffs[w] < diffs[wo]) && diffs[w] > 0)
-            {
+    for (let w = 0; w < n; w++) {
+        if (diffs[w] !== null) {
+            if ((wo === null || diffs[w] < diffs[wo]) && diffs[w] > 0) {
                 wo = w;
             }
         }
     }
 
-    if(wo !== null)
-    {
+    if (wo !== null) {
         obs.wav = wavs[wo];
-    }
-    
-    else
-    {
+    } else {
         obs.wav = null;
     }
 
-    if(obs.wav !== null)
-    {
+    if (obs.wav !== null) {
         let dist = Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y);
         let svel = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / dist;
-    
-        if(isNaN(svel))
-        {
+
+        if (isNaN(svel)) {
             svel = 0;
         }
-    
+
         let ovel = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / dist;
-    
-        if(isNaN(ovel))
-        {
+
+        if (isNaN(ovel)) {
             ovel = 0;
         }
-    
+
         obs.freq = obs.wav.freq * (s - ovel) / (s + svel);
-    
-        if(isNaN(obs.freq))
-        {
+
+        if (isNaN(obs.freq)) {
             obs.freq = obs.wav.freq;
         }
-    
-        obs.amp = obs.wav.amp * Math.pow(1 - 0.01, time - obs.wav.time);
-    }
 
-    else
-    {
+        obs.amp = obs.wav.amp * Math.pow(1 - 0.01, time - obs.wav.time);
+    } else {
         obs.freq = null;
         obs.amp = null;
     }
@@ -209,21 +185,18 @@ let ctxAmp = null;
 
 window.requestAnimationFrame(doAnim);
 
-function doAnim()
-{
+function doAnim() {
     doView();
 
-    if(view % 10 === 1)
-    {
+    if (view % 10 === 1) {
         doPlot();
     }
 
     window.requestAnimationFrame(doAnim);
 }
 
-function doView()
-{
-    ctxPos = canvPos.getContext("2d", { alpha: false });
+function doView() {
+    ctxPos = canvPos.getContext("2d", {alpha: false});
 
     ctxPos.clearRect(0, 0, 800, 600);
 
@@ -237,8 +210,7 @@ function doView()
     ctxPos.fillStyle = "#0f0";
     ctxPos.fill();
 
-    if(Math.hypot(obs.vel.x, obs.vel.y) > 0.001)
-    {
+    if (Math.hypot(obs.vel.x, obs.vel.y) > 0.001) {
         ctxPos.save();
 
         ctxPos.translate(obs.pos.x, obs.pos.y);
@@ -266,8 +238,7 @@ function doView()
     ctxPos.fillStyle = "#f00";
     ctxPos.fill();
 
-    if(Math.hypot(src.vel.x, src.vel.y) > 0.001)
-    {
+    if (Math.hypot(src.vel.x, src.vel.y) > 0.001) {
         ctxPos.save();
 
         ctxPos.translate(src.pos.x, src.pos.y);
@@ -292,12 +263,9 @@ function doView()
 
     ctxPos.save();
 
-    for(let w = 0; w < n; w += 10)
-    {
-        if(wavs[w] !== null)
-        {
-            if(time - wavs[w].time < n)
-            {
+    for (let w = 0; w < n; w += 10) {
+        if (wavs[w] !== null) {
+            if (time - wavs[w].time < n) {
                 ctxPos.beginPath();
                 ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, s * (time - wavs[w].time), 0, 2 * Math.PI);
                 ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / n, 0), 1);
@@ -310,8 +278,7 @@ function doView()
 
     ctxPos.restore();
 
-    if(twav === true && obs.wav !== null)
-    {
+    if (twav === true && obs.wav !== null) {
         ctxPos.beginPath();
         ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, s * (time - obs.wav.time), 0, 2 * Math.PI);
         ctxPos.lineWidth = 0.05;
@@ -323,8 +290,7 @@ function doView()
         ctxPos.fillStyle = "#ff0";
         ctxPos.fill();
 
-        if(Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001)
-        {
+        if (Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.001) {
             ctxPos.save();
 
             ctxPos.translate(obs.wav.pos.x, obs.wav.pos.y);
@@ -353,9 +319,8 @@ function doView()
     view++;
 }
 
-function doPlot()
-{
-    ctxFreq = canvFreq.getContext("2d", { alpha: false });
+function doPlot() {
+    ctxFreq = canvFreq.getContext("2d", {alpha: false});
 
     ctxFreq.clearRect(0, 0, 800, 200);
 
@@ -367,12 +332,10 @@ function doPlot()
 
     ctxFreq.beginPath();
 
-    for(let f = 0; f < n; f++)
-    {
+    for (let f = 0; f < n; f++) {
         let freq = freqh.src[((time - f - 1) + n) % n];
 
-        if(freq === null)
-        {
+        if (freq === null) {
             freq = 0;
         }
 
@@ -387,12 +350,10 @@ function doPlot()
 
     ctxFreq.beginPath();
 
-    for(let f = 0; f < n; f++)
-    {
+    for (let f = 0; f < n; f++) {
         let freq = freqh.obs[((time - f - 1) + n) % n];
 
-        if(freq === null)
-        {
+        if (freq === null) {
             freq = 0;
         }
 
@@ -405,15 +366,14 @@ function doPlot()
     ctxFreq.fillStyle = "#0f0";
     ctxFreq.fill();
 
-    for(let b = 1; b < 4; b++)
-    {
+    for (let b = 1; b < 4; b++) {
         ctxFreq.fillStyle = "#ddd";
         ctxFreq.fillRect(0, b / 4, 1, 0.01);
     }
 
     ctxFreq.restore();
 
-    ctxAmp = canvAmp.getContext("2d", { alpha: false });
+    ctxAmp = canvAmp.getContext("2d", {alpha: false});
 
     ctxAmp.clearRect(0, 0, 800, 200);
 
@@ -425,12 +385,10 @@ function doPlot()
 
     ctxAmp.beginPath();
 
-    for(let a = 0; a < n; a++)
-    {
+    for (let a = 0; a < n; a++) {
         let amp = amph.src[((time - a - 1) + n) % n];
 
-        if(amp === null)
-        {
+        if (amp === null) {
             amp = 0;
         }
 
@@ -445,12 +403,10 @@ function doPlot()
 
     ctxAmp.beginPath();
 
-    for(let a = 0; a < n; a++)
-    {
+    for (let a = 0; a < n; a++) {
         let amp = amph.obs[((time - a - 1) + n) % n];
 
-        if(amp === null)
-        {
+        if (amp === null) {
             amp = 0;
         }
 
@@ -463,8 +419,7 @@ function doPlot()
     ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
 
-    for(let b = 1; b < 5; b++)
-    {
+    for (let b = 1; b < 5; b++) {
         ctxAmp.fillStyle = "#ddd";
         ctxAmp.fillRect(0, 0.8 * b / 4, 1, 0.01);
     }
@@ -528,20 +483,17 @@ btnMagLow.onclick = setMagLow;
 btnMagMed.onclick = setMagMed;
 btnMagHigh.onclick = setMagHigh;
 
-function setTimeStrt()
-{
+function setTimeStrt() {
     run = true;
     fixTime();
 }
 
-function setTimeStop()
-{
+function setTimeStop() {
     run = false;
     fixTime();
 }
 
-function doBufrSave()
-{
+function doBufrSave() {
     bufr = {};
     bufr.run = false;
     bufr.time = time;
@@ -589,13 +541,11 @@ function doBufrSave()
             y: obs.acc.y
         }
     };
-    
+
     bufr.wavs = [];
 
-    for(let w = 0; w < n; w++)
-    {
-        if(wavs[w] !== null)
-        {
+    for (let w = 0; w < n; w++) {
+        if (wavs[w] !== null) {
             bufr.wavs[w] = {
                 time: wavs[w].time,
                 freq: wavs[w].freq,
@@ -609,60 +559,39 @@ function doBufrSave()
                     y: wavs[w].vel.y
                 }
             };
-        }
-
-        else
-        {
+        } else {
             bufr.wavs[w] = null;
         }
     }
 
     bufr.freqh = {src: [], obs: []};
 
-    for(let f = 0; f < n; f++)
-    {
-        if(freqh.src[f] !== null)
-        {
+    for (let f = 0; f < n; f++) {
+        if (freqh.src[f] !== null) {
             bufr.freqh.src[f] = freqh.src[f];
-        }
-
-        else
-        {
+        } else {
             bufr.freqh.src[f] = null;
         }
 
-        if(freqh.obs[f] !== null)
-        {
+        if (freqh.obs[f] !== null) {
             bufr.freqh.obs[f] = freqh.obs[f];
-        }
-
-        else
-        {
+        } else {
             bufr.freqh.obs[f] = null;
         }
     }
 
     bufr.amph = {src: [], obs: []};
 
-    for(let a = 0; a < n; a++)
-    {
-        if(amph.src[a] !== null)
-        {
+    for (let a = 0; a < n; a++) {
+        if (amph.src[a] !== null) {
             bufr.amph.src[a] = amph.src[a];
-        }
-
-        else
-        {
+        } else {
             bufr.amph.src[a] = null;
         }
 
-        if(amph.obs[a] !== null)
-        {
+        if (amph.obs[a] !== null) {
             bufr.amph.obs[a] = amph.obs[a];
-        }
-
-        else
-        {
+        } else {
             bufr.amph.obs[a] = null;
         }
     }
@@ -670,10 +599,8 @@ function doBufrSave()
     fixBufr();
 }
 
-function doBufrRstr()
-{
-    if(bufr !== null)
-    {
+function doBufrRstr() {
+    if (bufr !== null) {
         run = bufr.run;
         time = bufr.time;
         fmod = bufr.fmod;
@@ -702,11 +629,9 @@ function doBufrRstr()
         obs.vel.y = bufr.obs.vel.y;
         obs.acc.x = bufr.obs.acc.x;
         obs.acc.y = bufr.obs.acc.y;
-    
-        for(let w = 0; w < n; w++)
-        {
-            if(bufr.wavs[w] !== null)
-            {
+
+        for (let w = 0; w < n; w++) {
+            if (bufr.wavs[w] !== null) {
                 wavs[w].time = bufr.wavs[w].time;
                 wavs[w].freq = bufr.wavs[w].freq;
                 wavs[w].amp = bufr.wavs[w].amp;
@@ -714,76 +639,47 @@ function doBufrRstr()
                 wavs[w].pos.y = bufr.wavs[w].pos.y;
                 wavs[w].vel.x = bufr.wavs[w].vel.x;
                 wavs[w].vel.y = bufr.wavs[w].vel.y;
-            }
-
-            else
-            {
+            } else {
                 wavs[w] = null;
             }
         }
 
-        if(bufr.src.w >= 0)
-        {
+        if (bufr.src.w >= 0) {
             src.wav = wavs[bufr.src.w];
-        }
-
-        else
-        {
+        } else {
             src.wav = null;
         }
 
-        if(bufr.obs.w >= 0)
-        {
+        if (bufr.obs.w >= 0) {
             obs.wav = wavs[bufr.obs.w];
-        }
-
-        else
-        {
+        } else {
             obs.wav = null;
         }
 
-        for(let f = 0; f < n; f++)
-        {
-            if(bufr.freqh.src[f] !== null)
-            {
+        for (let f = 0; f < n; f++) {
+            if (bufr.freqh.src[f] !== null) {
                 freqh.src[f] = bufr.freqh.src[f];
-            }
-
-            else
-            {
+            } else {
                 freqh.src[f] = null;
             }
 
-            if(bufr.freqh.obs[f] !== null)
-            {
+            if (bufr.freqh.obs[f] !== null) {
                 freqh.obs[f] = bufr.freqh.obs[f];
-            }
-
-            else
-            {
+            } else {
                 freqh.obs[f] = null;
             }
         }
-    
-        for(let a = 0; a < n; a++)
-        {
-            if(bufr.amph.src[a] !== null)
-            {
-                amph.src[a] = bufr.amph.src[a];
-            }
 
-            else
-            {
+        for (let a = 0; a < n; a++) {
+            if (bufr.amph.src[a] !== null) {
+                amph.src[a] = bufr.amph.src[a];
+            } else {
                 amph.src[a] = null;
             }
 
-            if(bufr.amph.obs[a] !== null)
-            {
+            if (bufr.amph.obs[a] !== null) {
                 amph.obs[a] = bufr.amph.obs[a];
-            }
-
-            else
-            {
+            } else {
                 amph.obs[a] = null;
             }
         }
@@ -797,83 +693,58 @@ function doBufrRstr()
     }
 }
 
-function setFmodFlt()
-{
+function setFmodFlt() {
     fmod = 0;
     fixFmod();
 }
 
-function setFmodSqr()
-{
+function setFmodSqr() {
     fmod = 1;
     fixFmod();
 }
 
-function setFmodSwp()
-{
+function setFmodSwp() {
     fmod = 2;
     fixFmod();
 }
 
-function setFmodTrg()
-{
+function setFmodTrg() {
     fmod = 3;
     fixFmod();
 }
 
-function setFmodSin()
-{
+function setFmodSin() {
     fmod = 4;
     fixFmod();
 }
 
-function setFmod()
-{
+function setFmod() {
     let prd = 30;
     let phs = time % prd;
 
-    if(fmod === 0)
-    {
+    if (fmod === 0) {
         src.freq = 1;
-    }
-
-    else if(fmod === 1)
-    {
-        if(phs / prd < 0.5)
-        {
+    } else if (fmod === 1) {
+        if (phs / prd < 0.5) {
             src.freq = 0.5;
-        }
-
-        else
-        {
+        } else {
             src.freq = 1.5;
         }
-    }
-
-    else if(fmod === 2)
-    {
+    } else if (fmod === 2) {
         src.freq = 0.5 + phs / prd;
-    }
-
-    else if(fmod === 3)
-    {
+    } else if (fmod === 3) {
         src.freq = 0.5 + Math.abs(2 * phs / prd - 1);
-    }
-
-    else if(fmod === 4)
-    {
+    } else if (fmod === 4) {
         src.freq = 1 + 0.5 * Math.sin(2 * Math.PI * phs / prd);
     }
 }
 
-function setSndOn()
-{
+function setSndOn() {
     let temp = snd;
     snd = true;
     fixSnd();
 
-    if(temp === false)
-    {
+    if (temp === false) {
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
         oscl.type = "sawtooth";
@@ -885,14 +756,12 @@ function setSndOn()
     }
 }
 
-function setSndOff()
-{
+function setSndOff() {
     let temp = snd;
     snd = false;
     fixSnd();
 
-    if(temp === true)
-    {
+    if (temp === true) {
         oscl.stop();
         oscl.disconnect();
         gain.disconnect();
@@ -900,222 +769,135 @@ function setSndOff()
     }
 }
 
-function setSnd()
-{
-    if(snd === true)
-    {
-        if(run === true && obs.freq !== null && obs.amp !== null)
-        {
+function setSnd() {
+    if (snd === true) {
+        if (run === true && obs.freq !== null && obs.amp !== null) {
             oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.freq), 50), 3000);
             gain.gain.value = 0.2 * obs.amp;
-        }
-        
-        else
-        {
+        } else {
             oscl.frequency.value = 0;
             gain.gain.value = 0;
         }
     }
 }
 
-function setTwavShow()
-{
+function setTwavShow() {
     twav = true;
     fixTwav();
 }
 
-function setTwavHide()
-{
+function setTwavHide() {
     twav = false;
     fixTwav();
 }
 
-function setCtrlSrc()
-{
+function setCtrlSrc() {
     obj = src;
     fixCtrl();
 
-    if(src.type === 0)
-    {
+    if (src.type === 0) {
         setTypePos();
-    }
-
-    else if(src.type === 1)
-    {
+    } else if (src.type === 1) {
         setTypeVel();
-    }
-
-    else if(src.type === 2)
-    {
+    } else if (src.type === 2) {
         setTypeAcc();
     }
 
-    if(src.dir === 0)
-    {
+    if (src.dir === 0) {
         setDirZero();
-    }
-
-    else if(src.dir === 1)
-    {
+    } else if (src.dir === 1) {
         setDirLeft();
-    }
-
-    else if(src.dir === 2)
-    {
+    } else if (src.dir === 2) {
         setDirRght();
-    }
-
-    else if(src.dir === 3)
-    {
+    } else if (src.dir === 3) {
         setDirUp();
-    }
-
-    else if(src.dir === 4)
-    {
+    } else if (src.dir === 4) {
         setDirDown();
     }
 
-    if(src.mag === 1)
-    {
+    if (src.mag === 1) {
         setMagLow();
-    }
-
-    else if(src.mag === 2)
-    {
+    } else if (src.mag === 2) {
         setMagMed();
-    }
-    
-    else if(src.mag === 3)
-    {
+    } else if (src.mag === 3) {
         setMagHigh();
     }
 }
 
-function setCtrlObs()
-{
+function setCtrlObs() {
     obj = obs;
     fixCtrl();
 
-    if(obs.type === 0)
-    {
+    if (obs.type === 0) {
         setTypePos();
-    }
-
-    else if(obs.type === 1)
-    {
+    } else if (obs.type === 1) {
         setTypeVel();
-    }
-
-    else if(obs.type === 2)
-    {
+    } else if (obs.type === 2) {
         setTypeAcc();
     }
 
-    if(obs.dir === 0)
-    {
+    if (obs.dir === 0) {
         setDirZero();
-    }
-
-    else if(obs.dir === 1)
-    {
+    } else if (obs.dir === 1) {
         setDirLeft();
-    }
-
-    else if(obs.dir === 2)
-    {
+    } else if (obs.dir === 2) {
         setDirRght();
-    }
-
-    else if(obs.dir === 3)
-    {
+    } else if (obs.dir === 3) {
         setDirUp();
-    }
-
-    else if(obs.dir === 4)
-    {
+    } else if (obs.dir === 4) {
         setDirDown();
     }
 
-    if(obs.mag === 1)
-    {
+    if (obs.mag === 1) {
         setMagLow();
-    }
-
-    else if(obs.mag === 2)
-    {
+    } else if (obs.mag === 2) {
         setMagMed();
-    }
-    
-    else if(obs.mag === 3)
-    {
+    } else if (obs.mag === 3) {
         setMagHigh();
     }
 }
 
-function setTypePos()
-{
-    if(obj !== null)
-    {
+function setTypePos() {
+    if (obj !== null) {
         obj.type = 0;
         fixType();
         setType();
     }
 }
 
-function setTypeVel()
-{
-    if(obj !== null)
-    {
+function setTypeVel() {
+    if (obj !== null) {
         obj.type = 1;
         fixType();
         setType();
     }
 }
 
-function setTypeAcc()
-{
-    if(obj !== null)
-    {
+function setTypeAcc() {
+    if (obj !== null) {
         obj.type = 2;
         fixType();
         setType();
     }
 }
 
-function setType()
-{
-    if(obj !== null)
-    {
-        if(obj.dir !== null)
-        {
-            if(obj.type === 0)
-            {
-                if(obj.dir === 0)
-                {
+function setType() {
+    if (obj !== null) {
+        if (obj.dir !== null) {
+            if (obj.type === 0) {
+                if (obj.dir === 0) {
                     obj.pos.x = 0;
                     obj.pos.y = 0;
-                }
-
-                else if(obj.dir === 1)
-                {
+                } else if (obj.dir === 1) {
                     obj.pos.x = -obj.mag;
                     obj.pos.y = 0;
-                }
-
-                else if(obj.dir === 2)
-                {
+                } else if (obj.dir === 2) {
                     obj.pos.x = obj.mag;
                     obj.pos.y = 0;
-                }
-
-                else if(obj.dir === 3)
-                {
+                } else if (obj.dir === 3) {
                     obj.pos.x = 0;
                     obj.pos.y = obj.mag;
-                }
-
-                else if(obj.dir === 4)
-                {
+                } else if (obj.dir === 4) {
                     obj.pos.x = 0;
                     obj.pos.y = -obj.mag;
                 }
@@ -1124,72 +906,40 @@ function setType()
                 obj.vel.y = 0;
                 obj.acc.x = 0;
                 obj.acc.y = 0;
-            }
-
-            else if(obj.type === 1)
-            {
-                if(obj.dir === 0)
-                {
+            } else if (obj.type === 1) {
+                if (obj.dir === 0) {
                     obj.vel.x = 0;
                     obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 1)
-                {
+                } else if (obj.dir === 1) {
                     obj.vel.x = -0.4 * s * obj.mag;
                     obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 2)
-                {
+                } else if (obj.dir === 2) {
                     obj.vel.x = 0.4 * s * obj.mag;
                     obj.vel.y = 0;
-                }
-
-                else if(obj.dir === 3)
-                {
+                } else if (obj.dir === 3) {
                     obj.vel.x = 0;
                     obj.vel.y = 0.4 * s * obj.mag;
-                }
-
-                else if(obj.dir === 4)
-                {
+                } else if (obj.dir === 4) {
                     obj.vel.x = 0;
                     obj.vel.y = -0.4 * s * obj.mag;
                 }
 
                 obj.acc.x = 0;
                 obj.acc.y = 0;
-            }
-        
-            else if(obj.type === 2)
-            {
-                if(obj.dir === 0)
-                {
+            } else if (obj.type === 2) {
+                if (obj.dir === 0) {
                     obj.acc.x = 0;
                     obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 1)
-                {
+                } else if (obj.dir === 1) {
                     obj.acc.x = -0.5 * Math.pow(s, 2) * obj.mag;
                     obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 2)
-                {
+                } else if (obj.dir === 2) {
                     obj.acc.x = 0.5 * Math.pow(s, 2) * obj.mag;
                     obj.acc.y = 0;
-                }
-
-                else if(obj.dir === 3)
-                {
+                } else if (obj.dir === 3) {
                     obj.acc.x = 0;
                     obj.acc.y = 0.5 * Math.pow(s, 2) * obj.mag;
-                }
-
-                else if(obj.dir === 4)
-                {
+                } else if (obj.dir === 4) {
                     obj.acc.x = 0;
                     obj.acc.y = -0.5 * Math.pow(s, 2) * obj.mag;
                 }
@@ -1198,80 +948,64 @@ function setType()
     }
 }
 
-function setDirLeft()
-{
-    if(obj !== null)
-    {
+function setDirLeft() {
+    if (obj !== null) {
         obj.dir = 1;
         fixDir();
         setType();
     }
 }
 
-function setDirRght()
-{
-    if(obj !== null)
-    {
+function setDirRght() {
+    if (obj !== null) {
         obj.dir = 2;
         fixDir();
         setType();
     }
 }
 
-function setDirUp()
-{
-    if(obj !== null)
-    {
+function setDirUp() {
+    if (obj !== null) {
         obj.dir = 3;
         fixDir();
         setType();
     }
 }
 
-function setDirDown()
-{
-    if(obj !== null)
-    {
+function setDirDown() {
+    if (obj !== null) {
         obj.dir = 4;
         fixDir();
         setType();
     }
 }
 
-function setDirZero()
-{
-    if(obj !== null)
-    {
+function setDirZero() {
+    if (obj !== null) {
         obj.dir = 0;
         fixDir();
         setType();
     }
 }
 
-function setMagLow()
-{
-    if(obj !== null)
-    {
+function setMagLow() {
+    if (obj !== null) {
         obj.mag = 1;
         fixMag();
         setType();
     }
 }
 
-function setMagMed()
-{
-    if(obj !== null)
-    {
+function setMagMed() {
+    if (obj !== null) {
         obj.mag = 2;
         fixMag();
         setType();
     }
 }
 
-function setMagHigh()
-{
-    if(obj !== null)
-    {
+function setMagHigh() {
+    if (obj !== null) {
         obj.mag = 3;
         fixMag();
         setType();
@@ -1288,184 +1022,118 @@ fixType();
 fixDir();
 fixMag();
 
-function fixTime()
-{
+function fixTime() {
     btnTimeStrt.disabled = false;
     btnTimeStop.disabled = false;
 
-    if(run === true)
-    {
+    if (run === true) {
         btnTimeStrt.disabled = true;
-    }
-
-    else if(run === false)
-    {
+    } else if (run === false) {
         btnTimeStop.disabled = true;
     }
 }
 
-function fixBufr()
-{
+function fixBufr() {
     btnBufrRstr.disabled = false;
 
-    if(bufr === null)
-    {
+    if (bufr === null) {
         btnBufrRstr.disabled = true;
     }
 }
 
-function fixFmod()
-{
+function fixFmod() {
     btnFmodFlt.disabled = false;
     btnFmodSqr.disabled = false;
     btnFmodSwp.disabled = false;
     btnFmodTrg.disabled = false;
     btnFmodSin.disabled = false;
 
-    if(fmod === 0)
-    {
+    if (fmod === 0) {
         btnFmodFlt.disabled = true;
-    }
-
-    else if(fmod === 1)
-    {
+    } else if (fmod === 1) {
         btnFmodSqr.disabled = true;
-    }
-
-    else if(fmod === 2)
-    {
+    } else if (fmod === 2) {
         btnFmodSwp.disabled = true;
-    }
-
-    else if(fmod === 3)
-    {
+    } else if (fmod === 3) {
         btnFmodTrg.disabled = true;
-    }
-
-    else if(fmod === 4)
-    {
+    } else if (fmod === 4) {
         btnFmodSin.disabled = true;
     }
 }
 
-function fixSnd()
-{
+function fixSnd() {
     btnSndOn.disabled = false;
     btnSndOff.disabled = false;
 
-    if(snd === true)
-    {
+    if (snd === true) {
         btnSndOn.disabled = true;
-    }
-
-    else if(snd === false)
-    {
+    } else if (snd === false) {
         btnSndOff.disabled = true;
     }
 }
 
-function fixTwav()
-{
+function fixTwav() {
     btnTwavShow.disabled = false;
     btnTwavHide.disabled = false;
 
-    if(twav === true)
-    {
+    if (twav === true) {
         btnTwavShow.disabled = true;
-    }
-
-    else if(twav === false)
-    {
+    } else if (twav === false) {
         btnTwavHide.disabled = true;
     }
 }
 
-function fixCtrl()
-{
+function fixCtrl() {
     btnCtrlSrc.disabled = false;
     btnCtrlObs.disabled = false;
 
-    if(obj === src)
-    {
+    if (obj === src) {
         btnCtrlSrc.disabled = true;
-    }
-
-    else if(obj === obs)
-    {
+    } else if (obj === obs) {
         btnCtrlObs.disabled = true;
     }
 }
 
-function fixType()
-{
-    if(obj !== null)
-    {
+function fixType() {
+    if (obj !== null) {
         btnTypePos.disabled = false;
         btnTypeVel.disabled = false;
         btnTypeAcc.disabled = false;
 
-        if(obj.type === 0)
-        {
+        if (obj.type === 0) {
             btnTypePos.disabled = true;
-        }
-
-        else if(obj.type === 1)
-        {
+        } else if (obj.type === 1) {
             btnTypeVel.disabled = true;
-        }
-    
-        else if(obj.type === 2)
-        {
+        } else if (obj.type === 2) {
             btnTypeAcc.disabled = true;
         }
-    }
-
-    else
-    {
+    } else {
         btnTypePos.disabled = true;
         btnTypeVel.disabled = true;
         btnTypeAcc.disabled = true;
     }
 }
 
-function fixDir()
-{
-    if(obj !== null)
-    {
+function fixDir() {
+    if (obj !== null) {
         btnDirLeft.disabled = false;
         btnDirRght.disabled = false;
         btnDirUp.disabled = false;
         btnDirDown.disabled = false;
         btnDirZero.disabled = false;
 
-        if(obj.dir === 0)
-        {
+        if (obj.dir === 0) {
             btnDirZero.disabled = true;
-        }
-    
-        else if(obj.dir === 1)
-        {
+        } else if (obj.dir === 1) {
             btnDirLeft.disabled = true;
-        }
-    
-        else if(obj.dir === 2)
-        {
+        } else if (obj.dir === 2) {
             btnDirRght.disabled = true;
-        }
-    
-        else if(obj.dir === 3)
-        {
+        } else if (obj.dir === 3) {
             btnDirUp.disabled = true;
-        }
-    
-        else if(obj.dir === 4)
-        {
+        } else if (obj.dir === 4) {
             btnDirDown.disabled = true;
         }
-    }
-
-    else
-    {
+    } else {
         btnDirZero.disabled = true;
         btnDirLeft.disabled = true;
         btnDirRght.disabled = true;
@@ -1474,32 +1142,20 @@ function fixDir()
     }
 }
 
-function fixMag()
-{
-    if(obj !== null)
-    {
+function fixMag() {
+    if (obj !== null) {
         btnMagLow.disabled = false;
         btnMagMed.disabled = false;
         btnMagHigh.disabled = false;
 
-        if(obj.mag === 1)
-        {
+        if (obj.mag === 1) {
             btnMagLow.disabled = true;
-        }
-    
-        else if(obj.mag === 2)
-        {
+        } else if (obj.mag === 2) {
             btnMagMed.disabled = true;
-        }
-    
-        else if(obj.mag === 3)
-        {
+        } else if (obj.mag === 3) {
             btnMagHigh.disabled = true;
         }
-    }
-
-    else
-    {
+    } else {
         btnMagLow.disabled = true;
         btnMagMed.disabled = true;
         btnMagHigh.disabled = true;
@@ -1508,165 +1164,78 @@ function fixMag()
 
 window.onkeydown = doBtn;
 
-function doBtn(event)
-{
-    if(event.key.toUpperCase() === "P")
-    {
-        if(run === true)
-        {
+function doBtn(event) {
+    if (event.key.toUpperCase() === "P") {
+        if (run === true) {
             setTimeStop();
-        }
-
-        else if(run === false)
-        {
+        } else if (run === false) {
             setTimeStrt();
         }
-    }
-
-    else if(event.key.toUpperCase() === "S")
-    {
+    } else if (event.key.toUpperCase() === "S") {
         doBufrSave();
-    }
-
-    else if(event.key.toUpperCase() === "R")
-    {
+    } else if (event.key.toUpperCase() === "R") {
         doBufrRstr();
-    }
-
-    else if(event.key.toUpperCase() === "M")
-    {
-        if(snd === true)
-        {
+    } else if (event.key.toUpperCase() === "M") {
+        if (snd === true) {
             setSndOff();
-        }
-
-        else if(snd === false)
-        {
+        } else if (snd === false) {
             setSndOn();
         }
-    }
-
-    else if(event.key.toUpperCase() === "W")
-    {
-        if(twav === true)
-        {
+    } else if (event.key.toUpperCase() === "W") {
+        if (twav === true) {
             setTwavHide();
-        }
-
-        else if(twav === false)
-        {
+        } else if (twav === false) {
             setTwavShow();
         }
-    }
-
-    else if(event.key.toUpperCase() === "F")
-    {
-        if(fmod === 0)
-        {
+    } else if (event.key.toUpperCase() === "F") {
+        if (fmod === 0) {
             setFmodSqr();
-        }
-
-        else if(fmod === 1)
-        {
+        } else if (fmod === 1) {
             setFmodSwp();
-        }
-
-        else if(fmod === 2)
-        {
+        } else if (fmod === 2) {
             setFmodTrg();
-        }
-
-        else if(fmod === 3)
-        {
+        } else if (fmod === 3) {
             setFmodSin();
-        }
-
-        else if(fmod === 4)
-        {
+        } else if (fmod === 4) {
             setFmodFlt();
         }
-    }
-
-    else if(event.key.toUpperCase() === "C")
-    {
-        if(obj === src)
-        {
+    } else if (event.key.toUpperCase() === "C") {
+        if (obj === src) {
             setCtrlObs();
-        }
-
-        else if(obj === obs)
-        {
+        } else if (obj === obs) {
+            setCtrlSrc();
+        } else if (obj === null) {
             setCtrlSrc();
         }
-
-        else if(obj === null)
-        {
-            setCtrlSrc();
-        }
-    }
-
-    else if(event.key.toUpperCase() === "T")
-    {
-        if(obj !== null)
-        {
-            if(obj.type === 0)
-            {
+    } else if (event.key.toUpperCase() === "T") {
+        if (obj !== null) {
+            if (obj.type === 0) {
                 setTypeVel();
-            }
-
-            else if(obj.type === 1)
-            {
+            } else if (obj.type === 1) {
                 setTypeAcc();
-            }
-
-            else if(obj.type === 2)
-            {
+            } else if (obj.type === 2) {
                 setTypePos();
             }
         }
-    }
-
-    else if(event.key === "ArrowLeft")
-    {
+    } else if (event.key === "ArrowLeft") {
         event.preventDefault();
         setDirLeft();
-    }
-
-    else if(event.key === "ArrowRight")
-    {
+    } else if (event.key === "ArrowRight") {
         event.preventDefault();
         setDirRght();
-    }
-
-    else if(event.key === "ArrowUp")
-    {
+    } else if (event.key === "ArrowUp") {
         event.preventDefault();
         setDirUp();
-    }
-
-    else if(event.key === "ArrowDown")
-    {
+    } else if (event.key === "ArrowDown") {
         event.preventDefault();
         setDirDown();
-    }
-
-    else if(event.key === "0")
-    {
+    } else if (event.key === "0") {
         setDirZero();
-    }
-
-    else if(event.key === "1")
-    {
+    } else if (event.key === "1") {
         setMagLow();
-    }
-
-    else if(event.key === "2")
-    {
+    } else if (event.key === "2") {
         setMagMed();
-    }
-
-    else if(event.key === "3")
-    {
+    } else if (event.key === "3") {
         setMagHigh();
     }
 }
