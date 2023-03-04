@@ -83,12 +83,15 @@ body {
     color: #000;
 }
 
+#button-control-source, #button-control-observer {
+    padding: 8px 16px;
+    color: #000;
+}
+
 #button-control-source {
     background-color: #f00;
-    color: #000;
 }
 
 #button-control-observer {
     background-color: #0f0;
-    color: #000;
 }
