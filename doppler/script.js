@@ -160,10 +160,15 @@ function doTime() {
         obs.freq = obs.wav.freq * (s - ovel) / (s + svel);
 
         if (isNaN(obs.freq)) {
-            obs.freq = obs.wav.freq;
+            obs.freq = null;
         }
 
         obs.amp = obs.wav.amp * Math.pow(1 - 0.01, time - obs.wav.time);
+
+        if (isNaN(obs.amp)) {
+            obs.amp = null;
+        }
+        
     } else {
         obs.freq = null;
         obs.amp = null;
