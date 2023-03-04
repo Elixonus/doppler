@@ -2,26 +2,28 @@ body {
     display: flex;
     margin: 0;
     padding: 50px 0;
-    background-color: #0ff;
+    background-color: #ffa;
 }
 
 .section {
     margin: 5px;
     padding: 5px;
-    background-color: #f0f;
+    background-color: #ccc;
+    border: 8px solid #000;
 }
 
 .group {
     margin: 5px;
     padding: 5px;
-    background-color: #00f;
+    background-color: #fff;
+    border: 6px solid #000;
 }
 
 .panel {
     display: inline-block;
-    margin: 5px;
+    margin: 10px;
     padding: 5px;
-    background-color: #fff;
+    background-color: #eee;
 }
 
 .content {
@@ -67,13 +69,13 @@ body {
     margin: 0 auto;
     padding: 10px;
     text-align: center;
-    background-color: #ff0;
     border: 10px solid #000;
+    background-color: #fff;
 }
 
 #title {
     margin: 5px;
-    padding: 5px;
+    padding: 20px;
 }
 
 #button-twave-show, #button-twave-hide {
