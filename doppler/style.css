@@ -9,14 +9,14 @@ body {
     margin: 5px;
     padding: 5px;
     background-color: #ccc;
-    border: 8px solid #000;
+    border: 10px solid #000;
 }
 
 .group {
     margin: 5px;
     padding: 5px;
     background-color: #fff;
-    border: 6px solid #000;
+    border: 5px solid #000;
 }
 
 .panel {
@@ -69,7 +69,7 @@ body {
     margin: 0 auto;
     padding: 10px;
     text-align: center;
-    border: 10px solid #000;
+    border: 15px solid #000;
     background-color: #fff;
 }
 
