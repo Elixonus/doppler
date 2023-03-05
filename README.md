@@ -64,6 +64,12 @@ Does not implement the effects of wave interference.
 
 Observer can only detect one frequency and amplitude at a time.
 
-## Screenshot
+## Screenshots
 
-![Application User Interface](./interface.png)
+### Interface
+
+![User Interface](./interface.png)
+
+### Display
+
+![Example Screenshot](./screenshot.png)
