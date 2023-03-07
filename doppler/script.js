@@ -1244,3 +1244,42 @@ function doBtn(event) {
         setMagHigh();
     }
 }
+
+let txtDmp = document.getElementById("text-dump");
+
+setInterval(doDmp, 1000);
+
+function doDmp()
+{
+    let dmp = "";
+
+    dmp += "SRC:<br>";
+
+    if(src.wav !== null)
+    {
+        dmp += "^~>TIME=" + src.wav.time.toString() + "<br>";
+    }
+
+    if(src.type === 0)
+    {
+        dmp += "^~>CNST=POS<br>";
+    }
+
+    else if(src.type === 1)
+    {
+        dmp += "^~>CNST=VEL<br>";
+    }
+
+    else if(src.type === 2)
+    {
+        dmp += "^~>CNST=ACC<br>";
+    }
+
+    dmp += "^~>POS=<" + src.pos.x.toFixed(5) + "," + src.pos.y.toFixed(5) + "><br>";
+
+    dmp += "^~>VEL=<" + src.vel.x.toFixed(5) + "," + src.vel.y.toFixed(5) + "><br>";
+
+    dmp += "^~>MACH=" + (Math.hypot(src.vel.x, src.vel.y) / s).toFixed(5) + "<br>";
+
+    txtDmp.innerHTML = dmp;
+}
