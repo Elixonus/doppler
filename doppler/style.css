@@ -2,20 +2,20 @@ body {
     display: flex;
     margin: 0;
     padding: 50px 0;
-    background-color: #ff8;
+    background-color: #0ff;
 }
 
 .section {
     margin: 5px;
     padding: 5px;
-    background-color: #ccc;
+    background-color: #f0f;
     border: 10px solid #000;
 }
 
 .group {
     margin: 5px;
     padding: 5px;
-    background-color: #fff;
+    background-color: #00f;
     border: 5px solid #000;
 }
 

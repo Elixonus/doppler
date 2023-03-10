@@ -6,139 +6,139 @@
         <meta name="description" content="Simulation of the doppler effect, particularized in the context of sound waves.">
         <meta name="keywords" content="doppler, effect, physics, simulation, sound, waves">
         <meta name="author" content="Elias Dobrin">
-        <title>Doppler Effect Simulation</title>
+        <title>Doppler Effect Lab</title>
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <link rel="stylesheet" type="text/css" href="./style.css">
     </head>
     
     <body>
         <div id="main">
-            <h1 id="title">Doppler Effect Simulation</h1>
-                <div class="section">
-                    <h2 class="heading">General</h2>
-                    <div class="group">
-                        <div class="panel">
-                            <h3 class="label">TIME (P)</h3>
-                            <div class="content">
-                                <button type="button" id="button-time-start" class="button">START</button>
-                                <button type="button" id="button-time-stop" class="button">STOP</button>
-                            </div>
+            <h1 id="title">Doppler Effect Lab</h1>
+            <div class="section">
+                <h2 class="heading">General</h2>
+                <div class="group">
+                    <div class="panel">
+                        <h3 class="label">TIME (P)</h3>
+                        <div class="content">
+                            <button type="button" id="button-time-start" class="button">START</button>
+                            <button type="button" id="button-time-stop" class="button">STOP</button>
                         </div>
-                        <div class="panel">
-                            <h3 class="label">BUFFER (S/R)</h3>
-                            <div class="content">
-                                <button type="button" id="button-buffer-save" class="button">SAVE</button>
-                                <button type="button" id="button-buffer-restore" class="button">RESTORE</button>
-                            </div>
+                    </div>
+                    <div class="panel">
+                        <h3 class="label">BUFFER (S/R)</h3>
+                        <div class="content">
+                            <button type="button" id="button-buffer-save" class="button">SAVE</button>
+                            <button type="button" id="button-buffer-restore" class="button">RESTORE</button>
                         </div>
-                        <div class="panel">
-                            <h3 class="label">SOUND (M)</h3>
-                            <div class="content">
-                                <button type="button" id="button-sound-on" class="button">ON</button>
-                                <button type="button" id="button-sound-off" class="button">OFF</button>
-                            </div>
+                    </div>
+                    <div class="panel">
+                        <h3 class="label">SOUND (M)</h3>
+                        <div class="content">
+                            <button type="button" id="button-sound-on" class="button">ON</button>
+                            <button type="button" id="button-sound-off" class="button">OFF</button>
                         </div>
-                        <div class="panel">
-                            <h3 class="label">TWAVE (W)</h3>
-                            <div class="content">
-                                <button type="button" id="button-twave-show" class="button">SHOW</button>
-                                <button type="button" id="button-twave-hide" class="button">HIDE</button>
-                            </div>
+                    </div>
+                    <div class="panel">
+                        <h3 class="label">TWAVE (W)</h3>
+                        <div class="content">
+                            <button type="button" id="button-twave-show" class="button">SHOW</button>
+                            <button type="button" id="button-twave-hide" class="button">HIDE</button>
                         </div>
                     </div>
                 </div>
-                <div class="section">
-                    <h2 class="heading">Signal</h2>
-                    <div class="group">
-                        <div class="panel">
-                            <h3 class="label">FMOD (F)</h3>
-                            <div class="content">
-                                <button type="button" id="button-fmod-flat" class="button">FLAT</button>
-                                <button type="button" id="button-fmod-square" class="button">SQUARE</button>
-                                <button type="button" id="button-fmod-sweep" class="button">SWEEP</button>
-                                <button type="button" id="button-fmod-triangle" class="button">TRIANGLE</button>
-                                <button type="button" id="button-fmod-sine" class="button">SINE</button>
-                            </div>
+            </div>
+            <div class="section">
+                <h2 class="heading">Signal</h2>
+                <div class="group">
+                    <div class="panel">
+                        <h3 class="label">FMOD (F)</h3>
+                        <div class="content">
+                            <button type="button" id="button-fmod-flat" class="button">FLAT</button>
+                            <button type="button" id="button-fmod-square" class="button">SQUARE</button>
+                            <button type="button" id="button-fmod-sweep" class="button">SWEEP</button>
+                            <button type="button" id="button-fmod-triangle" class="button">TRIANGLE</button>
+                            <button type="button" id="button-fmod-sine" class="button">SINE</button>
                         </div>
                     </div>
                 </div>
-                <div class="section">
-                    <h2 class="heading">Object</h2>
-                    <div class="group">
-                        <div class="panel">
-                            <h3 class="label">CONTROL (C)</h3>
-                            <div class="content">
-                                <button type="button" id="button-control-source" class="button">SOURCE</button>
-                                <button type="button" id="button-control-observer" class="button">OBSERVER</button>
-                            </div>
+            </div>
+            <div class="section">
+                <h2 class="heading">Object</h2>
+                <div class="group">
+                    <div class="panel">
+                        <h3 class="label">CONTROL (C)</h3>
+                        <div class="content">
+                            <button type="button" id="button-control-source" class="button">SOURCE</button>
+                            <button type="button" id="button-control-observer" class="button">OBSERVER</button>
                         </div>
-                        <div class="section">
-                            <h2 class="heading">Motion</h2>
-                            <div class="group">
-                                <div class="panel">
-                                    <h3 class="label">TYPE (T)</h3>
-                                    <div class="content">
-                                        <button type="button" id="button-type-position" class="button">POSITION</button>
-                                        <button type="button" id="button-type-velocity" class="button">VELOCITY</button>
-                                        <button type="button" id="button-type-acceleration" class="button">ACCELERATION</button>
-                                    </div>
-                                </div>
-                                <div class="section">
-                                    <h2 class="heading">Vector</h2>
-                                    <div class="group">
-                                        <div class="panel">
-                                            <h3 class="label">DIRECTION (ARROW)</h3>
-                                            <div class="content">
-                                                <button type="button" id="button-direction-left" class="button">LEFT</button>
-                                                <button type="button" id="button-direction-right" class="button">RIGHT</button>
-                                                <button type="button" id="button-direction-up" class="button">UP</button>
-                                                <button type="button" id="button-direction-down" class="button">DOWN</button>
-                                                <button type="button" id="button-direction-zero" class="button">ZERO</button>
-                                            </div>
-                                        </div>
-                                        <div class="panel">
-                                            <h3 class="label">MAGNITUDE (*0/1/2/3)</h3>
-                                            <div class="content">
-                                                <button type="button" id="button-magnitude-low" class="button">LOW</button>
-                                                <button type="button" id="button-magnitude-medium" class="button">MEDIUM</button>
-                                                <button type="button" id="button-magnitude-high" class="button">HIGH</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="section">
+                        <h2 class="heading">Motion</h2>
+                        <div class="group">
+                            <div class="panel">
+                                <h3 class="label">TYPE (T)</h3>
+                                <div class="content">
+                                    <button type="button" id="button-type-position" class="button">POSITION</button>
+                                    <button type="button" id="button-type-velocity" class="button">VELOCITY</button>
+                                    <button type="button" id="button-type-acceleration" class="button">ACCELERATION</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="section">
-                    <h2 class="heading">View</h2>
-                    <div class="group">
-                        <div class="panel">
-                            <h3 class="label">POSITION vs TIME</h3>
-                            <div class="content">
-                                <canvas width="800" height="600" id="canvas-position" class="canvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="section">
-                    <h2 class="heading">Plot</h2>
-                    <div class="group">
-                        <div class="panel">
-                            <h3 class="label">FREQUENCY vs TIME</h3>
-                            <div class="content">
-                                <canvas width="800" height="200" id="canvas-frequency" class="canvas"></canvas>
-                            </div>
-                        </div>
-                        <div class="panel">
-                            <h3 class="label">AMPLITUDE vs TIME</h3>
-                            <div class="content">
-                                <canvas width="800" height="200" id="canvas-amplitude" class="canvas"></canvas>
+                            <div class="section">
+                                <h2 class="heading">Vector</h2>
+                                <div class="group">
+                                    <div class="panel">
+                                        <h3 class="label">DIRECTION (ARROW)</h3>
+                                        <div class="content">
+                                            <button type="button" id="button-direction-left" class="button">LEFT</button>
+                                            <button type="button" id="button-direction-right" class="button">RIGHT</button>
+                                            <button type="button" id="button-direction-up" class="button">UP</button>
+                                            <button type="button" id="button-direction-down" class="button">DOWN</button>
+                                            <button type="button" id="button-direction-zero" class="button">ZERO</button>
+                                        </div>
+                                    </div>
+                                    <div class="panel">
+                                        <h3 class="label">MAGNITUDE (*0/1/2/3)</h3>
+                                        <div class="content">
+                                            <button type="button" id="button-magnitude-low" class="button">LOW</button>
+                                            <button type="button" id="button-magnitude-medium" class="button">MEDIUM</button>
+                                            <button type="button" id="button-magnitude-high" class="button">HIGH</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="section">
+                <h2 class="heading">View</h2>
+                <div class="group">
+                    <div class="panel">
+                        <h3 class="label">POSITION vs TIME</h3>
+                        <div class="content">
+                            <canvas width="800" height="600" id="canvas-position" class="canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="heading">Plot</h2>
+                <div class="group">
+                    <div class="panel">
+                        <h3 class="label">FREQUENCY vs TIME</h3>
+                        <div class="content">
+                            <canvas width="800" height="200" id="canvas-frequency" class="canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3 class="label">AMPLITUDE vs TIME</h3>
+                        <div class="content">
+                            <canvas width="800" height="200" id="canvas-amplitude" class="canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="./script.js"></script>
     </body>
