@@ -96,6 +96,14 @@ function doTime() {
     obs.pos.x += obs.vel.x;
     obs.pos.y += obs.vel.y;
 
+    for(let w = 0; w < wavs.length; w++)
+    {
+        if(wavs[w] !== null)
+        {
+            wavs[w].amp *= 1 - 0.01;
+        }
+    }
+
     let ws = time % n;
 
     wavs[ws] = {
@@ -163,7 +171,7 @@ function doTime() {
             obs.freq = null;
         }
 
-        obs.amp = obs.wav.amp * Math.pow(1 - 0.01, time - obs.wav.time);
+        obs.amp = obs.wav.amp;
 
         if (isNaN(obs.amp)) {
             obs.amp = null;
@@ -371,6 +379,11 @@ function doPlot() {
     ctxFreq.fillStyle = "#0f0";
     ctxFreq.fill();
 
+    if(twav === true && obs.wav !== null) {
+        ctxFreq.fillStyle = "#ff0";
+        ctxFreq.fillRect(0, Math.min(0.25 * Math.abs(obs.wav.freq), 1), 1, 0.025);
+    }
+
     for (let b = 1; b < 4; b++) {
         ctxFreq.fillStyle = "#ddd";
         ctxFreq.fillRect(0, b / 4, 1, 0.01);
@@ -423,6 +436,11 @@ function doPlot() {
     ctxAmp.closePath();
     ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
+
+    if(twav === true && obs.wav !== null) {
+        ctxAmp.fillStyle = "#ff0";
+        ctxAmp.fillRect(0, 0.8 * obs.wav.amp, 1, 0.025);
+    }
 
     for (let b = 1; b < 5; b++) {
         ctxAmp.fillStyle = "#ddd";
