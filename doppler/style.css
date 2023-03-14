@@ -2,6 +2,7 @@ body {
     display: flex;
     margin: 0;
     padding: 50px 0;
+    text-align: center;
     background-color: #0ff;
 }
 
@@ -46,14 +47,15 @@ body {
     display: inline-block;
     margin: 1px;
     padding: 5px 10px;
-    background-color: #f0f;
+    background-color: #fff;
     color: #000;
     border: 5px solid #000;
     cursor: pointer;
 }
 
 .button:disabled {
-    background-color: #808;
+    background-color: #888;
+    color: #000;
     cursor: default;
 }
 
@@ -66,10 +68,9 @@ body {
 }
 
 #main {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 10px;
-    text-align: center;
     border: 15px solid #000;
     background-color: #fff;
 }
