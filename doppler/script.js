@@ -1,6 +1,7 @@
-const spd = 0.047;
+const spd = 0.05;
+const num = 250;
 const skp = 10;
-const num = 47 * skp;
+const prd = 20;
 
 let time = 0;
 let view = 0;
@@ -280,7 +281,7 @@ function doView() {
             if (spd * (time - wavs[w].time) < 4) {
                 ctxPos.beginPath();
                 ctxPos.arc(wavs[w].pos.x, wavs[w].pos.y, spd * (time - wavs[w].time), 0, 2 * Math.PI);
-                ctxPos.globalAlpha = Math.min(Math.max(1 - (time - wavs[w].time) / (4 / spd), 0), 1);
+                ctxPos.globalAlpha = Math.min(Math.max(1 - spd * (time - wavs[w].time) / 4, 0), 1);
                 ctxPos.lineWidth = 0.03;
                 ctxPos.strokeStyle = "#fff";
                 ctxPos.stroke();
@@ -741,7 +742,6 @@ function setFmodSin() {
 }
 
 function setFmod() {
-    let prd = 20;
     let phs = time % prd;
 
     if (fmod === 0) {
@@ -953,17 +953,17 @@ function setType() {
                     obj.acc.x = 0;
                     obj.acc.y = 0;
                 } else if (obj.dir === 1) {
-                    obj.acc.x = -0.5 * Math.pow(s, 2) * obj.mag;
+                    obj.acc.x = -0.5 * spd * spd * obj.mag;
                     obj.acc.y = 0;
                 } else if (obj.dir === 2) {
-                    obj.acc.x = 0.5 * Math.pow(s, 2) * obj.mag;
+                    obj.acc.x = 0.5 * spd * spd * obj.mag;
                     obj.acc.y = 0;
                 } else if (obj.dir === 3) {
                     obj.acc.x = 0;
-                    obj.acc.y = 0.5 * Math.pow(s, 2) * obj.mag;
+                    obj.acc.y = 0.5 * spd * spd * obj.mag;
                 } else if (obj.dir === 4) {
                     obj.acc.x = 0;
-                    obj.acc.y = -0.5 * Math.pow(s, 2) * obj.mag;
+                    obj.acc.y = -0.5 * spd * spd * obj.mag;
                 }
             }
         }
