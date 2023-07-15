@@ -55,7 +55,8 @@ body {
 }
 
 .button:disabled {
-    background-color: #888;
+    background-color: #444;
+    color: #fff;
     cursor: default;
 }
 
@@ -85,7 +86,7 @@ body {
 }
 
 #button-twave-show:disabled, #button-twave-hide:disabled {
-    background-color: #880;
+    background-color: #444;
 }
 
 #button-control-source, #button-control-observer {
@@ -97,7 +98,7 @@ body {
 }
 
 #button-control-source:disabled {
-    background-color: #800;
+    background-color: #444;
 }
 
 #button-control-observer {
@@ -105,5 +106,5 @@ body {
 }
 
 #button-control-observer:disabled {
-    background-color: #080;
+    background-color: #444;
 }
