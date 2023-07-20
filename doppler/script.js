@@ -1,7 +1,7 @@
-const wspd = 0.07;
+const wspd = 0.1;
 const wnum = 250;
 const wskp = 10;
-const mprd = 50;
+const mprd = 47;
 
 let time = 0;
 let view = 0;
@@ -214,16 +214,16 @@ function doView() {
     ctxPos.save();
     ctxPos.scale(100, 100);
 
-    for (let b = 1; b < 6; b++)
+    for (let b = 1; b < 12; b++)
     {
         ctxPos.fillStyle = "#444";
-        ctxPos.fillRect(0, 6 * b / 6, 8, 0.02);
+        ctxPos.fillRect(0, 6 * b / 12, 8, 0.02);
     }
 
-    for (let b = 1; b < 8; b++)
+    for (let b = 1; b < 16; b++)
     {
         ctxPos.fillStyle = "#444";
-        ctxPos.fillRect(8 * b / 8, 0, 0.02, 6);
+        ctxPos.fillRect(8 * b / 16, 0, 0.02, 6);
     }
 
     ctxPos.translate(4, 3);
@@ -354,14 +354,14 @@ function doPlot() {
 
     ctxFrq.beginPath();
 
-    for (let f = 0; f < wnum; f++) {
-        let frq = frqh.src[((time - f - 1) + wnum) % wnum];
+    for (let w = 0; w < wnum; w++) {
+        let frq = frqh.src[((time - w - 1) + wnum) % wnum];
 
         if (frq === null) {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * f / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -372,14 +372,14 @@ function doPlot() {
 
     ctxFrq.beginPath();
 
-    for (let f = 0; f < wnum; f++) {
-        let frq = frqh.obs[((time - f - 1) + wnum) % wnum];
+    for (let w = 0; w < wnum; w++) {
+        let frq = frqh.obs[((time - w - 1) + wnum) % wnum];
 
         if (frq === null) {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * f / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -388,9 +388,9 @@ function doPlot() {
     ctxFrq.fillStyle = "#0f0";
     ctxFrq.fill();
 
-    for (let b = 1; b < 4; b++) {
+    for (let b = 1; b < 8; b++) {
         ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(0, 2 * b / 4, 8, 0.02);
+        ctxFrq.fillRect(0, 2 * b / 8, 8, 0.02);
     }
 
     for (let b = 1; b < 6; b++) {
@@ -410,14 +410,14 @@ function doPlot() {
 
     ctxAmp.beginPath();
 
-    for (let a = 0; a < wnum; a++) {
-        let amp = amph.src[((time - a - 1) + wnum) % wnum];
+    for (let w = 0; w < wnum; w++) {
+        let amp = amph.src[((time - w - 1) + wnum) % wnum];
 
         if (amp === null) {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * a / (wnum - 1), 1.6 * amp);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 1.6 * amp);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -428,14 +428,14 @@ function doPlot() {
 
     ctxAmp.beginPath();
 
-    for (let a = 0; a < wnum; a++) {
-        let amp = amph.obs[((time - a - 1) + wnum) % wnum];
+    for (let w = 0; w < wnum; w++) {
+        let amp = amph.obs[((time - w - 1) + wnum) % wnum];
 
         if (amp === null) {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * a / (wnum - 1), 1.6 * amp);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 1.6 * amp);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -444,12 +444,12 @@ function doPlot() {
     ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
 
-    for (let b = 1; b < 5; b++) {
+    for (let b = 1; b < 10; b++) {
         ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(0, 2 * b / 5, 8, 0.02);
+        ctxAmp.fillRect(0, 2 * b / 10, 8, 0.02);
     }
 
-    for (let b = 1; b < 12; b++) {
+    for (let b = 1; b < 6; b++) {
         ctxAmp.fillStyle = "#444";
         ctxAmp.fillRect(8 * b / 6, 0, 0.02, 8);
     }
@@ -596,33 +596,33 @@ function doBufrSave() {
 
     bufr.frqh = {src: [], obs: []};
 
-    for (let f = 0; f < wnum; f++) {
-        if (frqh.src[f] !== null) {
-            bufr.frqh.src[f] = frqh.src[f];
+    for (let w = 0; w < wnum; w++) {
+        if (frqh.src[w] !== null) {
+            bufr.frqh.src[w] = frqh.src[w];
         } else {
-            bufr.frqh.src[f] = null;
+            bufr.frqh.src[w] = null;
         }
 
-        if (frqh.obs[f] !== null) {
-            bufr.frqh.obs[f] = frqh.obs[f];
+        if (frqh.obs[w] !== null) {
+            bufr.frqh.obs[w] = frqh.obs[w];
         } else {
-            bufr.frqh.obs[f] = null;
+            bufr.frqh.obs[w] = null;
         }
     }
 
     bufr.amph = {src: [], obs: []};
 
-    for (let a = 0; a < wnum; a++) {
-        if (amph.src[a] !== null) {
-            bufr.amph.src[a] = amph.src[a];
+    for (let w = 0; w < wnum; w++) {
+        if (amph.src[w] !== null) {
+            bufr.amph.src[w] = amph.src[w];
         } else {
-            bufr.amph.src[a] = null;
+            bufr.amph.src[w] = null;
         }
 
-        if (amph.obs[a] !== null) {
-            bufr.amph.obs[a] = amph.obs[a];
+        if (amph.obs[w] !== null) {
+            bufr.amph.obs[w] = amph.obs[w];
         } else {
-            bufr.amph.obs[a] = null;
+            bufr.amph.obs[w] = null;
         }
     }
 
@@ -686,31 +686,31 @@ function doBufrRstr() {
             obs.wav = null;
         }
 
-        for (let f = 0; f < wnum; f++) {
-            if (bufr.frqh.src[f] !== null) {
-                frqh.src[f] = bufr.frqh.src[f];
+        for (let w = 0; w < wnum; w++) {
+            if (bufr.frqh.src[w] !== null) {
+                frqh.src[w] = bufr.frqh.src[w];
             } else {
-                frqh.src[f] = null;
+                frqh.src[w] = null;
             }
 
-            if (bufr.frqh.obs[f] !== null) {
-                frqh.obs[f] = bufr.frqh.obs[f];
+            if (bufr.frqh.obs[w] !== null) {
+                frqh.obs[w] = bufr.frqh.obs[w];
             } else {
-                frqh.obs[f] = null;
+                frqh.obs[w] = null;
             }
         }
 
-        for (let a = 0; a < wnum; a++) {
-            if (bufr.amph.src[a] !== null) {
-                amph.src[a] = bufr.amph.src[a];
+        for (let w = 0; w < wnum; w++) {
+            if (bufr.amph.src[w] !== null) {
+                amph.src[w] = bufr.amph.src[w];
             } else {
-                amph.src[a] = null;
+                amph.src[w] = null;
             }
 
-            if (bufr.amph.obs[a] !== null) {
-                amph.obs[a] = bufr.amph.obs[a];
+            if (bufr.amph.obs[w] !== null) {
+                amph.obs[w] = bufr.amph.obs[w];
             } else {
-                amph.obs[a] = null;
+                amph.obs[w] = null;
             }
         }
 
