@@ -361,7 +361,7 @@ function doPlot() {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 2));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -379,7 +379,7 @@ function doPlot() {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 1));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 2));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -393,9 +393,9 @@ function doPlot() {
         ctxFrq.fillRect(0, 2 * b / 8, 8, 0.02);
     }
 
-    for (let b = 1; b < 6; b++) {
+    for (let b = 1; b < 12; b++) {
         ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(8 * b / 6, 0, 0.02, 8);
+        ctxFrq.fillRect(8 * b / 12, 0, 0.02, 8);
     }
 
     ctxFrq.restore();
@@ -417,7 +417,7 @@ function doPlot() {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * w / (wnum - 1), 1.6 * amp);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 12 * amp / 8);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -435,7 +435,7 @@ function doPlot() {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * w / (wnum - 1), 1.6 * amp);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 12 * amp / 8);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -444,14 +444,14 @@ function doPlot() {
     ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
 
-    for (let b = 1; b < 10; b++) {
+    for (let b = 1; b < 8; b++) {
         ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(0, 2 * b / 10, 8, 0.02);
+        ctxAmp.fillRect(0, 2 * b / 8, 8, 0.02);
     }
 
-    for (let b = 1; b < 6; b++) {
+    for (let b = 1; b < 12; b++) {
         ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(8 * b / 6, 0, 0.02, 8);
+        ctxAmp.fillRect(8 * b / 12, 0, 0.02, 8);
     }
 
     ctxAmp.restore();
@@ -776,7 +776,7 @@ function setSndOn() {
     if (temp === false) {
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
-        oscl.type = "sawtooth";
+        oscl.type = "square";
         gain = ctxSnd.createGain();
         setSnd();
         oscl.connect(gain);
