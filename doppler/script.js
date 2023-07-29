@@ -352,6 +352,16 @@ function doPlot() {
     ctxFrq.scale(-1, -1);
     ctxFrq.translate(-4, -1);
 
+    for (let b = 1; b < 8; b++) {
+        ctxFrq.fillStyle = "#444";
+        ctxFrq.fillRect(0, 2 * b / 8, 8, 0.02);
+    }
+
+    for (let b = 1; b < 12; b++) {
+        ctxFrq.fillStyle = "#444";
+        ctxFrq.fillRect(8 * b / 12, 0, 0.02, 8);
+    }
+
     ctxFrq.beginPath();
 
     for (let w = 0; w < wnum; w++) {
@@ -388,16 +398,6 @@ function doPlot() {
     ctxFrq.fillStyle = "#0f0";
     ctxFrq.fill();
 
-    for (let b = 1; b < 8; b++) {
-        ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(0, 2 * b / 8, 8, 0.02);
-    }
-
-    for (let b = 1; b < 12; b++) {
-        ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(8 * b / 12, 0, 0.02, 8);
-    }
-
     ctxFrq.restore();
 
     ctxAmp.clearRect(0, 0, 800, 200);
@@ -407,6 +407,16 @@ function doPlot() {
     ctxAmp.translate(4, 1);
     ctxAmp.scale(-1, -1);
     ctxAmp.translate(-4, -1);
+
+    for (let b = 1; b < 8; b++) {
+        ctxAmp.fillStyle = "#444";
+        ctxAmp.fillRect(0, 2 * b / 8, 8, 0.02);
+    }
+
+    for (let b = 1; b < 12; b++) {
+        ctxAmp.fillStyle = "#444";
+        ctxAmp.fillRect(8 * b / 12, 0, 0.02, 8);
+    }
 
     ctxAmp.beginPath();
 
@@ -443,16 +453,6 @@ function doPlot() {
     ctxAmp.closePath();
     ctxAmp.fillStyle = "#0f0";
     ctxAmp.fill();
-
-    for (let b = 1; b < 8; b++) {
-        ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(0, 2 * b / 8, 8, 0.02);
-    }
-
-    for (let b = 1; b < 12; b++) {
-        ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(8 * b / 12, 0, 0.02, 8);
-    }
 
     ctxAmp.restore();
 
