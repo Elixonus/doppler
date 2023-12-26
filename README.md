@@ -16,7 +16,7 @@ Source emits waves with a constant or variable frequency and constant amplitude.
 
 ## Waves
 
-Waves propagate in time with their amplitude attenuatuating exponentially.
+Waves propagate in time with their amplitude attenuating exponentially.
 
 Only crests are illustrated in the rendering of waves.
 
@@ -30,7 +30,7 @@ Observer detects a wave at a time and records its perceived frequency and amplit
 
 ## Algorithm
 
-Data of each wave is stored in a rolling queue array where the array is overwritten progressively in a repeating fashion.
+Data of each wave is stored in a rolling queue array where the array is overwritten progressively in a circular fashion.
 
 When each wave is emitted, the current time, as well as the position and velocity of the source is stored in an object to be used later.
 
@@ -44,7 +44,7 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `BUFFER` button group can be accessed with keys `S` and `R` to save the current simulation time and restore the saved time later on.
 
-`SOUND` button group can be accessed with key `M` to interpret the observer signal in time as a sound wave.
+`SOUND` button group can be accessed with key `M` to interpret the observer signal in time as an audible sound.
 
 `TWAVE` button group can be accessed with key `W` to highlight the properties of the wave that is observed at the current time. This includes but is not limited to, the position and velocity of the source.
 
@@ -60,7 +60,7 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 ## Limitations
 
-Does not implement the effects of wave interference.
+Simulation does not implement the effects of wave interference.
 
 Observer can only detect one frequency and amplitude at a time.
 
