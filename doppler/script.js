@@ -11,7 +11,7 @@ let run = true;
 let bufr = null;
 let fmod = 0;
 let snd = false;
-let twav = false;
+let owav = false;
 let obj = null;
 
 let src = {
@@ -129,7 +129,7 @@ function doTime() {
 
     for (let w = 0; w < wnum; w++) {
         if (wavs[w] !== null) {
-            diffs[w] = wspd * (time - wavs[w].time) - Math.hypot(obs.pos.x - wavs[w].pos.x, obs.pos.y - wavs[w].pos.y);
+            diffs[w] = wspd * (time - wavs[w].time) - Math.hypot(wavs[w].pos.x - obs.pos.x, wavs[w].pos.y - obs.pos.y);
         } else {
             diffs[w] = null;
         }
@@ -302,9 +302,9 @@ function doView() {
 
     ctxPos.restore();
 
-    if (twav === true && obs.wav !== null) {
+    if (owav === true && obs.wav !== null) {
         ctxPos.beginPath();
-        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, wspd * (time - obs.wav.time), 0, 2 * Math.PI);
+        ctxPos.arc(obs.wav.pos.x, obs.wav.pos.y, Math.hypot(obs.wav.pos.x - obs.pos.x, obs.wav.pos.y - obs.pos.y), 0, 2 * Math.PI);
         ctxPos.lineWidth = 0.05;
         ctxPos.strokeStyle = "#ff0";
         ctxPos.stroke();
@@ -470,8 +470,8 @@ const btnFmodTrg = document.getElementById("button-fmod-triangle");
 const btnFmodSin = document.getElementById("button-fmod-sine");
 const btnSndOn = document.getElementById("button-sound-on");
 const btnSndOff = document.getElementById("button-sound-off");
-const btnTwavShow = document.getElementById("button-twave-show");
-const btnTwavHide = document.getElementById("button-twave-hide");
+const btnOwavShow = document.getElementById("button-owave-show");
+const btnOwavHide = document.getElementById("button-owave-hide");
 const btnCtrlSrc = document.getElementById("button-control-source");
 const btnCtrlObs = document.getElementById("button-control-observer");
 const btnTypePos = document.getElementById("button-type-position");
@@ -497,8 +497,8 @@ btnFmodTrg.onclick = setFmodTrg;
 btnFmodSin.onclick = setFmodSin;
 btnSndOn.onclick = setSndOn;
 btnSndOff.onclick = setSndOff;
-btnTwavShow.onclick = setTwavShow;
-btnTwavHide.onclick = setTwavHide;
+btnOwavShow.onclick = setOwavShow;
+btnOwavHide.onclick = setOwavHide;
 btnCtrlSrc.onclick = setCtrlSrc;
 btnCtrlObs.onclick = setCtrlObs;
 btnTypePos.onclick = setTypePos;
@@ -810,14 +810,14 @@ function setSnd() {
     }
 }
 
-function setTwavShow() {
-    twav = true;
-    fixTwav();
+function setOwavShow() {
+    owav = true;
+    fixOwav();
 }
 
-function setTwavHide() {
-    twav = false;
-    fixTwav();
+function setOwavHide() {
+    owav = false;
+    fixOwav();
 }
 
 function setCtrlSrc() {
@@ -1045,7 +1045,7 @@ fixTime();
 fixBufr();
 fixFmod();
 fixSnd();
-fixTwav();
+fixOwav();
 fixCtrl();
 fixType();
 fixDir();
@@ -1101,14 +1101,14 @@ function fixSnd() {
     }
 }
 
-function fixTwav() {
-    btnTwavShow.disabled = false;
-    btnTwavHide.disabled = false;
+function fixOwav() {
+    btnOwavShow.disabled = false;
+    btnOwavHide.disabled = false;
 
-    if (twav === true) {
-        btnTwavShow.disabled = true;
-    } else if (twav === false) {
-        btnTwavHide.disabled = true;
+    if (owav === true) {
+        btnOwavShow.disabled = true;
+    } else if (owav === false) {
+        btnOwavHide.disabled = true;
     }
 }
 
@@ -1211,10 +1211,10 @@ function doBtn(event) {
             setSndOn();
         }
     } else if (event.key.toUpperCase() === "W") {
-        if (twav === true) {
-            setTwavHide();
-        } else if (twav === false) {
-            setTwavShow();
+        if (owav === true) {
+            setOwavHide();
+        } else if (owav === false) {
+            setOwavShow();
         }
     } else if (event.key.toUpperCase() === "F") {
         if (fmod === 0) {

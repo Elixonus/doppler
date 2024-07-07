@@ -81,11 +81,11 @@ body {
     padding: 20px;
 }
 
-#button-twave-show, #button-twave-hide {
+#button-owave-show, #button-owave-hide {
     background-color: #ff0;
 }
 
-#button-twave-show:disabled, #button-twave-hide:disabled {
+#button-owave-show:disabled, #button-owave-hide:disabled {
     background-color: #444;
 }
 
