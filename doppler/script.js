@@ -209,7 +209,8 @@ function doAnim() {
 }
 
 function doView() {
-    ctxPos.clearRect(0, 0, 800, 600);
+    ctxPos.fillStyle = "#000";
+    ctxPos.fillRect(0, 0, 800, 600);
 
     ctxPos.save();
     ctxPos.scale(100, 100);
@@ -344,7 +345,8 @@ function doView() {
 }
 
 function doPlot() {
-    ctxFrq.clearRect(0, 0, 800, 200);
+    ctxFrq.fillStyle = "#000";
+    ctxFrq.fillRect(0, 0, 800, 200);
 
     ctxFrq.save();
     ctxFrq.scale(100, 100);
@@ -400,7 +402,8 @@ function doPlot() {
 
     ctxFrq.restore();
 
-    ctxAmp.clearRect(0, 0, 800, 200);
+    ctxAmp.fillStyle = "#000";
+    ctxAmp.fillRect(0, 0, 800, 200);
 
     ctxAmp.save();
     ctxAmp.scale(100, 100);
@@ -463,15 +466,15 @@ const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
 const btnBufrRstr = document.getElementById("button-buffer-restore");
+const btnSndOn = document.getElementById("button-sound-on");
+const btnSndOff = document.getElementById("button-sound-off");
+const btnOwavShow = document.getElementById("button-owave-show");
+const btnOwavHide = document.getElementById("button-owave-hide");
 const btnFmodFlt = document.getElementById("button-fmod-flat");
 const btnFmodSqr = document.getElementById("button-fmod-square");
 const btnFmodSwp = document.getElementById("button-fmod-sweep");
 const btnFmodTrg = document.getElementById("button-fmod-triangle");
 const btnFmodSin = document.getElementById("button-fmod-sine");
-const btnSndOn = document.getElementById("button-sound-on");
-const btnSndOff = document.getElementById("button-sound-off");
-const btnOwavShow = document.getElementById("button-owave-show");
-const btnOwavHide = document.getElementById("button-owave-hide");
 const btnCtrlSrc = document.getElementById("button-control-source");
 const btnCtrlObs = document.getElementById("button-control-observer");
 const btnTypePos = document.getElementById("button-type-position");
@@ -486,32 +489,32 @@ const btnMagLow = document.getElementById("button-magnitude-low");
 const btnMagMed = document.getElementById("button-magnitude-medium");
 const btnMagHigh = document.getElementById("button-magnitude-high");
 
-btnTimeStrt.onclick = setTimeStrt;
-btnTimeStop.onclick = setTimeStop;
-btnBufrSave.onclick = doBufrSave;
-btnBufrRstr.onclick = doBufrRstr;
-btnFmodFlt.onclick = setFmodFlt;
-btnFmodSqr.onclick = setFmodSqr;
-btnFmodSwp.onclick = setFmodSwp;
-btnFmodTrg.onclick = setFmodTrg;
-btnFmodSin.onclick = setFmodSin;
-btnSndOn.onclick = setSndOn;
-btnSndOff.onclick = setSndOff;
-btnOwavShow.onclick = setOwavShow;
-btnOwavHide.onclick = setOwavHide;
-btnCtrlSrc.onclick = setCtrlSrc;
-btnCtrlObs.onclick = setCtrlObs;
-btnTypePos.onclick = setTypePos;
-btnTypeVel.onclick = setTypeVel;
-btnTypeAcc.onclick = setTypeAcc;
-btnDirLeft.onclick = setDirLeft;
-btnDirRght.onclick = setDirRght;
-btnDirUp.onclick = setDirUp;
-btnDirDown.onclick = setDirDown;
-btnDirZero.onclick = setDirZero;
-btnMagLow.onclick = setMagLow;
-btnMagMed.onclick = setMagMed;
-btnMagHigh.onclick = setMagHigh;
+btnTimeStrt.addEventListener("click", setTimeStrt);
+btnTimeStop.addEventListener("click", setTimeStop);
+btnBufrSave.addEventListener("click", doBufrSave);
+btnBufrRstr.addEventListener("click", doBufrRstr);
+btnSndOn.addEventListener("click", setSndOn);
+btnSndOff.addEventListener("click", setSndOff);
+btnOwavShow.addEventListener("click", setOwavShow);
+btnOwavHide.addEventListener("click", setOwavHide);
+btnFmodFlt.addEventListener("click", setFmodFlt);
+btnFmodSqr.addEventListener("click", setFmodSqr);
+btnFmodSwp.addEventListener("click", setFmodSwp);
+btnFmodTrg.addEventListener("click", setFmodTrg);
+btnFmodSin.addEventListener("click", setFmodSin);
+btnCtrlSrc.addEventListener("click", setCtrlSrc);
+btnCtrlObs.addEventListener("click", setCtrlObs);
+btnTypePos.addEventListener("click", setTypePos);
+btnTypeVel.addEventListener("click", setTypeVel);
+btnTypeAcc.addEventListener("click", setTypeAcc);
+btnDirLeft.addEventListener("click", setDirLeft);
+btnDirRght.addEventListener("click", setDirRght);
+btnDirUp.addEventListener("click", setDirUp);
+btnDirDown.addEventListener("click", setDirDown);
+btnDirZero.addEventListener("click", setDirZero);
+btnMagLow.addEventListener("click", setMagLow);
+btnMagMed.addEventListener("click", setMagMed);
+btnMagHigh.addEventListener("click", setMagHigh);
 
 function setTimeStrt() {
     run = true;
@@ -723,51 +726,6 @@ function doBufrRstr() {
     }
 }
 
-function setFmodFlt() {
-    fmod = 0;
-    fixFmod();
-}
-
-function setFmodSqr() {
-    fmod = 1;
-    fixFmod();
-}
-
-function setFmodSwp() {
-    fmod = 2;
-    fixFmod();
-}
-
-function setFmodTrg() {
-    fmod = 3;
-    fixFmod();
-}
-
-function setFmodSin() {
-    fmod = 4;
-    fixFmod();
-}
-
-function setFmod() {
-    let phs = time % mprd;
-
-    if (fmod === 0) {
-        src.frq = 1;
-    } else if (fmod === 1) {
-        if (phs / mprd < 0.5) {
-            src.frq = 0.5;
-        } else {
-            src.frq = 1.5;
-        }
-    } else if (fmod === 2) {
-        src.frq = 0.5 + phs / mprd;
-    } else if (fmod === 3) {
-        src.frq = 0.5 + Math.abs(2 * phs / mprd - 1);
-    } else if (fmod === 4) {
-        src.frq = 1 + 0.5 * Math.sin(2 * Math.PI * phs / mprd);
-    }
-}
-
 function setSndOn() {
     let temp = snd;
     snd = true;
@@ -818,6 +776,51 @@ function setOwavShow() {
 function setOwavHide() {
     owav = false;
     fixOwav();
+}
+
+function setFmodFlt() {
+    fmod = 0;
+    fixFmod();
+}
+
+function setFmodSqr() {
+    fmod = 1;
+    fixFmod();
+}
+
+function setFmodSwp() {
+    fmod = 2;
+    fixFmod();
+}
+
+function setFmodTrg() {
+    fmod = 3;
+    fixFmod();
+}
+
+function setFmodSin() {
+    fmod = 4;
+    fixFmod();
+}
+
+function setFmod() {
+    let phs = time % mprd;
+
+    if (fmod === 0) {
+        src.frq = 1;
+    } else if (fmod === 1) {
+        if (phs / mprd < 0.5) {
+            src.frq = 0.5;
+        } else {
+            src.frq = 1.5;
+        }
+    } else if (fmod === 2) {
+        src.frq = 0.5 + phs / mprd;
+    } else if (fmod === 3) {
+        src.frq = 0.5 + Math.abs(2 * phs / mprd - 1);
+    } else if (fmod === 4) {
+        src.frq = 1 + 0.5 * Math.sin(2 * Math.PI * phs / mprd);
+    }
 }
 
 function setCtrlSrc() {
@@ -1043,9 +1046,9 @@ function setMagHigh() {
 
 fixTime();
 fixBufr();
-fixFmod();
 fixSnd();
 fixOwav();
+fixFmod();
 fixCtrl();
 fixType();
 fixDir();
@@ -1070,26 +1073,6 @@ function fixBufr() {
     }
 }
 
-function fixFmod() {
-    btnFmodFlt.disabled = false;
-    btnFmodSqr.disabled = false;
-    btnFmodSwp.disabled = false;
-    btnFmodTrg.disabled = false;
-    btnFmodSin.disabled = false;
-
-    if (fmod === 0) {
-        btnFmodFlt.disabled = true;
-    } else if (fmod === 1) {
-        btnFmodSqr.disabled = true;
-    } else if (fmod === 2) {
-        btnFmodSwp.disabled = true;
-    } else if (fmod === 3) {
-        btnFmodTrg.disabled = true;
-    } else if (fmod === 4) {
-        btnFmodSin.disabled = true;
-    }
-}
-
 function fixSnd() {
     btnSndOn.disabled = false;
     btnSndOff.disabled = false;
@@ -1109,6 +1092,26 @@ function fixOwav() {
         btnOwavShow.disabled = true;
     } else if (owav === false) {
         btnOwavHide.disabled = true;
+    }
+}
+
+function fixFmod() {
+    btnFmodFlt.disabled = false;
+    btnFmodSqr.disabled = false;
+    btnFmodSwp.disabled = false;
+    btnFmodTrg.disabled = false;
+    btnFmodSin.disabled = false;
+
+    if (fmod === 0) {
+        btnFmodFlt.disabled = true;
+    } else if (fmod === 1) {
+        btnFmodSqr.disabled = true;
+    } else if (fmod === 2) {
+        btnFmodSwp.disabled = true;
+    } else if (fmod === 3) {
+        btnFmodTrg.disabled = true;
+    } else if (fmod === 4) {
+        btnFmodSin.disabled = true;
     }
 }
 
@@ -1191,9 +1194,9 @@ function fixMag() {
     }
 }
 
-window.onkeydown = doBtn;
+window.addEventListener("keydown", doKey);
 
-function doBtn(event) {
+function doKey(event) {
     if (event.key.toUpperCase() === "P") {
         if (run === true) {
             setTimeStop();
