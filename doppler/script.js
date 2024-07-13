@@ -1,7 +1,8 @@
-const wspd = 0.1;
+const wspd = 0.05;
+const wdec = 0.01;
 const wnum = 250;
-const wskp = 10;
-const mprd = 47;
+const wskp = 7;
+const mprd = 20;
 
 let time = 0;
 let view = 0;
@@ -74,7 +75,7 @@ let ctxSnd = null;
 let oscl = null;
 let gain = null;
 
-window.setInterval(doLgc, 47);
+window.setInterval(doLgc, 30);
 
 function doLgc() {
     if (run === true) {
@@ -100,7 +101,7 @@ function doTime() {
 
     for (let w = 0; w < wavs.length; w++) {
         if (wavs[w] !== null) {
-            wavs[w].amp *= 1 - 0.01;
+            wavs[w].amp *= 1 - wdec;
         }
     }
 
@@ -125,21 +126,21 @@ function doTime() {
     frqh.src[ws] = src.frq;
     amph.src[ws] = src.amp;
 
-    let diffs = [];
+    let dpms = [];
 
     for (let w = 0; w < wnum; w++) {
         if (wavs[w] !== null) {
-            diffs[w] = wspd * (time - wavs[w].time) - Math.hypot(wavs[w].pos.x - obs.pos.x, wavs[w].pos.y - obs.pos.y);
+            dpms[w] = wspd * (time - wavs[w].time) - Math.hypot(wavs[w].pos.x - obs.pos.x, wavs[w].pos.y - obs.pos.y);
         } else {
-            diffs[w] = null;
+            dpms[w] = null;
         }
     }
 
     let wo = null;
 
     for (let w = 0; w < wnum; w++) {
-        if (diffs[w] !== null) {
-            if ((wo === null || diffs[w] < diffs[wo]) && diffs[w] > 0) {
+        if (dpms[w] !== null) {
+            if ((wo === null || dpms[w] < dpms[wo]) && dpms[w] > 0) {
                 wo = w;
             }
         }
@@ -201,7 +202,7 @@ window.requestAnimationFrame(doAnim);
 function doAnim() {
     doView();
 
-    if (view % 10 === 1) {
+    if (view % 5 === 1) {
         doPlot();
     }
 
@@ -215,16 +216,14 @@ function doView() {
     ctxPos.save();
     ctxPos.scale(100, 100);
 
-    for (let b = 1; b < 12; b++)
-    {
+    for (let b = 1; b < 16; b++) {
         ctxPos.fillStyle = "#444";
-        ctxPos.fillRect(0, 6 * b / 12, 8, 0.02);
+        ctxPos.fillRect(8 * b / 16 - 0.01, 0, 0.02, 6);
     }
 
-    for (let b = 1; b < 16; b++)
-    {
+    for (let b = 1; b < 12; b++) {
         ctxPos.fillStyle = "#444";
-        ctxPos.fillRect(8 * b / 16, 0, 0.02, 6);
+        ctxPos.fillRect(0, 6 * b / 12 - 0.01, 8, 0.02);
     }
 
     ctxPos.translate(4, 3);
@@ -354,14 +353,14 @@ function doPlot() {
     ctxFrq.scale(-1, -1);
     ctxFrq.translate(-4, -1);
 
-    for (let b = 1; b < 8; b++) {
-        ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(0, 2 * b / 8, 8, 0.02);
-    }
-
     for (let b = 1; b < 12; b++) {
         ctxFrq.fillStyle = "#444";
-        ctxFrq.fillRect(8 * b / 12, 0, 0.02, 8);
+        ctxFrq.fillRect(8 * b / 12 - 0.01, 0, 0.02, 8);
+    }
+
+    for (let b = 1; b < 8; b++) {
+        ctxFrq.fillStyle = "#444";
+        ctxFrq.fillRect(0, 2 * b / 8 - 0.01, 8, 0.02);
     }
 
     ctxFrq.beginPath();
@@ -373,7 +372,7 @@ function doPlot() {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 2));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(2 * Math.abs(frq) / 4, 2));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -391,7 +390,7 @@ function doPlot() {
             frq = 0;
         }
 
-        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(0.5 * Math.abs(frq), 2));
+        ctxFrq.lineTo(8 * w / (wnum - 1), Math.min(2 * Math.abs(frq) / 4, 2));
     }
 
     ctxFrq.lineTo(8, 0);
@@ -411,14 +410,14 @@ function doPlot() {
     ctxAmp.scale(-1, -1);
     ctxAmp.translate(-4, -1);
 
-    for (let b = 1; b < 8; b++) {
-        ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(0, 2 * b / 8, 8, 0.02);
-    }
-
     for (let b = 1; b < 12; b++) {
         ctxAmp.fillStyle = "#444";
-        ctxAmp.fillRect(8 * b / 12, 0, 0.02, 8);
+        ctxAmp.fillRect(8 * b / 12 - 0.01, 0, 0.02, 8);
+    }
+
+    for (let b = 1; b < 8; b++) {
+        ctxAmp.fillStyle = "#444";
+        ctxAmp.fillRect(0, 2 * b / 8 - 0.01, 8, 0.02);
     }
 
     ctxAmp.beginPath();
@@ -430,7 +429,7 @@ function doPlot() {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * w / (wnum - 1), 12 * amp / 8);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 2 * 0.75 * amp);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -448,7 +447,7 @@ function doPlot() {
             amp = 0;
         }
 
-        ctxAmp.lineTo(8 * w / (wnum - 1), 12 * amp / 8);
+        ctxAmp.lineTo(8 * w / (wnum - 1), 2 * 0.75 * amp);
     }
 
     ctxAmp.lineTo(8, 0);
@@ -921,17 +920,17 @@ function setType() {
                     obj.pos.x = 0;
                     obj.pos.y = 0;
                 } else if (obj.dir === 1) {
-                    obj.pos.x = -obj.mag;
+                    obj.pos.x = -1 * obj.mag;
                     obj.pos.y = 0;
                 } else if (obj.dir === 2) {
-                    obj.pos.x = obj.mag;
+                    obj.pos.x = 1 * obj.mag;
                     obj.pos.y = 0;
                 } else if (obj.dir === 3) {
                     obj.pos.x = 0;
-                    obj.pos.y = obj.mag;
+                    obj.pos.y = 1 * obj.mag;
                 } else if (obj.dir === 4) {
                     obj.pos.x = 0;
-                    obj.pos.y = -obj.mag;
+                    obj.pos.y = -1 * obj.mag;
                 }
 
                 obj.vel.x = 0;

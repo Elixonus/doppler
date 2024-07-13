@@ -97,14 +97,10 @@ body {
     background-color: #f00;
 }
 
-#button-control-source:disabled {
-    background-color: #444;
-}
-
 #button-control-observer {
     background-color: #0f0;
 }
 
-#button-control-observer:disabled {
+#button-control-source:disabled, #button-control-observer:disabled {
     background-color: #444;
 }

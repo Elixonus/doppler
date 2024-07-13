@@ -70,10 +70,12 @@ Observer can only detect one frequency and amplitude at a time.
 
 ![Screenshot 1](./screen1.png)
 
+![Screenshot 1](./screen2.png)
+
 ### View
 
-![Screenshot 2](./screen2.png)
+![Screenshot 2](./screen3.png)
 
 ### Plot
 
-![Screenshot 3](./screen3.png)
+![Screenshot 3](./screen4.png)
