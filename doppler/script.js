@@ -734,7 +734,9 @@ function setSndOn() {
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
         oscl.type = "square";
+        oscl.frequency.value = 50;
         gain = ctxSnd.createGain();
+        gain.gain.value = 0;
         setSnd();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
@@ -758,11 +760,11 @@ function setSndOff() {
 function setSnd() {
     if (snd === true) {
         if (run === true && obs.frq !== null && obs.amp !== null) {
-            oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.frq), 50), 3000);
-            gain.gain.value = 0.2 * obs.amp;
+            oscl.frequency.linearRampToValueAtTime(Math.min(Math.max(1000 * Math.abs(obs.frq), 50), 3000), ctxSnd.currentTime + 0.03);
+            gain.gain.linearRampToValueAtTime(0.2 * obs.amp, ctxSnd.currentTime + 0.03);
         } else {
-            oscl.frequency.value = 0;
-            gain.gain.value = 0;
+            oscl.frequency.linearRampToValueAtTime(50, ctxSnd.currentTime + 0.03);
+            gain.gain.linearRampToValueAtTime(0, ctxSnd.currentTime + 0.03);
         }
     }
 }
