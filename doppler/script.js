@@ -1,3 +1,32 @@
+let song = [
+    1, 0, 0,
+    1, 0,
+    1.125, 1.125, 1.125, 1.125, 0,
+    1, 1, 1, 1, 0,
+    1.333, 1.333, 1.333, 1.333, 0,
+    1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 0, 0,
+    1, 0, 0,
+    1, 0,
+    1.125, 1.125, 1.125, 1.125, 0,
+    1, 1, 1, 1, 0,
+    1.5, 1.5, 1.5, 1.5, 0,
+    1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 0, 0,
+    1, 0, 0,
+    1, 0,
+    2, 2, 2, 2, 0,
+    1.667, 1.667, 1.667, 1.667, 0,
+    1.333, 1.333, 0,
+    1.333, 0,
+    1.25, 1.25, 1.25, 1.25, 0,
+    1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 0, 0,
+    1.765, 0, 0,
+    1.765, 0,
+    1.667, 1.667, 1.667, 1.667, 0,
+    1.333, 1.333, 1.333, 1.333, 0,
+    1.5, 1.5, 1.5, 1.5, 0,
+    1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 0, 0, 0, 0, 0, 0, 0, 0,
+];
+
 const wspd = 0.05;
 const wdec = 0.01;
 const wnum = 250;
@@ -10,7 +39,7 @@ let plot = 0;
 
 let run = true;
 let bufr = null;
-let fmod = 0;
+let fmod = 5;
 let snd = false;
 let owav = false;
 let obj = null;
@@ -821,6 +850,9 @@ function setFmod() {
         src.frq = 0.5 + Math.abs(2 * phs / mprd - 1);
     } else if (fmod === 4) {
         src.frq = 1 + 0.5 * Math.sin(2 * Math.PI * phs / mprd);
+    } else if (fmod === 5) {
+        phs = time % (25 * mprd)
+        src.frq = song[Math.round((song.length - 1) * (phs / (25 * mprd))) % song.length];
     }
 }
 
@@ -1229,7 +1261,7 @@ function doKey(event) {
             setFmodTrg();
         } else if (fmod === 3) {
             setFmodSin();
-        } else if (fmod === 4) {
+        } else if (fmod === 4 || fmod === 5) {
             setFmodFlt();
         }
     } else if (event.key.toUpperCase() === "C") {
