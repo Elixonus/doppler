@@ -46,7 +46,7 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `SOUND` button group can be accessed with key `M` to interpret the observer signal in time as an audible sound.
 
-`TWAVE` button group can be accessed with key `W` to highlight the properties of the wave that is observed at the current time. This includes but is not limited to, the position and velocity of the source.
+`OWAVE` button group can be accessed with key `W` to highlight the properties of the wave that is observed at the current time. This includes but is not limited to, the position and velocity of the source.
 
 `FMOD` button group can be accessed with key `F` to modulate the frequency of the source signal in time.
 
