@@ -71,29 +71,25 @@ for (let t = 0; t < wnum; t++) {
     amph.obs[t] = null;
 }
 
-let ctxSnd = null;
-let oscl = null;
-let gain = null;
+window.setInterval(doStep, 30);
 
-window.setInterval(doLgc, 30);
-
-function doLgc() {
+function doStep() {
     if (run === true) {
         setFmod();
-        doTime();
-    }
+        doPhys();
 
-    if (snd === true) {
-        setSnd();
+        if (snd === true) {
+            setSnd();
+        }
     }
 }
 
-function doTime() {
+function doPhys() {
     src.vel.x += src.acc.x;
     src.vel.y += src.acc.y;
     src.pos.x += src.vel.x;
     src.pos.y += src.vel.y;
-
+    
     obs.vel.x += obs.acc.x;
     obs.vel.y += obs.acc.y;
     obs.pos.x += obs.vel.x;
@@ -461,6 +457,10 @@ function doPlot() {
     plot++;
 }
 
+let ctxSnd = null;
+let oscl = null;
+let gain = null;
+
 const btnTimeStrt = document.getElementById("button-time-start");
 const btnTimeStop = document.getElementById("button-time-stop");
 const btnBufrSave = document.getElementById("button-buffer-save");
@@ -523,6 +523,7 @@ function setTimeStrt() {
 function setTimeStop() {
     run = false;
     fixTime();
+    setSnd();
 }
 
 function doBufrSave() {
@@ -726,17 +727,15 @@ function doBufrRstr() {
 }
 
 function setSndOn() {
-    let temp = snd;
     snd = true;
     fixSnd();
 
-    if (temp === false) {
+    if (ctxSnd === null && oscl === null && gain === null) {
         ctxSnd = new window.AudioContext();
         oscl = ctxSnd.createOscillator();
         oscl.type = "square";
         oscl.frequency.value = 50;
         gain = ctxSnd.createGain();
-        gain.gain.value = 0;
         setSnd();
         oscl.connect(gain);
         gain.connect(ctxSnd.destination);
@@ -745,26 +744,27 @@ function setSndOn() {
 }
 
 function setSndOff() {
-    let temp = snd;
     snd = false;
     fixSnd();
 
-    if (temp === true) {
+    if (ctxSnd !== null && oscl !== null && gain !== null) {
         oscl.stop();
         oscl.disconnect();
+        oscl = null;
         gain.disconnect();
+        gain = null;
         ctxSnd.close();
+        ctxSnd = null;
     }
 }
 
 function setSnd() {
     if (snd === true) {
         if (run === true && obs.frq !== null && obs.amp !== null) {
-            oscl.frequency.linearRampToValueAtTime(Math.min(Math.max(1000 * Math.abs(obs.frq), 50), 3000), ctxSnd.currentTime + 0.03);
-            gain.gain.linearRampToValueAtTime(0.2 * obs.amp, ctxSnd.currentTime + 0.03);
+            oscl.frequency.value = Math.min(Math.max(1000 * Math.abs(obs.frq), 50), 3000);
+            gain.gain.value = Math.min(Math.max(0.2 * obs.amp, 0), 3);
         } else {
-            oscl.frequency.linearRampToValueAtTime(50, ctxSnd.currentTime + 0.03);
-            gain.gain.linearRampToValueAtTime(0, ctxSnd.currentTime + 0.03);
+            gain.gain.value = 0;
         }
     }
 }
