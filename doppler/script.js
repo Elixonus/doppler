@@ -59,16 +59,18 @@ let obs = {
 
 let wavs = [];
 
+for (let w = 0; w < wnum; w++) {
+    wavs[w] = null;
+}
+
 let frqh = {src: [], obs: []};
 let amph = {src: [], obs: []};
 
-for (let t = 0; t < wnum; t++) {
-    wavs[t] = null;
-
-    frqh.src[t] = null;
-    frqh.obs[t] = null;
-    amph.src[t] = null;
-    amph.obs[t] = null;
+for (let w = 0; w < wnum; w++) {
+    frqh.src[w] = null;
+    frqh.obs[w] = null;
+    amph.src[w] = null;
+    amph.obs[w] = null;
 }
 
 window.setInterval(doStep, 30);
@@ -119,24 +121,21 @@ function doPhys() {
 
     src.wav = wavs[ws];
 
-    frqh.src[ws] = src.frq;
-    amph.src[ws] = src.amp;
-
-    let dpms = [];
+    let offs = [];
 
     for (let w = 0; w < wnum; w++) {
         if (wavs[w] !== null) {
-            dpms[w] = wspd * (time - wavs[w].time) - Math.hypot(wavs[w].pos.x - obs.pos.x, wavs[w].pos.y - obs.pos.y);
+            offs[w] = wspd * (time - wavs[w].time) - Math.hypot(wavs[w].pos.x - obs.pos.x, wavs[w].pos.y - obs.pos.y);
         } else {
-            dpms[w] = null;
+            offs[w] = null;
         }
     }
 
     let wo = null;
 
     for (let w = 0; w < wnum; w++) {
-        if (dpms[w] !== null) {
-            if ((wo === null || dpms[w] < dpms[wo]) && dpms[w] > 0) {
+        if (offs[w] !== null) {
+            if (offs[w] > 0 && (wo === null || offs[w] < offs[wo])) {
                 wo = w;
             }
         }
@@ -179,8 +178,10 @@ function doPhys() {
         obs.amp = null;
     }
 
-    frqh.obs[ws] = obs.frq;
-    amph.obs[ws] = obs.amp;
+    frqh.src[time % wnum] = src.frq;
+    amph.src[time % wnum] = src.amp;
+    frqh.obs[time % wnum] = obs.frq;
+    amph.obs[time % wnum] = obs.amp;
 
     time++;
 }
@@ -198,7 +199,7 @@ window.requestAnimationFrame(doAnim);
 function doAnim() {
     doView();
 
-    if (view % 5 === 1) {
+    if (view % 5 === 0) {
         doPlot();
     }
 
@@ -232,7 +233,6 @@ function doView() {
 
     if (Math.hypot(obs.vel.x, obs.vel.y) > 0.01 * wspd) {
         ctxPos.save();
-
         ctxPos.translate(obs.pos.x, obs.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
@@ -249,7 +249,6 @@ function doView() {
         ctxPos.closePath();
         ctxPos.fillStyle = "#0f0";
         ctxPos.fill();
-
         ctxPos.restore();
     }
 
@@ -260,7 +259,6 @@ function doView() {
 
     if (Math.hypot(src.vel.x, src.vel.y) > 0.01 * wspd) {
         ctxPos.save();
-
         ctxPos.translate(src.pos.x, src.pos.y);
         ctxPos.beginPath();
         ctxPos.lineTo(0, 0);
@@ -277,7 +275,6 @@ function doView() {
         ctxPos.closePath();
         ctxPos.fillStyle = "#f00";
         ctxPos.fill();
-
         ctxPos.restore();
     }
 
@@ -312,7 +309,6 @@ function doView() {
 
         if (Math.hypot(obs.wav.vel.x, obs.wav.vel.y) > 0.01 * wspd) {
             ctxPos.save();
-
             ctxPos.translate(obs.wav.pos.x, obs.wav.pos.y);
             ctxPos.beginPath();
             ctxPos.lineTo(0, 0);
@@ -329,7 +325,6 @@ function doView() {
             ctxPos.closePath();
             ctxPos.fillStyle = "#ff0";
             ctxPos.fill();
-
             ctxPos.restore();
         }
     }
@@ -723,6 +718,7 @@ function doBufrRstr() {
         fixType();
         fixDir();
         fixMag();
+        setSnd();
     }
 }
 
