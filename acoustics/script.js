@@ -9,6 +9,7 @@ lgo.src = "../acoustics/logo.gif";
 lgo.alt = "ACOUSTICS logo";
 lgo.style.marginLeft = "10px";
 lgo.style.verticalAlign = "middle";
+lgo.style.backgroundColor = "#000";
 document.getElementById("title").appendChild(lgo);
 
 const canvGeo = document.createElement("canvas");
@@ -25,7 +26,7 @@ const panGeo = document.createElement("div");
 panGeo.classList.add("panel");
 panGeo.appendChild(labGeo);
 panGeo.appendChild(contGeo);
-document.getElementsByClassName("group")[5].appendChild(panGeo);
+document.getElementsByClassName("section")[0].nextElementSibling.nextElementSibling.nextElementSibling.getElementsByClassName("group")[0].appendChild(panGeo);
 
 let ctxGeo = canvGeo.getContext("2d", {alpha: false});
 window.requestAnimationFrame(doAnimGeo);
@@ -41,6 +42,17 @@ function doViewGeo() {
 
     ctxGeo.save();
     ctxGeo.scale(100, 100);
+
+    for (let b = 1; b < 16; b++) {
+        ctxGeo.fillStyle = "#444";
+        ctxGeo.fillRect(8 * b / 16 - 0.01, 0, 0.02, 6);
+    }
+
+    for (let b = 1; b < 12; b++) {
+        ctxGeo.fillStyle = "#444";
+        ctxGeo.fillRect(0, 6 * b / 12 - 0.01, 8, 0.02);
+    }
+
     ctxGeo.translate(4, 3);
     ctxGeo.scale(1, -1);
 
@@ -121,30 +133,31 @@ function doViewGeo() {
             ctxGeo.restore();
         }
 
-        if (Math.hypot(ovel.x, ovel.y) > 0.01 * wspd) {
+        if (Math.hypot(ovel.x, ovel.y) > 0.01 * wspd) {    
+            ctxGeo.save();
+            ctxGeo.translate(obs.pos.x + ovel.x / wspd, obs.pos.y + ovel.y / wspd);
+            ctxGeo.rotate(Math.atan2(ovel.y / wspd, ovel.x / wspd));
+            if (Math.atan2(obs.vel.x * ovel.y - obs.vel.y * ovel.x, obs.vel.x * ovel.x + obs.vel.y * ovel.y) > 0) {
+                ctxGeo.scale(1, -1);
+            }
+            let len = 5 * Math.min(Math.hypot(ovel.x, ovel.y), Math.hypot(obs.vel.x - ovel.x, obs.vel.y - ovel.y));
+            ctxGeo.beginPath();
+            ctxGeo.lineTo(0, 0);
+            ctxGeo.lineTo(0, len);
+            ctxGeo.lineTo(-len, len);
+            ctxGeo.lineTo(-len, 0);
+            ctxGeo.closePath();
+            ctxGeo.lineWidth = 0.02;
+            ctxGeo.strokeStyle = "#fff";
+            ctxGeo.stroke();
+            ctxGeo.restore();
+
             ctxGeo.save();
             ctxGeo.beginPath();
             ctxGeo.lineTo(obs.pos.x + ovel.x / wspd, obs.pos.y + ovel.y / wspd);
             ctxGeo.lineTo(obs.pos.x + obs.vel.x / wspd, obs.pos.y + obs.vel.y / wspd);
             ctxGeo.lineWidth = 0.02;
             ctxGeo.setLineDash([0.07, 0.04]);
-            ctxGeo.strokeStyle = "#fff";
-            ctxGeo.stroke();
-            ctxGeo.restore();
-    
-            ctxGeo.save();
-            ctxGeo.translate(obs.pos.x + ovel.x / wspd, obs.pos.y + ovel.y / wspd);
-            ctxGeo.rotate(Math.atan2(ovel.y / wspd, ovel.x / wspd));
-            if ((((Math.atan2(obs.vel.y, obs.vel.x) - Math.atan2(ovel.y, ovel.x)) + Math.PI) % (2 * Math.PI)) - Math.PI < 0) {
-                ctxGeo.scale(1, -1);
-            }
-            ctxGeo.beginPath();
-            ctxGeo.lineTo(0, 0);
-            ctxGeo.lineTo(0, 0.15);
-            ctxGeo.lineTo(-0.15, 0.15);
-            ctxGeo.lineTo(-0.15, 0);
-            ctxGeo.closePath();
-            ctxGeo.lineWidth = 0.02;
             ctxGeo.strokeStyle = "#fff";
             ctxGeo.stroke();
             ctxGeo.restore();
@@ -168,30 +181,31 @@ function doViewGeo() {
             ctxGeo.restore();
         }
 
-        if (Math.hypot(svel.x, svel.y) > 0.01 * wspd) {
+        if (Math.hypot(svel.x, svel.y) > 0.01 * wspd) {    
+            ctxGeo.save();
+            ctxGeo.translate(obs.wav.pos.x + svel.x / wspd, obs.wav.pos.y + svel.y / wspd);
+            ctxGeo.rotate(Math.atan2(svel.y / wspd, svel.x / wspd));
+            if (Math.atan2(obs.wav.vel.x * svel.y - obs.wav.vel.y * svel.x, obs.wav.vel.x * svel.x + obs.wav.vel.y * svel.y) > 0) {
+                ctxGeo.scale(1, -1);
+            }
+            let len = 5 * Math.min(Math.hypot(svel.x, svel.y), Math.hypot(obs.wav.vel.x - svel.x, obs.wav.vel.y - svel.y));
+            ctxGeo.beginPath();
+            ctxGeo.lineTo(0, 0);
+            ctxGeo.lineTo(0, len);
+            ctxGeo.lineTo(-len, len);
+            ctxGeo.lineTo(-len, 0);
+            ctxGeo.closePath();
+            ctxGeo.lineWidth = 0.02;
+            ctxGeo.strokeStyle = "#fff";
+            ctxGeo.stroke();
+            ctxGeo.restore();
+
             ctxGeo.save();
             ctxGeo.beginPath();
             ctxGeo.lineTo(obs.wav.pos.x + svel.x / wspd, obs.wav.pos.y + svel.y / wspd);
             ctxGeo.lineTo(obs.wav.pos.x + obs.wav.vel.x / wspd, obs.wav.pos.y + obs.wav.vel.y / wspd);
             ctxGeo.lineWidth = 0.02;
             ctxGeo.setLineDash([0.07, 0.04]);
-            ctxGeo.strokeStyle = "#fff";
-            ctxGeo.stroke();
-            ctxGeo.restore();
-    
-            ctxGeo.save();
-            ctxGeo.translate(obs.wav.pos.x + svel.x / wspd, obs.wav.pos.y + svel.y / wspd);
-            ctxGeo.rotate(Math.atan2(svel.y / wspd, svel.x / wspd));
-            if ((((Math.atan2(obs.wav.vel.y, obs.wav.vel.x) - Math.atan2(svel.y, svel.x)) + Math.PI) % (2 * Math.PI)) - Math.PI < 0) {
-                ctxGeo.scale(1, -1);
-            }
-            ctxGeo.beginPath();
-            ctxGeo.lineTo(0, 0);
-            ctxGeo.lineTo(0, 0.15);
-            ctxGeo.lineTo(-0.15, 0.15);
-            ctxGeo.lineTo(-0.15, 0);
-            ctxGeo.closePath();
-            ctxGeo.lineWidth = 0.02;
             ctxGeo.strokeStyle = "#fff";
             ctxGeo.stroke();
             ctxGeo.restore();
@@ -238,4 +252,42 @@ function doViewGeo() {
 
 
     ctxGeo.restore();
+}
+
+const preDmp = document.createElement("pre");
+preDmp.style.textAlign = "left";
+const contDmp = document.createElement("div");
+contDmp.classList.add("content");
+contDmp.appendChild(preDmp);
+const labDmp = document.createElement("h3");
+labDmp.innerText = "Dump";
+labDmp.classList.add("label");
+const panDmp = document.createElement("div");
+panDmp.classList.add("panel");
+panDmp.appendChild(labDmp);
+panDmp.appendChild(contDmp);
+const grpInf = document.createElement("div");
+grpInf.classList.add("group");
+grpInf.appendChild(panDmp);
+const hdgInf = document.createElement("h2");
+hdgInf.innerText = "Info";
+hdgInf.classList.add("heading");
+const secInf = document.createElement("div");
+secInf.classList.add("section");
+secInf.appendChild(hdgInf);
+secInf.appendChild(grpInf);
+document.getElementById("main").appendChild(secInf);
+
+window.setInterval(doInf, 1000);
+
+function doInf() {
+    doDmp();
+}
+
+function doDmp() {
+    let html = "";
+    html += "parameters<br>"
+    html += "r_s-&gt; = &lt;" + obs.wav.pos.x.toFixed(3) + ", " + obs.wav.pos.y.toFixed(3) + "&gt; m<br>";
+    html += "r_o-&gt; = &lt;" + obs.pos.x.toFixed(3) + ", " + obs.pos.y.toFixed(3) + "&gt; m<br>";
+    preDmp.innerHTML = html;
 }
