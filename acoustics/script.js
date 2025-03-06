@@ -330,3 +330,74 @@ function doDmp() {
     }
     preDmp.innerHTML = html;
 }
+
+const btnSndHjkNon = document.createElement("button");
+btnSndHjkNon.innerText = "NONE";
+btnSndHjkNon.type = "button";
+btnSndHjkNon.classList.add("button");
+const btnSndHjkHpy = document.createElement("button");
+btnSndHjkHpy.innerText = "HAPPY BIRTHDAY!";
+btnSndHjkHpy.type = "button";
+btnSndHjkHpy.classList.add("button");
+const contSndHjk = document.createElement("div");
+contSndHjk.classList.add("content");
+contSndHjk.appendChild(btnSndHjkNon);
+contSndHjk.appendChild(btnSndHjkHpy);
+const labSndHjk = document.createElement("h3");
+labSndHjk.innerText = "SOUND HIJACK";
+labSndHjk.classList.add("label");
+const panSndHjk = document.createElement("div");
+panSndHjk.classList.add("panel");
+panSndHjk.appendChild(labSndHjk);
+panSndHjk.appendChild(contSndHjk);
+document.getElementsByClassName("section")[0].nextElementSibling.getElementsByClassName("group")[0].appendChild(panSndHjk);
+
+let hjk = 0;
+
+btnSndHjkNon.addEventListener("click", setSndHjkNon);
+btnSndHjkHpy.addEventListener("click", setSndHjkHpy);
+
+function setSndHjkNon() {
+    hjk = 0;
+    fixSndHjk();
+    setFmodFlt();
+}
+
+function setSndHjkHpy() {
+    hjk = 1;
+    fixSndHjk();
+}
+
+window.setInterval(setSndHjk, 30);
+
+function setSndHjk() {
+    let phs = time % mprd;
+
+    if (hjk === 0) {
+    } else {
+        fmod = -1;
+        if (hjk === 1) {
+            if (phs / mprd < 0.333) {
+                src.frq = 0.5;
+            } else if (phs / mprd < 0.667) {
+                src.frq = 1;
+            } else {
+                src.frq = 1.5;
+            }
+        }
+    }
+}
+
+fixSndHjk();
+
+function fixSndHjk() {
+    btnSndHjkNon.disabled = false;
+    btnSndHjkHpy.disabled = false;
+
+    if (hjk === 0) {
+        btnSndHjkNon.disabled = true;
+    } else if (hjk === 1) {
+        btnSndHjkHpy.disabled = true;
+    }
+
+}
