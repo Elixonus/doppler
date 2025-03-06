@@ -28,12 +28,37 @@ panGeo.appendChild(labGeo);
 panGeo.appendChild(contGeo);
 document.getElementsByClassName("section")[0].nextElementSibling.nextElementSibling.nextElementSibling.getElementsByClassName("group")[0].appendChild(panGeo);
 
-let ctxGeo = canvGeo.getContext("2d", {alpha: false});
-window.requestAnimationFrame(doAnimGeo);
+const canvPrs = document.createElement("canvas");
+canvPrs.width = 800;
+canvPrs.height = 200;
+canvPrs.classList.add("canvas");
+const contPrs = document.createElement("div");
+contPrs.classList.add("content");
+contPrs.appendChild(canvPrs);
+const labPrs = document.createElement("h3");
+labPrs.innerText = "PRESSURE vs INFINITESIMAL DISTANCE";
+labPrs.classList.add("label");
+const panPrs = document.createElement("div");
+panPrs.classList.add("panel");
+panPrs.appendChild(labPrs);
+panPrs.appendChild(contPrs);
+document.getElementsByClassName("section")[0].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.getElementsByClassName("group")[0].appendChild(panPrs);
 
-function doAnimGeo() {
+let ctxGeo = canvGeo.getContext("2d", {alpha: false});
+let ctxPrs = canvPrs.getContext("2d", {alpha: false});
+
+let view2 = 0;
+window.requestAnimationFrame(doAnim2);
+
+function doAnim2() {
     doViewGeo();
-    window.requestAnimationFrame(doAnimGeo);
+
+    if (view2 % 2 === 0) {
+        doPlotPrs();
+    }
+
+    view2++;
+    window.requestAnimationFrame(doAnim2);
 }
 
 function doViewGeo() {
@@ -71,7 +96,7 @@ function doViewGeo() {
         ctxGeo.arc(obs.wav.pos.x, obs.wav.pos.y, 0.05, 0, 2 * Math.PI);
         ctxGeo.fillStyle = "#ff0";
         ctxGeo.fill();
-    
+
         ctxGeo.beginPath();
         ctxGeo.lineTo(obs.wav.pos.x, obs.wav.pos.y);
         ctxGeo.lineTo(obs.pos.x, obs.pos.y);
@@ -250,8 +275,80 @@ function doViewGeo() {
         ctxGeo.restore();
     }
 
-
     ctxGeo.restore();
+}
+
+function doPlotPrs() {
+    ctxPrs.fillStyle = "#000";
+    ctxPrs.fillRect(0, 0, 800, 200);
+
+    ctxPrs.save();
+    ctxPrs.scale(100, 100);
+    ctxPrs.translate(4, 1);
+    ctxPrs.scale(-1, -1);
+    ctxPrs.translate(-4, 0);
+
+    for (let b = 1; b < 12; b++) {
+        ctxPrs.fillStyle = "#444";
+        ctxPrs.fillRect(8 * b / 12 - 0.01, 0, 0.02, 8);
+    }
+
+    for (let b = 1; b < 8; b++) {
+        ctxPrs.fillStyle = "#444";
+        ctxPrs.fillRect(0, 2 * b / 8 - 1 - 0.01, 8, 0.02);
+    }
+
+    ctxPrs.beginPath();
+
+    for (let w = 0; w < 250; w++) {
+        let frq = src.frq;
+
+        if (frq === null) {
+            frq = 0;
+        }
+
+        let amp = src.amp;
+
+        if (amp === null) {
+            amp = 0;
+        }
+
+        let prs = amp * Math.cos(2 * Math.PI * 15 * frq * (w / (250 - 1) - 0.5));
+        ctxPrs.lineTo(8 * w / (250 - 1), Math.min(Math.max(prs / 2, -1), 1));
+    }
+
+    ctxPrs.lineTo(8, 0);
+    ctxPrs.lineTo(0, 0);
+    ctxPrs.closePath();
+    ctxPrs.fillStyle = "#f00";
+    ctxPrs.fill();
+
+    ctxPrs.beginPath();
+
+    for (let w = 0; w < 250; w++) {
+        let frq = obs.frq;
+
+        if (frq === null) {
+            frq = 0;
+        }
+
+        let amp = obs.amp;
+
+        if (amp === null) {
+            amp = 0;
+        }
+
+        let prs = amp * Math.cos(2 * Math.PI * 15 * frq * (w / (250 - 1) - 0.5));
+        ctxPrs.lineTo(8 * w / (250 - 1), Math.min(Math.max(prs / 2, -1), 1));
+    }
+
+    ctxPrs.lineTo(8, 0);
+    ctxPrs.lineTo(0, 0);
+    ctxPrs.closePath();
+    ctxPrs.fillStyle = "#0f0";
+    ctxPrs.fill();
+
+    ctxPrs.restore();
 }
 
 const preDmp = document.createElement("pre");
@@ -344,7 +441,7 @@ contSndHjk.classList.add("content");
 contSndHjk.appendChild(btnSndHjkNon);
 contSndHjk.appendChild(btnSndHjkHpy);
 const labSndHjk = document.createElement("h3");
-labSndHjk.innerText = "SOUND HIJACK";
+labSndHjk.innerText = "SOUND HIJACK (H)";
 labSndHjk.classList.add("label");
 const panSndHjk = document.createElement("div");
 panSndHjk.classList.add("panel");
@@ -377,14 +474,46 @@ function setSndHjk() {
     } else {
         fmod = -1;
         if (hjk === 1) {
-            if (phs / mprd < 0.333) {
-                src.frq = 0.5;
-            } else if (phs / mprd < 0.667) {
-                src.frq = 1;
-            } else {
-                src.frq = 1.5;
-            }
+            let song = [
+                1, 0, 0,
+                1, 0,
+                1.125, 1.125, 1.125, 1.125, 0,
+                1, 1, 1, 1, 0,
+                1.333, 1.333, 1.333, 1.333, 0,
+                1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 0, 0,
+                1, 0, 0,
+                1, 0,
+                1.125, 1.125, 1.125, 1.125, 0,
+                1, 1, 1, 1, 0,
+                1.5, 1.5, 1.5, 1.5, 0,
+                1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 0, 0,
+                1, 0, 0,
+                1, 0,
+                2, 2, 2, 2, 0,
+                1.667, 1.667, 1.667, 1.667, 0,
+                1.333, 1.333, 0,
+                1.333, 0,
+                1.25, 1.25, 1.25, 1.25, 0,
+                1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 1.125, 0, 0,
+                1.765, 0, 0,
+                1.765, 0,
+                1.667, 1.667, 1.667, 1.667, 0,
+                1.333, 1.333, 1.333, 1.333, 0,
+                1.5, 1.5, 1.5, 1.5, 0,
+                1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 1.333, 0, 0, 0, 0, 0, 0, 0, 0,
+            ];
+            setSong(song, 25 * mprd)
         }
+    }
+}
+
+function setSong(song, dur) {
+    let ntim = (time % dur) / dur;
+    src.frq = song[Math.max(Math.round((song.length - 1) * ntim) % song.length, 0)];
+    if (src.frq === 0) {
+        src.amp = 0;
+    } else {
+        src.amp = 1;
     }
 }
 
@@ -399,5 +528,16 @@ function fixSndHjk() {
     } else if (hjk === 1) {
         btnSndHjkHpy.disabled = true;
     }
+}
 
+window.addEventListener("keydown", doKey2);
+
+function doKey2(event) {
+    if (event.key.toUpperCase() === "H") {
+        if (hjk === 0) {
+            setSndHjkHpy();
+        } else if (hjk === 1) {
+            setSndHjkNon();
+        }
+    }
 }
