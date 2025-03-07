@@ -83,14 +83,16 @@ body {
 
 #button-owave-show, #button-owave-hide {
     background-color: #ff0;
+    color: #000;
 }
 
 #button-owave-show:disabled, #button-owave-hide:disabled {
-    background-color: #444;
+    background-color: #660;
 }
 
 #button-control-source, #button-control-observer {
     padding: 10px 20px;
+    color: #000;
 }
 
 #button-control-source {
@@ -101,6 +103,10 @@ body {
     background-color: #0f0;
 }
 
-#button-control-source:disabled, #button-control-observer:disabled {
-    background-color: #444;
+#button-control-source:disabled {
+    background-color: #600;
+}
+
+#button-control-observer:disabled {
+    background-color: #060;
 }

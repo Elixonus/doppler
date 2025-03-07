@@ -197,7 +197,7 @@ function doViewGeo() {
         ctxGeo.lineTo(-0.1, 0.1);
         ctxGeo.lineTo(-0.1, -0.1);
         ctxGeo.lineTo(0, 0);
-        ctxGeo.closePath(); 
+        ctxGeo.closePath();
         ctxGeo.stroke();
         ctxGeo.restore();
     }
@@ -218,7 +218,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
@@ -240,7 +240,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
@@ -260,7 +260,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
