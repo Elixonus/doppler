@@ -11,7 +11,7 @@
                 margin: 0;
                 padding: 0;
             }
-            
+
             button {
                 display: inline-block;
                 cursor: pointer;
@@ -41,18 +41,24 @@
 
             let contDoc = null;
 
-            frm.addEventListener("load", function() {
+            frm.addEventListener("load", function () {
                 contDoc = frm.contentDocument;
             });
 
             const btnAco = document.getElementById("button-acoustics");
+            let aco = false;
 
-            btnAco.addEventListener("click", function() {
+            btnAco.addEventListener("click", function () {
+                if (aco === true) {
+                    return ;
+                }
+
                 let scr = document.createElement("script");
                 scr.type = "text/javascript";
                 scr.src = "../acoustics/script.js";
 
                 if (contDoc !== null) {
+                    aco = true;
                     contDoc.body.appendChild(scr);
                 } else {
                     alert("Cross Origin Request Issue");
@@ -60,14 +66,20 @@
             });
 
             const btnIsf = document.getElementById("button-eyesafe");
+            let isf = false;
 
-            btnIsf.addEventListener("click", function() {
+            btnIsf.addEventListener("click", function () {
+                if (isf === true) {
+                    return ;
+                }
+
                 let stl = document.createElement("link");
                 stl.rel = "stylesheet";
                 stl.type = "text/css";
                 stl.href = "../eyesafe/style.css";
 
                 if (contDoc !== null) {
+                    isf = true;
                     contDoc.head.appendChild(stl);
                 } else {
                     alert("Cross Origin Request Issue");
