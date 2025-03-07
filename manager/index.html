@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Doppler Effect Lab</title>
+        <link rel="icon" type="image/x-icon" href="../doppler/favicon.ico">
+        <style type="text/css">
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            button {
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            #group-buttons {
+                text-align: center;
+            }
+
+            #frame {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="group-buttons">
+            <button type="button" id="button-acoustics">ACOUSTICS</button>
+            <button type="button" id="button-eyesafe">Eyesafe</button>
+        </div>
+        <iframe id="frame" src="../doppler/index.html" width="500px" height="500px" title="Lab Content Frame" frameborder="0"></iframe>
+        <script type="text/javascript">
+
+            const frm = document.getElementById("frame");
+
+            let contDoc = null;
+
+            frm.addEventListener("load", function() {
+                contDoc = frm.contentDocument;
+            });
+
+            const btnAco = document.getElementById("button-acoustics");
+
+            btnAco.addEventListener("click", function() {
+                let scr = document.createElement("script");
+                scr.type = "text/javascript";
+                scr.src = "../acoustics/script.js";
+
+                if (contDoc !== null) {
+                    contDoc.body.appendChild(scr);
+                } else {
+                    alert("Cross Origin Request Issue");
+                }
+            });
+
+            const btnIsf = document.getElementById("button-eyesafe");
+
+            btnIsf.addEventListener("click", function() {
+                let stl = document.createElement("link");
+                stl.rel = "stylesheet";
+                stl.type = "text/css";
+                stl.href = "../eyesafe/style.css";
+
+                if (contDoc !== null) {
+                    contDoc.head.appendChild(stl);
+                } else {
+                    alert("Cross Origin Request Issue");
+                }
+            });
+
+        </script>
+    </body>
+</html>

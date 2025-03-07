@@ -1,6 +1,6 @@
 /*
 let scr = document.createElement("script");
-scr.type = "text/javascript"
+scr.type = "text/javascript";
 scr.src = "../acoustics/script.js";
 document.body.appendChild(scr);
 */
