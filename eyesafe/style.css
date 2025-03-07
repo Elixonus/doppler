@@ -1,0 +1,41 @@
+/*
+let stl = document.createElement("link");
+stl.rel = "stylesheet";
+stl.type = "text/css";
+stl.href = "../eyesafe/style.css";
+document.head.appendChild(stl);
+*/
+
+body {
+    background-color: #fff !important;
+}
+
+img {
+    display: none !important;
+}
+
+.section {
+    margin: 10px !important;
+    padding: 10px !important;
+    background-color: #fff !important;
+    border: 4px solid #eee !important;
+}
+
+.group {
+    margin: 2px !important;
+    padding: 2px !important;
+    background-color: #fff !important;
+    border: none !important;
+}
+
+.panel {
+    margin: 4px !important;
+    padding: 2px !important;
+    background-color: #fff !important;
+    border: 5px solid #000 !important;
+}
+
+#main {
+    padding: 4px !important;
+    border: none !important;
+}
