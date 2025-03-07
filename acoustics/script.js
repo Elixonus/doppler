@@ -197,7 +197,7 @@ function doViewGeo() {
         ctxGeo.lineTo(-0.1, 0.1);
         ctxGeo.lineTo(-0.1, -0.1);
         ctxGeo.lineTo(0, 0);
-        ctxGeo.closePath(); 
+        ctxGeo.closePath();
         ctxGeo.stroke();
         ctxGeo.restore();
     }
@@ -218,7 +218,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
@@ -240,7 +240,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
@@ -260,7 +260,7 @@ function doViewGeo() {
             ctxGeo.lineTo(-0.1, 0.1);
             ctxGeo.lineTo(-0.1, -0.1);
             ctxGeo.lineTo(0, 0);
-            ctxGeo.closePath(); 
+            ctxGeo.closePath();
             ctxGeo.stroke();
             ctxGeo.restore();
         }
@@ -400,8 +400,8 @@ function doDmp() {
     let html = "";
     if (obs.wav !== null) {
         html += "parameters<br>"
-        html += "r_s-&gt; = &lt;" + obs.wav.pos.x.toFixed(3) + ", " + obs.wav.pos.y.toFixed(3) + "&gt; m<br>";
-        html += "r_o-&gt; = &lt;" + obs.pos.x.toFixed(3) + ", " + obs.pos.y.toFixed(3) + "&gt; m<br>";
+        html += "r_s-&gt; = (" + obs.wav.pos.x.toFixed(3) + ", " + obs.wav.pos.y.toFixed(3) + ") m<br>";
+        html += "r_o-&gt; = (" + obs.pos.x.toFixed(3) + ", " + obs.pos.y.toFixed(3) + ") m<br>";
         html += "v = " + wspd.toFixed(3) + " m/s<br>";
         html += "v_s-&gt; = &lt;" + obs.wav.vel.x.toFixed(3) + ", " + obs.wav.vel.y.toFixed(3) + "&gt; m/s<br>";
         html += "v_o-&gt; = &lt;" + obs.vel.x.toFixed(3) + ", " + obs.vel.y.toFixed(3) + "&gt; m/s<br>";
@@ -413,11 +413,11 @@ function doDmp() {
         html += "d_so = " + d_so.toFixed(3) + " m<br>";
         html += "component of projection<br>";
         html += "v_s = (v_s-&gt; * (r_s-&gt; - r_o-&gt;)) / d_so<br>";
-        html += "v_s = (<" + obs.wav.vel.x.toFixed(3) + ", " + obs.wav.vel.y.toFixed(3) + "> * <" + obs.wav.pos.x.toFixed(3) + " - " + obs.pos.x.toFixed(3) + ", " + obs.wav.pos.y.toFixed(3) + " - " + obs.pos.y.toFixed(3) + ">) / " + d_so.toFixed(3) + "<br>";
+        html += "v_s = (<" + obs.wav.vel.x.toFixed(3) + ", " + obs.wav.vel.y.toFixed(3) + "> * (" + obs.wav.pos.x.toFixed(3) + " - " + obs.pos.x.toFixed(3) + ", " + obs.wav.pos.y.toFixed(3) + " - " + obs.pos.y.toFixed(3) + ")) / " + d_so.toFixed(3) + "<br>";
         let v_s = (obs.wav.vel.x * (obs.wav.pos.x - obs.pos.x) + obs.wav.vel.y * (obs.wav.pos.y - obs.pos.y)) / d_so;
         html += "v_s = " + v_s.toFixed(3) + " m/s<br>";
         html += "v_o = (v_o-&gt; * (r_o-&gt; - r_s-&gt;)) / d_so<br>";
-        html += "v_o = (<" + obs.vel.x.toFixed(3) + ", " + obs.vel.y.toFixed(3) + "> * <" + obs.pos.x.toFixed(3) + " - " + obs.wav.pos.x.toFixed(3) + ", " + obs.pos.y.toFixed(3) + " - " + obs.wav.pos.y.toFixed(3) + ">) / " + d_so.toFixed(3) + "<br>";
+        html += "v_o = (<" + obs.vel.x.toFixed(3) + ", " + obs.vel.y.toFixed(3) + "> * (" + obs.pos.x.toFixed(3) + " - " + obs.wav.pos.x.toFixed(3) + ", " + obs.pos.y.toFixed(3) + " - " + obs.wav.pos.y.toFixed(3) + ")) / " + d_so.toFixed(3) + "<br>";
         let v_o = (obs.vel.x * (obs.pos.x - obs.wav.pos.x) + obs.vel.y * (obs.pos.y - obs.wav.pos.y)) / d_so;
         html += "v_o = " + v_o.toFixed(3) + " m/s<br>";
         html += "doppler equation<br>";

@@ -91,7 +91,7 @@ function doPhys() {
     src.vel.y += src.acc.y;
     src.pos.x += src.vel.x;
     src.pos.y += src.vel.y;
-    
+
     obs.vel.x += obs.acc.x;
     obs.vel.y += obs.acc.y;
     obs.pos.x += obs.vel.x;
