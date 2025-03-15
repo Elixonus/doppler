@@ -40,9 +40,9 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 ## Functionality
 
-`TIME` button group can be accessed with key `P` to pause the simulation, possibly to change the properties of the source and observer.
+`TIME` button group can be accessed with key `P` to pause the simulation and possibly change the properties of the source and observer.
 
-`BUFFER` button group can be accessed with keys `S` and `R` to save the current simulation time and restore the saved time later on.
+`BUFFER` button group can be accessed with keys `S` and `R` to save the current simulation context and restore the saved context.
 
 `SOUND` button group can be accessed with key `M` to interpret the observer signal in time as an audible sound.
 
@@ -50,13 +50,13 @@ If an observer wave is found, the perceived frequency and amplitude is calculate
 
 `FMOD` button group can be accessed with key `F` to modulate the frequency of the source signal in time.
 
-`CONTROL` button group can be accessed with key `C` to switch between modifying the properties of the source and observer.
+`CONTROL` button group can be accessed with key `C` to switch between modification of the properties of the source and observer.
 
-`TYPE` button group can be accessed with key `T` to switch between modifying the position, velocity and acceleration of the controlled object.
+`TYPE` button group can be accessed with key `T` to switch between modification of the position, velocity and acceleration of the controlled object.
 
-`DIRECTION` button group can be accessed with keys `ArrowLeft`, `ArrowRight`, `ArrowUp`, `ArrowDown` and `0` to set the direction of the vector (including origin) of the motion type of the controlled object.
+`DIRECTION` button group can be accessed with keys `ArrowLeft`, `ArrowRight`, `ArrowUp`, `ArrowDown` and `0` to set the direction of the vector (including origin) of the selected motion type of the controlled object.
 
-`MAGNITUDE` button group can be accessed with keys `1`, `2` and `3` to set the magnitude of the vector (excluding origin) of the motion type of the controlled object.
+`MAGNITUDE` button group can be accessed with keys `1`, `2` and `3` to set the magnitude of the vector (excluding origin) of the selected motion type of the controlled object.
 
 ## Limitations
 
