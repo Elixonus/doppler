@@ -31,7 +31,7 @@
     </head>
     <body>
         <div id="group-buttons">
-            <button type="button" id="button-acoustics">ACOUSTICS</button>
+            <button type="button" id="button-acoustics">Acoustics</button>
             <button type="button" id="button-eyesafe">Eyesafe</button>
         </div>
         <iframe id="frame" src="../doppler/index.html" width="500px" height="500px" title="Lab Content Frame" frameborder="0"></iframe>
@@ -61,7 +61,7 @@
                     aco = true;
                     contDoc.body.appendChild(scr);
                 } else {
-                    alert("Cross Origin Request Issue");
+                    alert("Cross Origin Request Error");
                 }
             });
 
@@ -82,7 +82,7 @@
                     isf = true;
                     contDoc.head.appendChild(stl);
                 } else {
-                    alert("Cross Origin Request Issue");
+                    alert("Cross Origin Request Error");
                 }
             });
 

@@ -5,14 +5,6 @@ scr.src = "../acoustics/script.js";
 document.body.appendChild(scr);
 */
 
-const lgo = document.createElement("img");
-lgo.src = "../acoustics/logo.gif";
-lgo.alt = "ACOUSTICS logo";
-lgo.style.marginLeft = "10px";
-lgo.style.verticalAlign = "middle";
-lgo.style.backgroundColor = "#000";
-document.getElementById("title").appendChild(lgo);
-
 const canvGeo = document.createElement("canvas");
 canvGeo.width = 800;
 canvGeo.height = 600;
