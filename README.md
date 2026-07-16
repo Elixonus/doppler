@@ -64,18 +64,6 @@ Simulation does not implement the effects of wave interference.
 
 Observer can only detect one frequency and amplitude at a time.
 
-## Screenshots
+## Screenshot
 
-### Main
-
-![Screenshot 1](./screen1.png)
-
-![Screenshot 1](./screen2.png)
-
-### View
-
-![Screenshot 2](./screen3.png)
-
-### Plot
-
-![Screenshot 3](./screen4.png)
+![Screenshot 1](./screen.png)
