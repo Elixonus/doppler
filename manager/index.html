@@ -32,7 +32,6 @@
     <body>
         <div id="group-buttons">
             <button type="button" id="button-acoustics">Acoustics</button>
-            <button type="button" id="button-eyesafe">Eyesafe</button>
         </div>
         <iframe id="frame" src="../doppler/index.html" width="500px" height="500px" title="Lab Content Frame" frameborder="0"></iframe>
         <script type="text/javascript">
@@ -60,27 +59,6 @@
                 if (contDoc !== null) {
                     aco = true;
                     contDoc.body.appendChild(scr);
-                } else {
-                    alert("Cross Origin Request Error");
-                }
-            });
-
-            const btnIsf = document.getElementById("button-eyesafe");
-            let isf = false;
-
-            btnIsf.addEventListener("click", function () {
-                if (isf === true) {
-                    return ;
-                }
-
-                let stl = document.createElement("link");
-                stl.rel = "stylesheet";
-                stl.type = "text/css";
-                stl.href = "../eyesafe/style.css";
-
-                if (contDoc !== null) {
-                    isf = true;
-                    contDoc.head.appendChild(stl);
                 } else {
                     alert("Cross Origin Request Error");
                 }
