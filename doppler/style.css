@@ -67,6 +67,8 @@ body {
     padding: 0;
     vertical-align: middle;
     background-color: #000;
+    border: 10px solid #000;
+    box-sizing: border-box;
 }
 
 #main {
